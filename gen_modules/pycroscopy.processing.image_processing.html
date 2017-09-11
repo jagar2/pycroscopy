@@ -1,0 +1,1142 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing.image_processing &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.processing.image_processing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.processing.image_processing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.processing.image_processing">
+<span id="pycroscopy-processing-image-processing"></span><h1>pycroscopy.processing.image_processing<a class="headerlink" href="#module-pycroscopy.processing.image_processing" title="Permalink to this headline">¶</a></h1>
+<p>Created on Jun 16, 2016</p>
+<p>&#64;author: Chris Smith – <a class="reference external" href="mailto:csmith55&#37;&#52;&#48;utk&#46;edu">csmith55<span>&#64;</span>utk<span>&#46;</span>edu</a></p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.processing.image_processing.radially_average_correlation">
+<code class="descname">radially_average_correlation</code><span class="sig-paren">(</span><em>data_mat</em>, <em>num_r_bin</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#radially_average_correlation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.radially_average_correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the radially average correlation functions for a given 2D image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_mat</strong> (<em>2D real numpy array</em>) – Image to analyze</li>
+<li><strong>num_r_bin</strong> (<em>unsigned int</em>) – Number of spatial bins to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>a_mat</strong> (<em>2D real numpy array</em>) – Noise spectrum of the image</li>
+<li><strong>a_rad_avg_vec</strong> (<em>1D real numpy array</em>) – Average value of the correlation as a function of feature size</li>
+<li><strong>a_rad_max_vec</strong> (<em>1D real numpy array</em>) – Maximum value of the correlation as a function of feature size</li>
+<li><strong>a_rad_min_vec</strong> (<em>1D real numpy array</em>) – Minimum value of the correlation as a function of feature size</li>
+<li><strong>a_rad_std_vec</strong> (<em>1D real numpy array</em>) – Standard deviation of the correlation as a function of feature size</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div></div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pycroscopy.processing.image_processing.ImageWindow">
+<em class="property">class </em><code class="descname">ImageWindow</code><span class="sig-paren">(</span><em>h5_main</em>, <em>max_RAM_mb=1024</em>, <em>cores=None</em>, <em>reset=True</em>, <em>**image_args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This class will handle the reading of a raw image file, creating windows from it, and writing those
+windows to an HDF5 file.</p>
+<p>Setup the image windowing</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – HDF5 Dataset containing the data to be windowed</li>
+<li><strong>max_RAM_mb</strong> (<em>int</em><em>, </em><em>optional</em>) – integer maximum amount of ram, in Mb, to use in windowing
+Default 1024</li>
+<li><strong>cores</strong> (<em>int</em><em>, </em><em>optional</em>) – integer number of [logical] CPU cores to use in windowing
+Defualt None, use number of available cores minus 2</li>
+<li><strong>reset</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – should all data in the hdf5 file be deleted</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow._ImageWindow__plot_window_fit">
+<code class="descname">_ImageWindow__plot_window_fit</code><span class="sig-paren">(</span><em>r_vec</em>, <em>r_sort</em>, <em>fft_absimage</em>, <em>fft_abssort</em>, <em>guess</em>, <em>fit</em>, <em>save_plots=True</em>, <em>show_plots=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow._ImageWindow__plot_window_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a plot showing the quality of the least-squares fit to the peaks of the FFT of the image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>r_vec</strong> (<em>numpy array</em>) – 1D array of unsorted radii in pixels</li>
+<li><strong>r_sort</strong> (<em>numpy array</em>) – 1D array of the sorted radii</li>
+<li><strong>fft_absimage</strong> (<em>numpy array</em>) – 1D array of the absolute value of the FFT of the normalized image</li>
+<li><strong>fft_abssort</strong> (<em>numpy array</em>) – 1D array of FFT_absimage after being sorted to match r_sort</li>
+<li><strong>guess</strong> (<em>numpy array</em>) – 1D array of the gaussian guess</li>
+<li><strong>fit</strong> (<em>numpy array</em>) – 1D array of the fitted gaussian</li>
+<li><strong>save_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If True then a plot showing the quality of the fit will be
+generated and saved to disk.
+Default True</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If True then a plot showing the quality of the fit will be
+generated and shown on screen.
+Default False</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.processing.image_processing.ImageWindow._check_win_parameters">
+<em class="property">static </em><code class="descname">_check_win_parameters</code><span class="sig-paren">(</span><em>h5_main</em>, <em>win_step_x</em>, <em>win_step_y</em>, <em>win_x</em>, <em>win_y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow._check_win_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow._check_win_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the window parameters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Dataset containing the Raw Image</li>
+<li><strong>win_step_x</strong> (<em>uint</em>) – Step size in the x-direction between windows.</li>
+<li><strong>win_step_y</strong> (<em>uint</em>) – Step size in the y-direction between windows.</li>
+<li><strong>win_x</strong> (<em>uint</em>) – Size of the window in the x-direction.</li>
+<li><strong>win_y</strong> (<em>uint</em>) – Size of the window in the y-direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>image</strong> (<em>numpy.ndarray</em>) – Array containing the original image reshaped by position.</li>
+<li><strong>win_step_x</strong> (<em>uint</em>) – Step size in the x-direction between windows.</li>
+<li><strong>win_step_y</strong> (<em>uint</em>) – Step size in the y-direction between windows.</li>
+<li><strong>win_x</strong> (<em>uint</em>) – Size of the window in the x-direction.</li>
+<li><strong>win_y</strong> (<em>uint</em>) – Size of the window in the y-direction.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.processing.image_processing.ImageWindow._get_window_pos_spec">
+<em class="property">static </em><code class="descname">_get_window_pos_spec</code><span class="sig-paren">(</span><em>image</em>, <em>win_step_x</em>, <em>win_step_y</em>, <em>win_x</em>, <em>win_y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow._get_window_pos_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow._get_window_pos_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the position and spectroscopic datasets for the windows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>image</strong> (<em>numpy.ndarray</em>) – Raw Image</li>
+<li><strong>win_step_x</strong> (<em>uint</em>) – Step size in the x-direction between windows.</li>
+<li><strong>win_step_y</strong> (<em>uint</em>) – Step size in the y-direction between windows.</li>
+<li><strong>win_x</strong> (<em>uint</em>) – Size of the window in the x-direction.</li>
+<li><strong>win_y</strong> (<em>uint</em>) – Size of the window in the y-direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>ds_pix_inds</strong> (<em>MicroDataset</em>) – Spectroscopic Indices of the windows</li>
+<li><strong>ds_pix_vals</strong> (<em>MicroDataset</em>) – Spectroscopic Values of the windows</li>
+<li><strong>ds_pos_inds</strong> (<em>MicroDataset</em>) – Position Indices of the windows</li>
+<li><strong>ds_pos_vals</strong> (<em>MicroDataset</em>) – Position Values of the windows</li>
+<li><strong>win_pos_mat</strong> (<em>numpy.ndarray</em>) – Array containing the positions of the window origins</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow._setup_window_h5">
+<code class="descname">_setup_window_h5</code><span class="sig-paren">(</span><em>h5_main</em>, <em>psf_width</em>, <em>win_fft</em>, <em>win_step_x</em>, <em>win_step_y</em>, <em>win_type</em>, <em>win_x</em>, <em>win_y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow._setup_window_h5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow._setup_window_h5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the hdf5 group for the windows</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Dataset containing the Raw Image</li>
+<li><strong>psf_width</strong> (<em>uint</em>) – psf_width???  Someone who knows what this is should fill it in</li>
+<li><strong>win_fft</strong> – </li>
+<li><strong>win_step_x</strong> (<em>uint</em>) – Step size in the x-direction between windows.</li>
+<li><strong>win_step_y</strong> (<em>uint</em>) – Step size in the y-direction between windows.</li>
+<li><strong>win_type</strong> – </li>
+<li><strong>win_x</strong> (<em>uint</em>) – Size of the window in the x-direction.</li>
+<li><strong>win_y</strong> (<em>uint</em>) – Size of the window in the y-direction.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.abs_fft_func">
+<em class="property">static </em><code class="descname">abs_fft_func</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.abs_fft_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.abs_fft_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the 2d FFT of each window in <cite>windows</cite> and return in the proper form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>numpy.ndarray</em>) – Windowed image to take the FFT of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>windows</strong> – Array of the Magnitude of the FFT of each window for the input
+<cite>image</cite></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.build_clean_image">
+<code class="descname">build_clean_image</code><span class="sig-paren">(</span><em>h5_win=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.build_clean_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.build_clean_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconstructs the cleaned image from the windowed dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>h5_win</strong> (<em>HDF5 dataset</em><em> , </em><em>optional</em>) – The windowed image to be reconstructed.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>h5_clean</strong> – The cleaned image</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">HDF5 dataset</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.clean_and_build">
+<code class="descname">clean_and_build</code><span class="sig-paren">(</span><em>h5_win=None</em>, <em>components=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.clean_and_build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.clean_and_build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild the Image from the SVD results on the windows
+Optionally, only use components less than n_comp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_win</strong> (<em>hdf5 Dataset</em><em>, </em><em>optional</em>) – dataset containing the windowed image which SVD was performed on</li>
+<li><strong>components</strong> (<em>{int</em><em>, </em><em>iterable of int</em><em>, </em><em>slice} optional</em>) – <p>Defines which components to keep</p>
+<p>Input Types
+integer : Components less than the input will be kept
+length 2 iterable of integers : Integers define start and stop of component slice to retain
+other iterable of integers or slice : Selection of component indices to retain</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>clean_wins</strong> – the cleaned windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.clean_and_build_batch">
+<code class="descname">clean_and_build_batch</code><span class="sig-paren">(</span><em>h5_win=None</em>, <em>components=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.clean_and_build_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.clean_and_build_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild the Image from the SVD results on the windows
+Optionally, only use components less than n_comp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_win</strong> (<em>hdf5 Dataset</em><em>, </em><em>optional</em>) – dataset containing the windowed image which SVD was performed on</li>
+<li><strong>components</strong> (<em>{int</em><em>, </em><em>iterable of int</em><em>, </em><em>slice} optional</em>) – <p>Defines which components to keep
+Default - None, all components kept</p>
+<p>Input Types
+integer : Components less than the input will be kept
+length 2 iterable of integers : Integers define start and stop of component slice to retain
+other iterable of integers or slice : Selection of component indices to retain</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>clean_wins</strong> – the cleaned windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.clean_and_build_separate_components">
+<code class="descname">clean_and_build_separate_components</code><span class="sig-paren">(</span><em>h5_win=None</em>, <em>components=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.clean_and_build_separate_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.clean_and_build_separate_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild the Image from the SVD results on the windows
+Optionally, only use components less than n_comp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_win</strong> (<em>hdf5 Dataset</em><em>, </em><em>optional</em>) – dataset containing the windowed image which SVD was performed on</li>
+<li><strong>components</strong> – Defines which components to keep
+Default - None, all components kept</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>clean_wins</strong> – the cleaned windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.do_windowing">
+<code class="descname">do_windowing</code><span class="sig-paren">(</span><em>win_x=None</em>, <em>win_y=None</em>, <em>win_step_x=1</em>, <em>win_step_y=1</em>, <em>win_fft=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.do_windowing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.do_windowing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the windows from the normalized image and write them to the file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>win_x</strong> (<em>int</em><em>, </em><em>optional</em>) – size of the window, in pixels, in the horizontal direction
+Default None, a guess will be made based on the FFT of the image</li>
+<li><strong>win_y</strong> (<em>int</em><em>, </em><em>optional</em>) – size of the window, in pixels, in the vertical direction
+Default None, a guess will be made based on the FFT of the image</li>
+<li><strong>win_step_x</strong> (<em>int</em><em>, </em><em>optional</em>) – step size, in pixels, to take between windows in the horizontal direction
+Default 1</li>
+<li><strong>win_step_y</strong> (<em>int</em><em>, </em><em>optional</em>) – step size, in pixels, to take between windows in the vertical direction
+Default 1</li>
+<li><strong>win_fft</strong> (<em>str</em><em>, </em><em>optional</em>) – What kind of fft should be stored with the windows.  Options are
+None - Only the window
+‘abs’ - Only the magnitude of the fft
+‘data+abs’ - The window and magnitude of the fft
+‘data+complex’ - The window and the complex fft
+Default None</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_wins</strong> – Dataset containing the flattened windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.plot_clean_image">
+<code class="descname">plot_clean_image</code><span class="sig-paren">(</span><em>h5_clean=None</em>, <em>image_path=None</em>, <em>image_type='png'</em>, <em>save_plots=True</em>, <em>show_plots=False</em>, <em>cmap='gray'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.plot_clean_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.plot_clean_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the cleaned image stored in the HDF5 dataset h5_clean</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_clean</strong> (<em>HDF5 dataset</em><em>, </em><em>optional</em>) – cleaned image to be plotted</li>
+<li><strong>image_path</strong> (<em>str</em><em>, </em><em>optional</em>) – path to save cleaned image file
+Default None, ‘_clean’ will be appened to the name of the input image</li>
+<li><strong>image_type</strong> (<em>str</em><em>, </em><em>optional</em>) – image format to save the cleaned image as
+Default ‘png’, all formats recognized by matplotlib.pyplot.imsave
+are allowed</li>
+<li><strong>save_plots</strong> (<em>Boolean</em><em>, </em><em>pptional</em>) – If true, the image will be saved to image_path
+with the extention specified by image_type
+Default True</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If true, the image will be displayed on the screen
+Default False</li>
+<li><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – matplotlib colormap string designation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>clean_image</strong> – object holding the plot of the cleaned image</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Axis_Image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.win_abs_fft_func">
+<em class="property">static </em><code class="descname">win_abs_fft_func</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.win_abs_fft_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.win_abs_fft_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the 2d FFT of each window in <cite>windows</cite> and return in the proper form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>numpy.ndarray</em>) – Windowed image to take the FFT of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>windows</strong> – Array of windows and the Magnitude of the FFT of each window for the input
+<cite>image</cite></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.win_comp_fft_func">
+<em class="property">static </em><code class="descname">win_comp_fft_func</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.win_comp_fft_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.win_comp_fft_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the 2d FFT of each window in <cite>windows</cite> and return in the proper form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>numpy.ndarray</em>) – Windowed image to take the FFT of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>windows</strong> – Array of windows and the FFT of each window for the input <cite>image</cite></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.win_data_func">
+<em class="property">static </em><code class="descname">win_data_func</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.win_data_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.win_data_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the input image in the <cite>windata32</cite> format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>numpy.ndarray</em>) – Windowed image to take the FFT of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>windows</strong> – Array the image in the windata32 format</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_processing.ImageWindow.window_size_extract">
+<code class="descname">window_size_extract</code><span class="sig-paren">(</span><em>num_peaks=2</em>, <em>save_plots=True</em>, <em>show_plots=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.window_size_extract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_processing.ImageWindow.window_size_extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the normalized image and extract from it an optimal window size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_peaks</strong> (<em>int</em><em>, </em><em>optional</em>) – number of peaks to use during least squares fit
+Default 2</li>
+<li><strong>save_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If True then a plot showing the quality of the fit will be
+generated and saved to disk.  Ignored if do_fit is false.
+Default True</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If True then a plot showing the quality of the fit will be
+generated and shown on screen.  Ignored if do_fit is false.
+Default False</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>window_size</strong> (<em>int</em>) – Optimal window size in pixels</li>
+<li><strong>psf_width</strong> (<em>int</em>) – Estimate atom spacing in pixels</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">ImageWindow</code><span class="sig-paren">(</span><em>h5_main</em>, <em>max_RAM_mb=1024</em>, <em>cores=None</em>, <em>reset=True</em>, <em>**image_args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This class will handle the reading of a raw image file, creating windows from it, and writing those
+windows to an HDF5 file.</p>
+<p>Setup the image windowing</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – HDF5 Dataset containing the data to be windowed</li>
+<li><strong>max_RAM_mb</strong> (<em>int</em><em>, </em><em>optional</em>) – integer maximum amount of ram, in Mb, to use in windowing
+Default 1024</li>
+<li><strong>cores</strong> (<em>int</em><em>, </em><em>optional</em>) – integer number of [logical] CPU cores to use in windowing
+Defualt None, use number of available cores minus 2</li>
+<li><strong>reset</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – should all data in the hdf5 file be deleted</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt>
+<code class="descname">_ImageWindow__plot_window_fit</code><span class="sig-paren">(</span><em>r_vec</em>, <em>r_sort</em>, <em>fft_absimage</em>, <em>fft_abssort</em>, <em>guess</em>, <em>fit</em>, <em>save_plots=True</em>, <em>show_plots=False</em><span class="sig-paren">)</span></dt>
+<dd><p>Generate a plot showing the quality of the least-squares fit to the peaks of the FFT of the image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>r_vec</strong> (<em>numpy array</em>) – 1D array of unsorted radii in pixels</li>
+<li><strong>r_sort</strong> (<em>numpy array</em>) – 1D array of the sorted radii</li>
+<li><strong>fft_absimage</strong> (<em>numpy array</em>) – 1D array of the absolute value of the FFT of the normalized image</li>
+<li><strong>fft_abssort</strong> (<em>numpy array</em>) – 1D array of FFT_absimage after being sorted to match r_sort</li>
+<li><strong>guess</strong> (<em>numpy array</em>) – 1D array of the gaussian guess</li>
+<li><strong>fit</strong> (<em>numpy array</em>) – 1D array of the fitted gaussian</li>
+<li><strong>save_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If True then a plot showing the quality of the fit will be
+generated and saved to disk.
+Default True</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If True then a plot showing the quality of the fit will be
+generated and shown on screen.
+Default False</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">_check_win_parameters</code><span class="sig-paren">(</span><em>h5_main</em>, <em>win_step_x</em>, <em>win_step_y</em>, <em>win_x</em>, <em>win_y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow._check_win_parameters"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Check the window parameters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Dataset containing the Raw Image</li>
+<li><strong>win_step_x</strong> (<em>uint</em>) – Step size in the x-direction between windows.</li>
+<li><strong>win_step_y</strong> (<em>uint</em>) – Step size in the y-direction between windows.</li>
+<li><strong>win_x</strong> (<em>uint</em>) – Size of the window in the x-direction.</li>
+<li><strong>win_y</strong> (<em>uint</em>) – Size of the window in the y-direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>image</strong> (<em>numpy.ndarray</em>) – Array containing the original image reshaped by position.</li>
+<li><strong>win_step_x</strong> (<em>uint</em>) – Step size in the x-direction between windows.</li>
+<li><strong>win_step_y</strong> (<em>uint</em>) – Step size in the y-direction between windows.</li>
+<li><strong>win_x</strong> (<em>uint</em>) – Size of the window in the x-direction.</li>
+<li><strong>win_y</strong> (<em>uint</em>) – Size of the window in the y-direction.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">_get_window_pos_spec</code><span class="sig-paren">(</span><em>image</em>, <em>win_step_x</em>, <em>win_step_y</em>, <em>win_x</em>, <em>win_y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow._get_window_pos_spec"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Create the position and spectroscopic datasets for the windows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>image</strong> (<em>numpy.ndarray</em>) – Raw Image</li>
+<li><strong>win_step_x</strong> (<em>uint</em>) – Step size in the x-direction between windows.</li>
+<li><strong>win_step_y</strong> (<em>uint</em>) – Step size in the y-direction between windows.</li>
+<li><strong>win_x</strong> (<em>uint</em>) – Size of the window in the x-direction.</li>
+<li><strong>win_y</strong> (<em>uint</em>) – Size of the window in the y-direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>ds_pix_inds</strong> (<em>MicroDataset</em>) – Spectroscopic Indices of the windows</li>
+<li><strong>ds_pix_vals</strong> (<em>MicroDataset</em>) – Spectroscopic Values of the windows</li>
+<li><strong>ds_pos_inds</strong> (<em>MicroDataset</em>) – Position Indices of the windows</li>
+<li><strong>ds_pos_vals</strong> (<em>MicroDataset</em>) – Position Values of the windows</li>
+<li><strong>win_pos_mat</strong> (<em>numpy.ndarray</em>) – Array containing the positions of the window origins</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_setup_window_h5</code><span class="sig-paren">(</span><em>h5_main</em>, <em>psf_width</em>, <em>win_fft</em>, <em>win_step_x</em>, <em>win_step_y</em>, <em>win_type</em>, <em>win_x</em>, <em>win_y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow._setup_window_h5"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Setup the hdf5 group for the windows</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Dataset containing the Raw Image</li>
+<li><strong>psf_width</strong> (<em>uint</em>) – psf_width???  Someone who knows what this is should fill it in</li>
+<li><strong>win_fft</strong> – </li>
+<li><strong>win_step_x</strong> (<em>uint</em>) – Step size in the x-direction between windows.</li>
+<li><strong>win_step_y</strong> (<em>uint</em>) – Step size in the y-direction between windows.</li>
+<li><strong>win_type</strong> – </li>
+<li><strong>win_x</strong> (<em>uint</em>) – Size of the window in the x-direction.</li>
+<li><strong>win_y</strong> (<em>uint</em>) – Size of the window in the y-direction.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">abs_fft_func</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.abs_fft_func"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Take the 2d FFT of each window in <cite>windows</cite> and return in the proper form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>numpy.ndarray</em>) – Windowed image to take the FFT of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>windows</strong> – Array of the Magnitude of the FFT of each window for the input
+<cite>image</cite></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">build_clean_image</code><span class="sig-paren">(</span><em>h5_win=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.build_clean_image"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Reconstructs the cleaned image from the windowed dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>h5_win</strong> (<em>HDF5 dataset</em><em> , </em><em>optional</em>) – The windowed image to be reconstructed.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>h5_clean</strong> – The cleaned image</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">HDF5 dataset</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">clean_and_build</code><span class="sig-paren">(</span><em>h5_win=None</em>, <em>components=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.clean_and_build"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Rebuild the Image from the SVD results on the windows
+Optionally, only use components less than n_comp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_win</strong> (<em>hdf5 Dataset</em><em>, </em><em>optional</em>) – dataset containing the windowed image which SVD was performed on</li>
+<li><strong>components</strong> (<em>{int</em><em>, </em><em>iterable of int</em><em>, </em><em>slice} optional</em>) – <p>Defines which components to keep</p>
+<p>Input Types
+integer : Components less than the input will be kept
+length 2 iterable of integers : Integers define start and stop of component slice to retain
+other iterable of integers or slice : Selection of component indices to retain</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>clean_wins</strong> – the cleaned windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">clean_and_build_batch</code><span class="sig-paren">(</span><em>h5_win=None</em>, <em>components=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.clean_and_build_batch"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Rebuild the Image from the SVD results on the windows
+Optionally, only use components less than n_comp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_win</strong> (<em>hdf5 Dataset</em><em>, </em><em>optional</em>) – dataset containing the windowed image which SVD was performed on</li>
+<li><strong>components</strong> (<em>{int</em><em>, </em><em>iterable of int</em><em>, </em><em>slice} optional</em>) – <p>Defines which components to keep
+Default - None, all components kept</p>
+<p>Input Types
+integer : Components less than the input will be kept
+length 2 iterable of integers : Integers define start and stop of component slice to retain
+other iterable of integers or slice : Selection of component indices to retain</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>clean_wins</strong> – the cleaned windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">clean_and_build_separate_components</code><span class="sig-paren">(</span><em>h5_win=None</em>, <em>components=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.clean_and_build_separate_components"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Rebuild the Image from the SVD results on the windows
+Optionally, only use components less than n_comp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_win</strong> (<em>hdf5 Dataset</em><em>, </em><em>optional</em>) – dataset containing the windowed image which SVD was performed on</li>
+<li><strong>components</strong> – Defines which components to keep
+Default - None, all components kept</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>clean_wins</strong> – the cleaned windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">do_windowing</code><span class="sig-paren">(</span><em>win_x=None</em>, <em>win_y=None</em>, <em>win_step_x=1</em>, <em>win_step_y=1</em>, <em>win_fft=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.do_windowing"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Extract the windows from the normalized image and write them to the file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>win_x</strong> (<em>int</em><em>, </em><em>optional</em>) – size of the window, in pixels, in the horizontal direction
+Default None, a guess will be made based on the FFT of the image</li>
+<li><strong>win_y</strong> (<em>int</em><em>, </em><em>optional</em>) – size of the window, in pixels, in the vertical direction
+Default None, a guess will be made based on the FFT of the image</li>
+<li><strong>win_step_x</strong> (<em>int</em><em>, </em><em>optional</em>) – step size, in pixels, to take between windows in the horizontal direction
+Default 1</li>
+<li><strong>win_step_y</strong> (<em>int</em><em>, </em><em>optional</em>) – step size, in pixels, to take between windows in the vertical direction
+Default 1</li>
+<li><strong>win_fft</strong> (<em>str</em><em>, </em><em>optional</em>) – What kind of fft should be stored with the windows.  Options are
+None - Only the window
+‘abs’ - Only the magnitude of the fft
+‘data+abs’ - The window and magnitude of the fft
+‘data+complex’ - The window and the complex fft
+Default None</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_wins</strong> – Dataset containing the flattened windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">plot_clean_image</code><span class="sig-paren">(</span><em>h5_clean=None</em>, <em>image_path=None</em>, <em>image_type='png'</em>, <em>save_plots=True</em>, <em>show_plots=False</em>, <em>cmap='gray'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.plot_clean_image"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot the cleaned image stored in the HDF5 dataset h5_clean</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_clean</strong> (<em>HDF5 dataset</em><em>, </em><em>optional</em>) – cleaned image to be plotted</li>
+<li><strong>image_path</strong> (<em>str</em><em>, </em><em>optional</em>) – path to save cleaned image file
+Default None, ‘_clean’ will be appened to the name of the input image</li>
+<li><strong>image_type</strong> (<em>str</em><em>, </em><em>optional</em>) – image format to save the cleaned image as
+Default ‘png’, all formats recognized by matplotlib.pyplot.imsave
+are allowed</li>
+<li><strong>save_plots</strong> (<em>Boolean</em><em>, </em><em>pptional</em>) – If true, the image will be saved to image_path
+with the extention specified by image_type
+Default True</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If true, the image will be displayed on the screen
+Default False</li>
+<li><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – matplotlib colormap string designation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>clean_image</strong> – object holding the plot of the cleaned image</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Axis_Image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">win_abs_fft_func</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.win_abs_fft_func"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Take the 2d FFT of each window in <cite>windows</cite> and return in the proper form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>numpy.ndarray</em>) – Windowed image to take the FFT of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>windows</strong> – Array of windows and the Magnitude of the FFT of each window for the input
+<cite>image</cite></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">win_comp_fft_func</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.win_comp_fft_func"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Take the 2d FFT of each window in <cite>windows</cite> and return in the proper form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>numpy.ndarray</em>) – Windowed image to take the FFT of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>windows</strong> – Array of windows and the FFT of each window for the input <cite>image</cite></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">win_data_func</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.win_data_func"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns the input image in the <cite>windata32</cite> format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>numpy.ndarray</em>) – Windowed image to take the FFT of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>windows</strong> – Array the image in the windata32 format</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">window_size_extract</code><span class="sig-paren">(</span><em>num_peaks=2</em>, <em>save_plots=True</em>, <em>show_plots=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#ImageWindow.window_size_extract"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Take the normalized image and extract from it an optimal window size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_peaks</strong> (<em>int</em><em>, </em><em>optional</em>) – number of peaks to use during least squares fit
+Default 2</li>
+<li><strong>save_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If True then a plot showing the quality of the fit will be
+generated and saved to disk.  Ignored if do_fit is false.
+Default True</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – If True then a plot showing the quality of the fit will be
+generated and shown on screen.  Ignored if do_fit is false.
+Default False</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>window_size</strong> (<em>int</em>) – Optimal window size in pixels</li>
+<li><strong>psf_width</strong> (<em>int</em>) – Estimate atom spacing in pixels</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">radially_average_correlation</code><span class="sig-paren">(</span><em>data_mat</em>, <em>num_r_bin</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_processing.html#radially_average_correlation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Calculates the radially average correlation functions for a given 2D image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_mat</strong> (<em>2D real numpy array</em>) – Image to analyze</li>
+<li><strong>num_r_bin</strong> (<em>unsigned int</em>) – Number of spatial bins to analyze</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>a_mat</strong> (<em>2D real numpy array</em>) – Noise spectrum of the image</li>
+<li><strong>a_rad_avg_vec</strong> (<em>1D real numpy array</em>) – Average value of the correlation as a function of feature size</li>
+<li><strong>a_rad_max_vec</strong> (<em>1D real numpy array</em>) – Maximum value of the correlation as a function of feature size</li>
+<li><strong>a_rad_min_vec</strong> (<em>1D real numpy array</em>) – Minimum value of the correlation as a function of feature size</li>
+<li><strong>a_rad_std_vec</strong> (<em>1D real numpy array</em>) – Standard deviation of the correlation as a function of feature size</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

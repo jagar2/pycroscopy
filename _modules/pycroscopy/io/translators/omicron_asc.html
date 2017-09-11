@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.translators.omicron_asc &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.translators.omicron_asc</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.translators.omicron_asc</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Wed Sep 28 12:50:47 2016</span>
+
+<span class="sd">@author: Suhas Somnath</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  <span class="c1"># For array operations</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">.numpy_translator</span> <span class="k">import</span> <span class="n">NumpyTranslator</span>
+
+
+<div class="viewcode-block" id="AscTranslator"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.omicron_asc.AscTranslator">[docs]</a><span class="k">class</span> <span class="nc">AscTranslator</span><span class="p">(</span><span class="n">NumpyTranslator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Translates Scanning Tunnelling Spectroscopy (STS) data in .asc files obtained from Omicron STMs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AscTranslator.translate"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.omicron_asc.AscTranslator.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">max_v</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Translates the provided .asc file to .h5</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        file_path : string / unicode</span>
+<span class="sd">            Absolute path of the source .ASC STS file from Omicron STMs</span>
+<span class="sd">        max_v : float</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        h5_path : string / unicode</span>
+<span class="sd">            Absolute path of the translated file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">max_v</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">max_v</span><span class="p">)</span>
+
+        <span class="n">folder_path</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+
+        <span class="c1"># Extracting the raw data into memory</span>
+        <span class="n">file_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">string_lines</span> <span class="o">=</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">file_handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># Extract parameters from the first few header lines</span>
+        <span class="n">parm_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_parms</span><span class="p">(</span><span class="n">string_lines</span><span class="p">)</span>
+
+        <span class="n">num_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parm_dict</span><span class="p">[</span><span class="s1">&#39;y-pixels&#39;</span><span class="p">])</span>
+        <span class="n">num_cols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parm_dict</span><span class="p">[</span><span class="s1">&#39;x-pixels&#39;</span><span class="p">])</span>
+        <span class="n">num_pos</span> <span class="o">=</span> <span class="n">num_rows</span> <span class="o">*</span> <span class="n">num_cols</span>
+        <span class="n">spectra_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parm_dict</span><span class="p">[</span><span class="s1">&#39;z-points&#39;</span><span class="p">])</span>
+
+        <span class="c1"># num_headers = len(string_lines) - num_pos</span>
+        <span class="n">num_headers</span> <span class="o">=</span> <span class="mi">403</span>
+
+        <span class="c1"># Extract the STS data from subsequent lines</span>
+        <span class="n">raw_data_2d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_data</span><span class="p">(</span><span class="n">string_lines</span><span class="p">,</span> <span class="n">num_pos</span><span class="p">,</span> <span class="n">spectra_length</span><span class="p">,</span> <span class="n">num_headers</span><span class="p">)</span>
+
+        <span class="c1"># Generate the x / voltage / spectroscopic axis:</span>
+        <span class="n">volt_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">max_v</span><span class="p">,</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">max_v</span><span class="p">,</span> <span class="n">spectra_length</span><span class="p">)</span>
+
+        <span class="n">h5_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">+</span> <span class="s1">&#39;.h5&#39;</span><span class="p">)</span>
+
+        <span class="c1"># pass on the the necessary pieces of information onto the numpy translate that will handle the creation and</span>
+        <span class="c1"># writing to the h5 file.</span>
+        <span class="n">h5_path</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">AscTranslator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">h5_path</span><span class="p">,</span> <span class="n">raw_data_2d</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">,</span> <span class="n">qty_name</span><span class="o">=</span><span class="s1">&#39;Current&#39;</span><span class="p">,</span>
+                                                       <span class="n">data_unit</span><span class="o">=</span><span class="s1">&#39;nA&#39;</span><span class="p">,</span> <span class="n">spec_name</span><span class="o">=</span><span class="s1">&#39;Bias&#39;</span><span class="p">,</span> <span class="n">spec_unit</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">,</span>
+                                                       <span class="n">spec_val</span><span class="o">=</span><span class="n">volt_vec</span><span class="p">,</span> <span class="n">scan_height</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">scan_width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                                                       <span class="n">spatial_unit</span><span class="o">=</span><span class="s1">&#39;nm&#39;</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;STS&#39;</span><span class="p">,</span> <span class="n">translator_name</span><span class="o">=</span><span class="s1">&#39;ASC&#39;</span><span class="p">,</span>
+                                                       <span class="n">parms_dict</span><span class="o">=</span><span class="n">parm_dict</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">h5_path</span></div>
+
+<div class="viewcode-block" id="AscTranslator._read_data"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.omicron_asc.AscTranslator._read_data">[docs]</a>    <span class="k">def</span> <span class="nf">_read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string_lines</span><span class="p">,</span> <span class="n">num_pos</span><span class="p">,</span> <span class="n">spectra_length</span><span class="p">,</span> <span class="n">num_headers</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reads the data from lines of the data file</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        string_lines : list of strings</span>
+<span class="sd">            Lines containing the data in string format, separated by tabs</span>
+<span class="sd">        num_pos : unsigned int</span>
+<span class="sd">            Number of pixels</span>
+<span class="sd">        spectra_length : unsigned int</span>
+<span class="sd">            Number of points in the spectral / voltage axis</span>
+<span class="sd">        num_headers : unsigned int</span>
+<span class="sd">            Number of header lines to ignore</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        raw_data_2d : 2D numpy array</span>
+<span class="sd">            Data arranged as [position x voltage points]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">raw_data_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_pos</span><span class="p">,</span> <span class="n">spectra_length</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pos</span><span class="p">):</span>
+            <span class="n">this_line</span> <span class="o">=</span> <span class="n">string_lines</span><span class="p">[</span><span class="n">num_headers</span> <span class="o">+</span> <span class="n">line_ind</span><span class="p">]</span>
+            <span class="n">string_spectrum</span> <span class="o">=</span> <span class="n">this_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># omitting the new line</span>
+            <span class="n">raw_data_2d</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">string_spectrum</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">raw_data_2d</span></div>
+
+<div class="viewcode-block" id="AscTranslator._parse_file_path"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.omicron_asc.AscTranslator._parse_file_path">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_path</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__read_parms</span><span class="p">(</span><span class="n">string_lines</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the parameters regarding the experiment as dictionary</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        string_lines : list of strings</span>
+<span class="sd">            Lines from the data file in string representation</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        parm_dict : dictionary</span>
+<span class="sd">            Dictionary of parameters regarding the experiment</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Reading parameters stored in the first few rows of the file</span>
+        <span class="n">parm_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">string_lines</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">17</span><span class="p">]:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;# &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+            <span class="n">test</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">test</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="n">parm_dict</span><span class="p">[</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">test</span>
+
+        <span class="k">return</span> <span class="n">parm_dict</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

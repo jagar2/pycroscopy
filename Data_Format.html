@@ -1,0 +1,1198 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pycroscopy Data and File Format &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="index.html"/>
+        <link rel="next" title="pycroscopy package" href="pycroscopy.html"/>
+        <link rel="prev" title="Pycroscopy" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pycroscopy Data and File Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why-should-you-care">Why should you care?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pycroscopy-data-format">Pycroscopy data format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-datasets"><code class="docutils literal"><span class="pre">Main</span></code> Datasets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compound-datasets">Compound Datasets:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ancillary-datasets"><code class="docutils literal"><span class="pre">Ancillary</span></code> Datasets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#channels">Channels</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#file-format-hdf5">File Format (HDF5)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation">Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-data"><code class="docutils literal"><span class="pre">Main</span></code> data:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ancillary-data"><code class="docutils literal"><span class="pre">Ancillary</span></code> data:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#datagroups">Datagroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#measurement-data">Measurement data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tool-analysis-processing">Tool (analysis / processing)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-topics">Advanced topics:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Pycroscopy Data and File Format</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Data_Format.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pycroscopy-data-and-file-format">
+<h1>Pycroscopy Data and File Format<a class="headerlink" href="#pycroscopy-data-and-file-format" title="Permalink to this headline">¶</a></h1>
+<p><strong>Suhas Somnath</strong></p>
+<p>8/8/2017</p>
+<p>In this document we aim to provide a comprehensive overview, guidelines,
+and specifications for storing imaging data using the community-driven
+pycroscopy format. The credit for guidelines on structuring the data
+goes to <strong>Dr. Stephen Jesse</strong> and the credit for implementation goes to
+<strong>Dr. Suhas Somnath</strong> and <strong>Chris R. Smith</strong></p>
+<div class="section" id="why-should-you-care">
+<h2>Why should you care?<a class="headerlink" href="#why-should-you-care" title="Permalink to this headline">¶</a></h2>
+<p>The quest for understanding more about samples has necessitated the
+development of a multitude of microscopes, each capable of numerous
+measurement modalities.</p>
+<p>Typically, each commercial microscope generates data files formatted in
+proprietary data formats by the instrument manufacturer. The proprietary
+natures of these data formats impede scientific progress in the
+following ways: 1. By making it challenging for researchers to extract
+data from these files 2. Impeding the correlation of data acquired from
+different instruments. 3. Inability to store results back into the same
+file 4. Inflexibility to accomodate few kilobytes to several gigabytes
+of data 5. Requiring different versions of analysis routines for each
+format 6. In some cases, requiring proprietary software provided with
+the microscope to access the data</p>
+<p>Future concerns: 1. Several fields are moving towards the open science
+paradigm which will require journals and researchers to support journal
+papers with data and analysis software 2. US Federal agencies that
+support scientific research require curation of datasets in a clear and
+organized manner</p>
+<p>To solve the above and many more problems, we have developed an
+<strong>instrument agnostic data format</strong> that can be used to represent data
+from any instrument, size, dimensionality, or complexity. We store data
+in <strong>heirarchical data format (HDF5)</strong> files because we find them to be
+best suited for the pycroscopy data format.</p>
+</div>
+<div class="section" id="pycroscopy-data-format">
+<h2>Pycroscopy data format<a class="headerlink" href="#pycroscopy-data-format" title="Permalink to this headline">¶</a></h2>
+<p>Data in pycroscopy files are stored in three main kinds of datasets:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">Main</span></code> datasets that contain the raw measurements recorded from
+the instrument as well as results from processing or analysis routines
+applied to the data</li>
+<li>Mandatory <code class="docutils literal"><span class="pre">Ancillary</span></code> datasets that are necessary to explain the
+<code class="docutils literal"><span class="pre">main</span></code> data</li>
+<li><code class="docutils literal"><span class="pre">Extra</span></code> datasets store any other data that may be of value</li>
+</ol>
+<div class="section" id="main-datasets">
+<h3><code class="docutils literal"><span class="pre">Main</span></code> Datasets<a class="headerlink" href="#main-datasets" title="Permalink to this headline">¶</a></h3>
+<p>Regardless of origin, modality or complexity, imaging data have one
+thing in common:</p>
+<p><strong>The same measurement is performed at multiple spatial locations</strong></p>
+<p>The data format in pycroscopy is based on this one simple ground truth.
+The data always has some <code class="docutils literal"><span class="pre">spatial</span> <span class="pre">dimensions</span></code> (X, Y, Z) and some
+<code class="docutils literal"><span class="pre">spectroscopic</span> <span class="pre">dimensions</span></code> (time, frequency, intensity, wavelength,
+temperature, cycle, voltage, etc.). <strong>In pycroscopy, the spatial
+dimensions are collapsed onto a single dimension and the spectroscopic
+dimensions are flattened to the other dimensions.</strong> Thus, all data are
+stored as two dimensional grids. While the data could indeed be stored
+in the original N-dimensional form, there are a few key advantages to
+the 2D format:</p>
+<ul class="simple">
+<li>Researchers want to acquire ever larger datasets that
+take much longer to acquire. This has necessitated approaches such as
+sparse sampling or <a class="reference external" href="https://en.wikipedia.org/wiki/Compressed_sensing">compressed sensing</a> wherein
+measurements are acqurired from a few randomly sampled positions and the
+data for the rest of the positions are inferred using complex
+algorithms. Storing such sparse sampled data in the N dimensional format
+would baloon the size of the stored data even though the majority of the
+data is actually empty. Two dimensional datasets would allow the random
+measurements to be written without any empty sections.</li>
+<li>When acquiring measurement data, users often adjust experimental parameters
+during the experiment that may affect the size of the data, especially the
+spectral sizes. Thus, changes in experimental parameters would mean that the
+existing N dimensional set would have to be left partially (in most cases
+largely) empty and a new N dimensional dataset would have to be allocated
+with the first few positions left empty. In the case of flattened datasets,
+the current dataset can be truncated at the point of the parameter change
+and a new dataset can be created to start from the current measurement.
+Thus, no space would be wasted.</li>
+</ul>
+<p>Here are some examples of how some familar data can be represented using
+this paradigm:</p>
+<ul class="simple">
+<li><strong>Grayscale photographs</strong>: A single value (intensity) in is recorded
+at each pixel in a two dimensional grid. Thus, there are are two
+spatial dimensions - X, Y and one spectroscopic dimension -
+“Intensity”. The data can be represented as a N x 1 matrix where N is
+the product of the number of rows and columns of pixels. The second
+axis has size of 1 since we only record one value (intensity) at each
+location. <em>The positions will be arranged as row0-col0, row0-col1….
+row0-colN, row1-col0….</em> Color images or photographs will be
+discussed below due to some very important subtleties about the
+measurement.</li>
+<li>A <strong>single Raman spectra</strong>: In this case, the measurement is recorded
+at a single location. At this position, data is recorded as a
+function of a single (spectroscopic) variable such as wavelength.
+Thus this data is represented as a 1 x P matrix, where P is the
+number of points in the spectra</li>
+<li><strong>Scanning Tunelling Spectroscopy or IV spectroscopy</strong>: The current
+(A 1D array of size P) is recorded as a function of voltage at each
+position in a two dimensional grid of points (two spatial
+dimensions). Thus the data would be represented as a N x P matrix,
+where N is the product of the number of rows and columns in the grid
+and P is the number of spectroscopic points recorded.</li>
+</ul>
+<p>Using prefixes <code class="docutils literal"><span class="pre">i</span></code> for position and <code class="docutils literal"><span class="pre">j</span></code> for spectroscopic, the main
+dataset would be structured as:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="11%" />
+<col width="19%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">i0, j0</th>
+<th class="head">i0, j1</th>
+<th class="head">i0, j2</th>
+<th class="head">&#160;</th>
+<th class="head">i0, jP-2</th>
+<th class="head">i0, jP-1</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>i1, j0</td>
+<td>i1, j1</td>
+<td>i1, j2</td>
+<td>&#160;</td>
+<td>i1, jP-2</td>
+<td>i1, jP-1</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>iN-2, j0</td>
+<td>iN-2, j1</td>
+<td>iN-2, j2</td>
+<td>&#160;</td>
+<td>iN-2, jP-2</td>
+<td>iN-2, jP-1</td>
+</tr>
+<tr class="row-odd"><td>iN-1, j0</td>
+<td>iN-1, j1</td>
+<td>iN-1, j2</td>
+<td>&#160;</td>
+<td>iN-1, jP-1</td>
+<td>iN-1, jP-1</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><ul>
+<li><p class="first">If the same voltage sweep were performed twice at each location, the data would be represented as N x 2 P.
+The data is still saved as a long (2*P) 1D array at each location. The number of spectroscopic dimensions
+would change from just [‘Voltage’] to [‘Voltage’, ‘Cycle’] where the second spectroscopic dimension would
+account for repetitions of this bias sweep.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>The spectroscopic data would be stored as it would be recorded as volt_0-cycle_0, volt_1-cycle_0…..
+volt_P-1-cycle_0, volt_0-cycle_1…..volt_P-1-cycle-1. Just like the positions</strong></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Now, if the bias was swept thrice from -1 to +1V and then thrice again from -2 to 2V, the data bacomes
+N x 2 * 3 P. The data now has two position dimensions (X, Y) and three spectrosocpic dimensions [‘Voltage’,
+‘Cycle’, ‘Step’]. The data is still saved as a (P * 2 * 3) 1D array at each location.</p>
+</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>A collection of <code class="docutils literal"><span class="pre">k</span></code> chosen spectra would also be considered
+<code class="docutils literal"><span class="pre">main</span></code> datasets since the data is still structured as
+<code class="docutils literal"><span class="pre">[instance,</span> <span class="pre">features]</span></code>. Some examples include:</li>
+<li>the cluster centers obtained from a clustering algorithm like
+<code class="docutils literal"><span class="pre">k-Means</span> <span class="pre">clustering</span></code>.</li>
+<li>The abundance maps obtained from decomposition algorithms like
+<code class="docutils literal"><span class="pre">Singular</span> <span class="pre">Value</span> <span class="pre">Decomposition</span> <span class="pre">(SVD)</span></code> or
+<code class="docutils literal"><span class="pre">Non-negetive</span> <span class="pre">matrix</span> <span class="pre">factorization</span> <span class="pre">(NMF)</span></code></li>
+</ul>
+<div class="section" id="compound-datasets">
+<h4>Compound Datasets:<a class="headerlink" href="#compound-datasets" title="Permalink to this headline">¶</a></h4>
+<p>There are instances where multiple values are associate with a
+single position and spectroscopic value in a dataset.  In these cases,
+we use the Compound Dataset functionality in HDF5 to store all of the
+values at each point.  This also allows us to access any combination of
+the values without needing to read all of them.  Pycroscopy actually uses
+compound datasets a lot more frequently than one would think. The need
+and utility of compound datasets are best described with examples:</p>
+<ul class="simple">
+<li><strong>Color images</strong>: Each position in these datasets contain three (red,
+blue, green) or four (cyan, black, magenta, yellow) values. One would
+naturally be tempted to simply treat these datasets as N x 3 datasets
+and it certainly is not wrong to represent data this way. However,
+storing the data in this format would mean that the red intensity was
+collected first, followed by the green, and finally by the blue. In
+other words, a notion of chronology is attached to both the position
+and spectroscopic axis if one strictly follows the pycroscopy defenition.
+While the intensities for each color may be acquired sequentially in
+detectors, we will assume that they are acquired simultaneously for
+this argument. In these cases, we store data using <code class="docutils literal"><span class="pre">compound</span> <span class="pre">datasets</span></code>
+that allow the storage of multiple pieces of data within the same cell.
+While this may seem confusing or implausible, remember that computers
+store complex numbers in the same way. The complex numbers have a <em>real</em>
+and an <em>imaginary</em> component just like color images have <em>red</em>, <em>blue</em>,
+and <em>green</em> components that describe a single pixel. Therefore, color
+images in pycroscopy would be represented by a N x 1 matrix with
+compound values instead of a N x 3 matrix with real or integer values.
+One would refer to the red component at a particular position as
+<code class="docutils literal"><span class="pre">dataset[position_index,</span> <span class="pre">spectroscopic_index]['red']</span></code>.</li>
+<li><strong>Functional fits</strong>: Let’s take the example of a N x P dataset whose
+spectra at each location are fitted to a complicated equation. Now the P
+points in the spectra will be represented by S coefficients that don’t
+necessarily follow any order. Consequently, the result of the functional
+fit should actually be a N x 1 dataset where each element is a compound
+value made up of the S coefficients. Note that while some form of sequence
+can be forced onto the coefficients if the spectra were fit to polynomial
+equations, the drawbacks outweight the benefits:<ul>
+<li>Storing data in compund datasets circumvents (slicing) problems associated
+with getting a specific / the kth coeffient if the data were stored in a
+real-valued matrix instead.</li>
+<li>Visualization also becomes a lot simpler since compound datasets cannot
+be plotted without specifying the component / coefficient of interest. This
+avoids plots with alternating coefficients that are several orders of
+magnitude larger / smaller than each other.</li>
+</ul>
+</li>
+</ul>
+<p>For more information on compound datasets see the <cite>tutorial
+&lt;https://support.hdfgroup.org/HDF5/Tutor/compound.html&gt;</cite> from the HDF Group
+and the <cite>h5py Datasets documentation
+&lt;http://docs.h5py.org/en/latest/high/dataset.html#reading-writing-data&gt;</cite></p>
+</div>
+</div>
+<div class="section" id="ancillary-datasets">
+<h3><code class="docutils literal"><span class="pre">Ancillary</span></code> Datasets<a class="headerlink" href="#ancillary-datasets" title="Permalink to this headline">¶</a></h3>
+<p>Each <code class="docutils literal"><span class="pre">main</span></code> dataset is always accompanied by four ancillary datasets to
+help make sense of the flattened <code class="docutils literal"><span class="pre">main</span></code> dataset. These are the:</p>
+<ul class="simple">
+<li>The <code class="docutils literal"><span class="pre">Position</span> <span class="pre">Values</span></code> and <code class="docutils literal"><span class="pre">Position</span> <span class="pre">Indices</span></code> describe the index and
+value of any given row or spatial position in the dataset.</li>
+<li>The <code class="docutils literal"><span class="pre">Spectroscopic</span> <span class="pre">Values</span></code> and <code class="docutils literal"><span class="pre">Spectroscopic</span> <span class="pre">Indices</span></code> describe the
+spectroscopic information at the specific time.</li>
+</ul>
+<p>In addition to serving as a legend or the key for the , these ancillary
+datasets are necessary for explaining:</p>
+<ul class="simple">
+<li>the original dimensionality of the dataset</li>
+<li>how to reshape the data back to its N dimensional form</li>
+</ul>
+<p>Much like <code class="docutils literal"><span class="pre">main</span></code> datasets, the <code class="docutils literal"><span class="pre">ancillary</span></code> datasets are also two
+dimensional matricies regardless of the number of position or
+spectroscopic dimensions. Given a main dataset with <code class="docutils literal"><span class="pre">N</span></code> positions in
+<code class="docutils literal"><span class="pre">U</span></code> dimensions and <code class="docutils literal"><span class="pre">P</span></code> spectral values in <code class="docutils literal"><span class="pre">V</span></code> dimensions:</p>
+<ul class="simple">
+<li>The <code class="docutils literal"><span class="pre">Position</span> <span class="pre">Indices</span></code> and <code class="docutils literal"><span class="pre">Position</span> <span class="pre">Values</span></code> datasets would both of the
+same size of <code class="docutils literal"><span class="pre">N</span> <span class="pre">x</span> <span class="pre">U</span></code>, where <code class="docutils literal"><span class="pre">U</span></code> is the number of position
+dimensions. The columns would be arranged in ascending order of rate of
+change. In other words, the first column would be the fastest changing
+position dimension and the last column would be the slowest.<ul>
+<li>A simple grayscale photograph with N pixels would have ancillary position
+datasets of size N x 2. The first column would be the columns (faster)
+and the second would be the rows assuming that the data was collected
+column-by-column and then row-by-row.</li>
+</ul>
+</li>
+<li>The <code class="docutils literal"><span class="pre">Spectroscopic</span> <span class="pre">Values</span></code> and <code class="docutils literal"><span class="pre">Spectroscopic</span> <span class="pre">Indices</span></code> dataset would
+both be <code class="docutils literal"><span class="pre">V</span> <span class="pre">x</span> <span class="pre">S</span></code> in shape, where <code class="docutils literal"><span class="pre">V</span></code> is the number of spectroscopic
+dimensions. Similarly to the position dimensions, the first row would be
+the fastest changing spectroscopic dimension while the last row would be
+the slowest.</li>
+</ul>
+<p>The ancillary datasets are better illustrated using an example. Let’s
+take the <strong>IV Spectorscopy</strong> example from above, which has two position
+dimensions - X and Y, and three spectroscopic dimensions - Voltage,
+Cycle, Step.</p>
+<ul class="simple">
+<li>If the dataset had 2 rows and 3 columns, the corresponding
+<code class="docutils literal"><span class="pre">Position</span> <span class="pre">Indices</span></code> dataset would be:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="58%" />
+<col width="42%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">X</th>
+<th class="head">Y</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>1</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Note that indices start from 0 instead of 1 and end at N-1 instead of
+N in lines with common programming languages such as C or python.</li>
+<li>Correpondingly, if the measurements were performed at X locations:
+0.0, 1.5, and 3.0 microns and Y locations: -7.0 and 2.3 nanometers,
+the <code class="docutils literal"><span class="pre">Position</span> <span class="pre">Values</span></code> dataset may look like the table below:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">X [um]</th>
+<th class="head">Y [nm]</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.0</td>
+<td>-7.0</td>
+</tr>
+<tr class="row-odd"><td>1.5</td>
+<td>-7.0</td>
+</tr>
+<tr class="row-even"><td>3.0</td>
+<td>-7.0</td>
+</tr>
+<tr class="row-odd"><td>0.0</td>
+<td>2.3</td>
+</tr>
+<tr class="row-even"><td>1.5</td>
+<td>2.3</td>
+</tr>
+<tr class="row-odd"><td>3.0</td>
+<td>2.3</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Note that X and Y have different units - microns and nanometers.
+Pycroscopy has been designed to handle variations in the units for
+each of these dimensions. Details regarding how and where to store
+the information regarding the <code class="docutils literal"><span class="pre">labels</span></code> (‘X’, ‘Y’) and <code class="docutils literal"><span class="pre">units</span></code> for
+these dimensions (‘um’, ‘nm’) will be discussed below.</li>
+<li>If the dataset had 3 bias values in each cycle, each cycle repeated 2
+times, and there were 5 such bias waveforms or steps; the
+<code class="docutils literal"><span class="pre">Spectroscopic</span> <span class="pre">Indices</span></code> would be:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Bias</th>
+<th class="head">0</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">0</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">0</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">.</th>
+<th class="head">.</th>
+<th class="head">.</th>
+<th class="head">0</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">0</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">0</th>
+<th class="head">1</th>
+<th class="head">2</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Cycle</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>Step</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Similarly, the <code class="docutils literal"><span class="pre">Spectroscopic</span> <span class="pre">Values</span></code> table would be structured as:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="6%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="5%" />
+<col width="5%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="5%" />
+<col width="6%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="5%" />
+<col width="5%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Bias [V]</th>
+<th class="head">-6.5</th>
+<th class="head">0.0</th>
+<th class="head">6.5</th>
+<th class="head">-6.5</th>
+<th class="head">0.0</th>
+<th class="head">6.5</th>
+<th class="head">-6.5</th>
+<th class="head">0.0</th>
+<th class="head">6.5</th>
+<th class="head">.</th>
+<th class="head">.</th>
+<th class="head">.</th>
+<th class="head">6.5</th>
+<th class="head">-6.5</th>
+<th class="head">0.0</th>
+<th class="head">6.5</th>
+<th class="head">-6.5</th>
+<th class="head">0.0</th>
+<th class="head">6.5</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Cycle []</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>Step []</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Thus, the data at the fourth row and seventh column of the main
+dataset can be explained using these ancillary datasets as data from:<ul>
+<li>X index of 0, with value of 0.0 microns</li>
+<li>Y index of 1 and value of 2.3 nm
+where a bias of index 0 and value of -6.5 V was being applied
+on the first cycle
+of the second bias waveform step.</li>
+</ul>
+</li>
+<li>A simple glance at the shape of these datsets would be enough to
+reveal that the data has two position dimensions (from the second
+axis of the <code class="docutils literal"><span class="pre">Position</span> <span class="pre">Indices</span></code> dataset) and three spectroscopic
+dimensions (from the first axis of the <code class="docutils literal"><span class="pre">Spectroscopic</span> <span class="pre">Indices</span></code>
+dataset)</li>
+</ul>
+<div class="section" id="channels">
+<h4>Channels<a class="headerlink" href="#channels" title="Permalink to this headline">¶</a></h4>
+<p>The pycroscopy data format also allows multiple channels of information
+to be recorded as separate datasets in the same file. For example, one
+channel could be a spectra (1D array) collected at each location on a 2D
+grid while another could be the temperature (single value) recorded by
+another sensor at the same spatial positions. In this case, the two
+datasets could indeed share the same ancilalry position datasets but
+different spectroscopic datasets. Alternativeley, there could be other
+cases where the average measurement over multiple spatial points is
+recorded separately (possibly by another detector). In this case, the
+two measurement datasets would not share the ancillary position datasets
+as well. Other specifics regarding the implementation of different
+channels will be discussed in a later section.</p>
+</div>
+</div>
+</div>
+<div class="section" id="file-format-hdf5">
+<h2>File Format (HDF5)<a class="headerlink" href="#file-format-hdf5" title="Permalink to this headline">¶</a></h2>
+<p>While it is indeed possible to store data in the pycroscopy format in
+multiple kinds of file formats such at .mat files, plain binary files,
+etc., we chose the <a class="reference external" href="https://support.hdfgroup.org/HDF5/doc/H5.intro.html">HDF5 file
+format</a> since it
+comfortably accomodates the pycroscopy format and offers several
+advantageous features.</p>
+<p>Information can be stored in HDF5 files in several ways:
+* <code class="docutils literal"><span class="pre">Datasets</span></code> allow the storageo of data matricies and these are the</p>
+<blockquote>
+<div>vessels used for storing the <code class="docutils literal"><span class="pre">main</span></code>, <code class="docutils literal"><span class="pre">ancillary</span></code>, and any extra data
+matricies</div></blockquote>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Datagroups</span></code> are similar to folders in conventional
+file systems and can be used to store any number of datasets or
+datagroups themselves</li>
+<li><code class="docutils literal"><span class="pre">Attributes</span></code> are small pieces of
+information, such as experimental or analytical parameters, that are
+stored in key-value pairs in the same way as dictionaries in python.
+Both datagroups and datasets can store attributes.</li>
+<li>While they are not
+means to store data, <code class="docutils literal"><span class="pre">Links</span></code> or <code class="docutils literal"><span class="pre">references</span></code> can be used to
+provide shortcuts and aliases to datasets and datagroups. This feature
+is especially useful for avoiding duplication of datasets when two
+<code class="docutils literal"><span class="pre">main</span></code> datasets use the same ancillary datasets.</li>
+</ul>
+<p>Among the <a class="reference external" href="http://extremecomputingtraining.anl.gov/files/2015/03/HDF5-Intro-aug7-130.pdf">various
+benefits</a>
+that they offer, HDF5 files:</p>
+<ul class="simple">
+<li>are readily compatible with high-performance computing facilities</li>
+<li>scale very efficiently from few kilobytes to several terabytes</li>
+<li>can be read and modified using any language including Python, Matlab,
+C/C++, Java, Fortran, Igor Pro, etc.</li>
+<li>store data in a intuitive and familiar heirarchical / tree-like
+structure that is similar to files and folders in personal computers.</li>
+<li>faciliates storage of any number of experimental or analysis parameters
+in addition to regular data.</li>
+</ul>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Here we discuss guidelines and specifications for implementing the
+pycroscopy format in HDF5 files.</p>
+<div class="section" id="main-data">
+<h3><code class="docutils literal"><span class="pre">Main</span></code> data:<a class="headerlink" href="#main-data" title="Permalink to this headline">¶</a></h3>
+<p><strong>Dataset</strong> structured as (positions x time or spectroscopic values)</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">dtype</span></code> : uint8, float32, complex64, compound if necessary, etc.</li>
+<li><em>Required</em> attributes:<ul>
+<li><code class="docutils literal"><span class="pre">quantity</span></code> - Single string that explains the data. The physical
+quantity contained in each cell of the dataset – eg –
+‘Current’ or ‘Deflection’</li>
+<li><code class="docutils literal"><span class="pre">units</span></code> – Single string for units. The units for the physical
+quantity like ‘nA’, ‘V’, ‘pF’, etc.</li>
+<li><code class="docutils literal"><span class="pre">Position_Indices</span></code> - Reference to the position indices dataset</li>
+<li><code class="docutils literal"><span class="pre">Position_Values</span></code> - Reference to the position values dataset</li>
+<li><code class="docutils literal"><span class="pre">Spectroscopic_Indices</span></code> - Reference to the spectroscopic indices
+dataset</li>
+<li><code class="docutils literal"><span class="pre">Spectroscopic_Values</span></code> - Reference to the spectroscopic values
+dataset</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://support.hdfgroup.org/HDF5/doc1.8/Advanced/Chunking/index.html">chunking</a>
+: HDF group recommends that chunks be between 100 kB to 1 MB. We
+recommend chunking by whole number of positions since data is more
+likely to be read by position rather than by specific spectral indices.</li>
+</ul>
+<p>Note that we are only storing references to the ancillary datasets. This
+allows multiple <code class="docutils literal"><span class="pre">main</span></code> datasets to share the same ancillary datasets
+without having to duplicate them.</p>
+</div>
+<div class="section" id="ancillary-data">
+<h3><code class="docutils literal"><span class="pre">Ancillary</span></code> data:<a class="headerlink" href="#ancillary-data" title="Permalink to this headline">¶</a></h3>
+<p><strong>Position_Indices</strong> structured as (positions x spatial dimensions)</p>
+<ul class="simple">
+<li>dimensions are arranged in ascending order of rate of change. In other
+words, the fastest changing dimension is in the first column and the
+slowest is in the last or rightmost column.</li>
+<li><code class="docutils literal"><span class="pre">dtype</span></code> : uint32</li>
+<li>Required attributes:<ul>
+<li><code class="docutils literal"><span class="pre">labels</span></code> - list of strings for the column names like [‘X’, ‘Y’]</li>
+<li><code class="docutils literal"><span class="pre">units</span></code> – list of strings for units like [‘um’, ‘nm’]</li>
+</ul>
+</li>
+<li>Optional attributes:
+* Region references based on column names</li>
+</ul>
+<p><strong>Position_Values</strong> structured as (positions x spatial dimensions)</p>
+<ul class="simple">
+<li>dimensions are arranged in ascending order of rate of change. In other
+words, the fastest changing dimension is in the first column and the
+slowest is in the last or rightmost column.</li>
+<li><code class="docutils literal"><span class="pre">dtype</span></code> : float32</li>
+<li>Required attributes:<ul>
+<li><code class="docutils literal"><span class="pre">labels</span></code> - list of strings for the column names like [‘X’, ‘Y’]</li>
+<li><code class="docutils literal"><span class="pre">units</span></code> – list of strings for units like [‘um’, ‘nm’]</li>
+</ul>
+</li>
+<li>Optional attributes:
+* Region references based on column names</li>
+</ul>
+<p><strong>Spectroscopic_Indices</strong> structured as (spectroscopic dimensions x
+time)</p>
+<ul class="simple">
+<li>dimensions are arranged in ascending order of rate of change.
+In other words, the fastest changing dimension is in the first row and
+the slowest is in the last or lowermost row.</li>
+<li><code class="docutils literal"><span class="pre">dtype</span></code> : uint32</li>
+<li>Required attributes:<ul>
+<li><code class="docutils literal"><span class="pre">labels</span></code> - list of strings for the column names like [‘Bias’, ‘Cycle’]</li>
+<li><code class="docutils literal"><span class="pre">units</span></code> – list of strings for units like [‘V’, ‘’].
+Empty string for dimensionless quantities</li>
+</ul>
+</li>
+<li>Optional attributes:
+* Region references based on row names</li>
+</ul>
+<p><strong>Spectroscopic_Values</strong> structured as (spectroscopic dimensions x
+time)</p>
+<ul>
+<li><p class="first">dimensions are arranged in ascending order of rate of change.
+In other words, the fastest changing dimension is in the first row and
+the slowest is in the last or lowermost row.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">dtype</span></code> : float32</p>
+</li>
+<li><p class="first">Required attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">labels</span></code> - list of strings for the column names like [‘Bias’, ‘Cycle’]</li>
+<li><code class="docutils literal"><span class="pre">units</span></code> – list of strings for units like [‘V’, ‘’].</li>
+</ul>
+<p>Empty string for dimensionless quantities</p>
+</li>
+<li><p class="first">Optional attributes:
+* Region references based on row names</p>
+</li>
+</ul>
+</div>
+<div class="section" id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>All datagroups and datasets must be created with the following two
+<strong>mandatory</strong> attributes for better traceability:</li>
+<li><code class="docutils literal"><span class="pre">time_stamp</span></code> : ‘2017_08_15-22_15_45’ (date and time of creation
+of the datagroup or dataset formatted as ‘YYYY_MM_DD-HH_mm_ss’ as
+a string)</li>
+<li><code class="docutils literal"><span class="pre">machine_id</span></code> : ‘mac1234.ornl.gov’ (a fully qualified domain name as
+a string)</li>
+</ul>
+</div>
+<div class="section" id="datagroups">
+<h3>Datagroups<a class="headerlink" href="#datagroups" title="Permalink to this headline">¶</a></h3>
+<p>Datagroups in pycroscopy are used to organize datasets in an intuitive
+manner.</p>
+<div class="section" id="measurement-data">
+<h4>Measurement data<a class="headerlink" href="#measurement-data" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>As mentioned earlier, microscope users may change experimental
+parameters during measurements. Even if these changes are minor, they
+can lead to misinterpretation of data if the changes are not handled
+robustly. To solve this problem, we recommend storing data under
+datagroups named as <strong>``Measurement_00x``</strong>. Each time the parameters
+are changed, the dataset is truncated to the point until which data
+was collected and a new datagroup is created to store the upcoming
+new measurement data.</li>
+<li>Each <strong>channel</strong> of information acquired during the measurement gets
+its own datagroup.</li>
+<li>The <code class="docutils literal"><span class="pre">main</span></code> datasets would reside within these channel datagroups.</li>
+<li>Similar to the measurement datagroups, the channel datagroups are
+named as <code class="docutils literal"><span class="pre">Channel_00x</span></code>. The index for the datagroup is incremented
+according to the index of the information channel.</li>
+<li>Depending on the circumstances, the ancillary datasets can be shared
+among channels.<ul>
+<li>Instead of the main dataset in Channel_001 having references to
+the ancillary datasets in Channel_000, we recommend placing the
+ancillary datasets outside the Channel datagroups in a area common
+to both channel datagroups. Typically, this is the
+Measurement_00x datagroup.</li>
+</ul>
+</li>
+<li>This is what the tree structure in the file looks like when
+experimental parameters were changed twice and there are two channels
+of information being acquired during the measurements.</li>
+<li><code class="docutils literal"><span class="pre">/</span></code> (Root - also considered a datagroup)</li>
+<li>Datasets common to all measurement groups (perhaps some calibration
+data that is acquired only once before all measurements)</li>
+<li><code class="docutils literal"><span class="pre">Measurement_000</span></code> (datagroup)<ul>
+<li><code class="docutils literal"><span class="pre">Channel_000</span></code> (datagroup)<ul>
+<li>Datasets here</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">Channel_001</span></code> (datagroup)<ul>
+<li>Datasets here</li>
+</ul>
+</li>
+<li>Datasets common to Channel_000 and Channel_001</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">Measurement_001</span></code> (datagroup)<ul>
+<li><code class="docutils literal"><span class="pre">Channel_000</span></code> (datagroup)<ul>
+<li>Datasets here</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">Channel_001</span></code> (datagroup)<ul>
+<li>Datasets here</li>
+</ul>
+</li>
+<li>Datasets common to Channel_000 and Channel_001</li>
+</ul>
+</li>
+<li></li>
+</ul>
+</div>
+<div class="section" id="tool-analysis-processing">
+<h4>Tool (analysis / processing)<a class="headerlink" href="#tool-analysis-processing" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">Each time an analysis or processing routine, refered generally as
+<code class="docutils literal"><span class="pre">tool</span></code>, is performed on a dataset of interest, the results are
+stored in new datasets within a datagroup.</p>
+</li>
+<li><p class="first">A completely new dataset(s) and datagroup are created even if a minor
+operation is being performed on the dataset.</p>
+</li>
+<li><p class="first">Almost always, the tool is applied to a <code class="docutils literal"><span class="pre">main</span></code> dataset (refered to
+as the <code class="docutils literal"><span class="pre">parent</span></code> dataset) and at least one of the results is
+typically also a <code class="docutils literal"><span class="pre">main</span></code> dataset. These new <code class="docutils literal"><span class="pre">main</span></code> datasets will
+either need to be linked to the ancillary matricies of the <code class="docutils literal"><span class="pre">parent</span></code>
+or to new ancillary datasets that will need to be created.</p>
+</li>
+<li><p class="first">The resultant dataset(s) are always stored in a datagroup whose name
+is derived from the names of the tool and the dataset. This makes the
+data <strong>traceable</strong>, meaning that the names of the datasets and
+datagroups are sufficient to understand what processing or analysis
+steps were applied to the data to bring it to a particular point.</p>
+</li>
+<li><p class="first">The datagroup is named as <code class="docutils literal"><span class="pre">Parent_Dataset-Tool_Name_00x</span></code>, where a
+<code class="docutils literal"><span class="pre">tool</span></code> named <code class="docutils literal"><span class="pre">Tool_Name</span></code> is applied to a <code class="docutils literal"><span class="pre">main</span></code> dataset named
+<code class="docutils literal"><span class="pre">Parent_Dataset</span></code>.</p>
+<ul class="simple">
+<li>Since there is a possibility that the same tool could be applied
+to the very same dataset multiple times, we store the results of
+each run of the tool in a separate datagroup. These datagroups are
+differentiated by the index that is appened to the base-name of
+the datagroup.</li>
+<li>Note that a <code class="docutils literal"><span class="pre">-</span></code> separates the dataset name from the tool name
+and anything after the last <code class="docutils literal"><span class="pre">_</span></code> will be assumed to be the index
+of the datagroup</li>
+</ul>
+</li>
+<li><p class="first">In general, the results from tools applied to datasets should be
+stored as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">Parent_Dataset</span></code></li>
+<li><code class="docutils literal"><span class="pre">Parent_Dataset-Tool_Name_000</span></code> (datagroup comtaining results from
+first run of the <code class="docutils literal"><span class="pre">tool</span></code> on <code class="docutils literal"><span class="pre">Parent_Dataset</span></code>)<ul>
+<li>Attributes:<ul>
+<li><code class="docutils literal"><span class="pre">time_stamp</span></code></li>
+<li><code class="docutils literal"><span class="pre">machine_id</span></code></li>
+<li><code class="docutils literal"><span class="pre">algorithm</span></code></li>
+<li>Other tool-relevant attributes</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">Dataset_Result0</span></code></li>
+<li><code class="docutils literal"><span class="pre">Dataset_Result1</span></code> …</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">Parent_Dataset-Tool_Name_001</span></code> (datagroup comtaining results from
+second run of the <code class="docutils literal"><span class="pre">tool</span></code> on <code class="docutils literal"><span class="pre">Parent_Dataset</span></code>)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">This methodolody is illustrated with an example of applying
+<code class="docutils literal"><span class="pre">K-Means</span> <span class="pre">Clustering</span></code> on the <code class="docutils literal"><span class="pre">Raw_Data</span></code> acquired from a
+mesurement:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">Raw_Data</span></code> (<code class="docutils literal"><span class="pre">main</span></code> dataset)</li>
+<li><code class="docutils literal"><span class="pre">Raw_Data-Cluster_000</span></code> (datagroup)</li>
+<li>Attributes:<ul>
+<li><code class="docutils literal"><span class="pre">time_stamp</span></code> : ‘2017_08_15-22_15_45’</li>
+<li><code class="docutils literal"><span class="pre">machine_id</span></code> : ‘mac1234.ornl.gov’      * <code class="docutils literal"><span class="pre">algorithm</span></code> :
+‘K-Means’</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">Label_Indices</span></code> (ancillary spectroscopic dataset)</li>
+<li><code class="docutils literal"><span class="pre">Label_Values</span></code> (ancillary spectroscopic dataset)</li>
+<li><code class="docutils literal"><span class="pre">Labels</span></code> (main dataset)<ul>
+<li>Attributes:<ul>
+<li><code class="docutils literal"><span class="pre">quantity</span></code> : ‘Cluster labels’</li>
+<li><code class="docutils literal"><span class="pre">units</span></code> : ‘’</li>
+<li><code class="docutils literal"><span class="pre">Position_Indicies</span></code> : Reference to <code class="docutils literal"><span class="pre">Position_Indices</span></code> from
+attribute of <code class="docutils literal"><span class="pre">Raw_Data</span></code></li>
+<li><code class="docutils literal"><span class="pre">Position_Values</span></code> : Reference to <code class="docutils literal"><span class="pre">Position_Values</span></code> from
+attribute of <code class="docutils literal"><span class="pre">Raw_Data</span></code></li>
+<li><code class="docutils literal"><span class="pre">Spectrocopic_Indices</span></code> : Reference to <code class="docutils literal"><span class="pre">Label_Indices</span></code></li>
+<li><code class="docutils literal"><span class="pre">Spectrocopic_Values</span></code> : Reference to <code class="docutils literal"><span class="pre">Label_Values</span></code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">Cluster_Indices</span></code> (ancillary positions dataset)</li>
+<li><code class="docutils literal"><span class="pre">Cluster_Values</span></code> (ancillary positions dataset)</li>
+<li><code class="docutils literal"><span class="pre">Mean_Response</span></code> (main dataset) &lt;- This dataset stores the endmember
+or mean response for each cluster<ul>
+<li>Attributes:<ul>
+<li><code class="docutils literal"><span class="pre">quantity</span></code> : copy from the <code class="docutils literal"><span class="pre">quantity</span></code> attribute in
+<code class="docutils literal"><span class="pre">Raw_Data</span></code></li>
+<li><code class="docutils literal"><span class="pre">units</span></code> : copy from the <code class="docutils literal"><span class="pre">units</span></code> attribute in <code class="docutils literal"><span class="pre">Raw_Data</span></code></li>
+<li><code class="docutils literal"><span class="pre">Position_Indicies</span></code> : Reference to <code class="docutils literal"><span class="pre">Cluster_Indices</span></code></li>
+<li><code class="docutils literal"><span class="pre">Position_Values</span></code> : Reference to <code class="docutils literal"><span class="pre">Cluster_Values</span></code></li>
+<li><code class="docutils literal"><span class="pre">Spectrocopic_Indices</span></code> : Reference to
+<code class="docutils literal"><span class="pre">Spectrocopic_Indices</span></code> from attribute of <code class="docutils literal"><span class="pre">Raw_Data</span></code></li>
+<li><code class="docutils literal"><span class="pre">Spectrocopic_Values</span></code> : Reference to <code class="docutils literal"><span class="pre">Spectrocopic_Values</span></code>
+from attribute of <code class="docutils literal"><span class="pre">Raw_Data</span></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Note that the spectroscopic datasets that the <code class="docutils literal"><span class="pre">Labels</span></code> dataset link
+to are not called <code class="docutils literal"><span class="pre">Spectroscopic_Indices</span></code> or
+<code class="docutils literal"><span class="pre">Spectroscopic_Values</span></code> themselves. They only need to follow the
+specifications outlined above. The same is true for the position
+datasets for <code class="docutils literal"><span class="pre">Mean_Response</span></code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="advanced-topics">
+<h2>Advanced topics:<a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Region</span> <span class="pre">references</span></code> - These are references to sections of a
+<code class="docutils literal"><span class="pre">main</span></code> or <code class="docutils literal"><span class="pre">ancillary</span></code> dataset that make it easy to access data
+specfic to a specific portion of the measurement, or each column or
+row in the ancillary datasets just by their alias (intuitive strings
+for names).</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pycroscopy.html" class="btn btn-neutral float-right" title="pycroscopy package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Pycroscopy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

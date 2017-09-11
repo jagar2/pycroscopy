@@ -1,0 +1,1583 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.viz.plot_utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../index.html"/>
+        <link rel="up" title="pycroscopy.viz" href="../pycroscopy.viz.html"/>
+        <link rel="next" title="Pycroscopy Gallery" href="../../auto_examples/index.html"/>
+        <link rel="prev" title="pycroscopy.viz.be_viz_utils" href="pycroscopy.viz.be_viz_utils.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../pycroscopy.html">pycroscopy package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../pycroscopy.html#description">0. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pycroscopy.html#package-structure">1. Package Structure</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../pycroscopy.html#pycroscopy-modules">2. Pycroscopy Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.analysis.html">pycroscopy.analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.io.html">pycroscopy.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.processing.html">pycroscopy.processing</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../pycroscopy.viz.html">pycroscopy.viz</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../pycroscopy.viz.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../pycroscopy.html">pycroscopy package</a> &raquo;</li>
+        
+          <li><a href="../pycroscopy.viz.html">pycroscopy.viz</a> &raquo;</li>
+        
+      <li>pycroscopy.viz.plot_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/gen_modules/_autosummary/pycroscopy.viz.plot_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.viz.plot_utils">
+<span id="pycroscopy-viz-plot-utils"></span><h1>pycroscopy.viz.plot_utils<a class="headerlink" href="#module-pycroscopy.viz.plot_utils" title="Permalink to this headline">¶</a></h1>
+<p>Created on Thu May 05 13:29:12 2016</p>
+<p>&#64;author: Suhas Somnath</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.viz.plot_utils.cmap_from_rgba">
+<code class="descname">cmap_from_rgba</code><span class="sig-paren">(</span><em>name</em>, <em>interp_vals</em>, <em>normalization_val</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#cmap_from_rgba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.cmap_from_rgba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a colormap given a matlab-style interpolation table</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>String / Unicode</em>) – Name of the desired colormap</li>
+<li><strong>interp_vals</strong> (<em>List of tuples</em>) – Interpolation table that describes the desired color map. Each entry in the table should be described as:
+(position in the colorbar, (red, green, blue, alpha))
+The position in the color bar, red, green, blue, and alpha vary from 0 to the normalization value</li>
+<li><strong>normalization_val</strong> (<em>number</em>) – The common maximum value for the position in the color bar, red, green, blue, and alpha</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_cmap</strong> – desired color map</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.colors.LinearSegmentedColormap object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.cmap_hot_desaturated">
+<code class="descname">cmap_hot_desaturated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#cmap_hot_desaturated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.cmap_hot_desaturated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a desaturated color map based on the hot colormap</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>new_cmap</strong> – Desaturated version of the hot color map</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">matplotlib.colors.LinearSegmentedColormap object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.cmap_jet_white_center">
+<code class="descname">cmap_jet_white_center</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#cmap_jet_white_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.cmap_jet_white_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the jet colormap with a white center</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>white_jet</strong> – color map object that can be used in place of the default colormap</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">matplotlib.colors.LinearSegmentedColormap object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.discrete_cmap">
+<code class="descname">discrete_cmap</code><span class="sig-paren">(</span><em>num_bins</em>, <em>base_cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#discrete_cmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.discrete_cmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an N-bin discrete colormap from the specified input map</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_bins</strong> (<em>unsigned int</em>) – Number of discrete bins</li>
+<li><strong>base_cmap</strong> (<em>matplotlib.colors.LinearSegmentedColormap object</em>) – Base color map to discretize</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_cmap</strong> – Discretized color map</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">String or matplotlib.colors.LinearSegmentedColormap object</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Jake VanderPlas License: BSD-style
+<a class="reference external" href="https://gist.github.com/jakevdp/91077b0cae40f8f8244a">https://gist.github.com/jakevdp/91077b0cae40f8f8244a</a></p>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.get_cmap_object">
+<code class="descname">get_cmap_object</code><span class="sig-paren">(</span><em>cmap</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#get_cmap_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.get_cmap_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the matplotlib.colors.LinearSegmentedColormap object regardless of the input</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>cmap</strong> – Requested / Default colormap object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">matplotlib.colors.LinearSegmentedColormap object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.make_linear_alpha_cmap">
+<code class="descname">make_linear_alpha_cmap</code><span class="sig-paren">(</span><em>name</em>, <em>solid_color</em>, <em>normalization_val</em>, <em>min_alpha=0</em>, <em>max_alpha=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#make_linear_alpha_cmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.make_linear_alpha_cmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a transparent to opaque color map based on a single solid color</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>String / Unicode</em>) – Name of the desired colormap</li>
+<li><strong>solid_color</strong> (<em>List of numbers</em>) – red, green, blue, and alpha values for a specific color</li>
+<li><strong>normalization_val</strong> (<em>number</em>) – The common maximum value for the red, green, blue, and alpha values. This is 1 in matplotlib</li>
+<li><strong>min_alpha</strong> (<em>float</em><em> (</em><em>optional. Default = 0 : ie- transparent</em><em>)</em>) – Lowest alpha value for the bottom of the color bar</li>
+<li><strong>max_alpha</strong> (<em>float</em><em> (</em><em>optional. Default = 1 : ie- opaque</em><em>)</em>) – Highest alpha value for the top of the color bar</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_cmap</strong> – transparent to opaque color map based on the provided color</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.colors.LinearSegmentedColormap object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plotScree">
+<code class="descname">plotScree</code><span class="sig-paren">(</span><em>scree</em>, <em>title='Scree'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plotScree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plotScree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the scree or scree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>scree</strong> (<em>1D real numpy array</em>) – The scree vector from SVD</li>
+<li><strong>title</strong> (<em>str</em>) – Figure title.  Default Scree</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_1d_spectrum">
+<code class="descname">plot_1d_spectrum</code><span class="sig-paren">(</span><em>data_vec</em>, <em>freq</em>, <em>title</em>, <em>figure_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_1d_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_1d_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the Step averaged BE response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_vec</strong> (<em>1D numpy array</em>) – Response of one BE pulse</li>
+<li><strong>freq</strong> (<em>1D numpy array</em>) – BE frequency that serves as the X axis of the plot</li>
+<li><strong>title</strong> (<em>String</em>) – Plot group name</li>
+<li><strong>figure_path</strong> (<em>String / Unicode</em>) – Absolute path of the file to write the figure to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fig</strong> (<em>Matplotlib.pyplot figure</em>) – Figure handle</li>
+<li><strong>ax</strong> (<em>Matplotlib.pyplot axis</em>) – Axis handle</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_2d_spectrogram">
+<code class="descname">plot_2d_spectrogram</code><span class="sig-paren">(</span><em>mean_spectrogram</em>, <em>freq</em>, <em>title</em>, <em>figure_path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_2d_spectrogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_2d_spectrogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the position averaged spectrogram</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mean_spectrogram</strong> (<em>2D numpy complex array</em>) – Means spectrogram arranged as [frequency, UDVS step]</li>
+<li><strong>freq</strong> (<em>1D numpy float array</em>) – BE frequency that serves as the X axis of the plot</li>
+<li><strong>title</strong> (<em>String</em>) – Plot group name</li>
+<li><strong>figure_path</strong> (<em>String / Unicode</em>) – Absolute path of the file to write the figure to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fig</strong> (<em>Matplotlib.pyplot figure</em>) – Figure handle</li>
+<li><strong>ax</strong> (<em>Matplotlib.pyplot axis</em>) – Axis handle</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_cluster_dendrogram">
+<code class="descname">plot_cluster_dendrogram</code><span class="sig-paren">(</span><em>label_mat</em>, <em>e_vals</em>, <em>num_comp</em>, <em>num_cluster</em>, <em>mode='Full'</em>, <em>last=None</em>, <em>sort_type='distance'</em>, <em>sort_mode=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_cluster_dendrogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_cluster_dendrogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and plots the dendrograms for the given label_mat and
+eigenvalues</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>label_mat</strong> (<em>2D real numpy array</em>) – structured as [rows, cols], from KMeans clustering</li>
+<li><strong>e_vals</strong> (<em>3D real numpy array of eigenvalues</em>) – structured as [component, rows, cols]</li>
+<li><strong>num_comp</strong> (<em>int</em>) – Number of components used to make eigenvalues</li>
+<li><strong>num_cluster</strong> (<em>int</em>) – Number of cluster used to make the label_mat</li>
+<li><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – How should the dendrograms be created.
+“Full” – use all clusters when creating the dendrograms
+“Truncated” – stop showing clusters after ‘last’</li>
+<li><strong>last</strong> (<em>int</em><em>, </em><em>optional - should be provided when using &quot;Truncated&quot;</em>) – How many merged clusters should be shown when using
+“Truncated” mode</li>
+<li><strong>sort_type</strong> (<em>{'count'</em><em>, </em><em>'distance'}</em><em>, </em><em>optional</em>) – What type of sorting should be used when plotting the
+dendrograms.  Options are:
+count - Uses the count_sort from scipy.cluster.hierachy.dendrogram
+distance - Uses the distance_sort from scipy.cluster.hierachy.dendrogram</li>
+<li><strong>sort_mode</strong> (<em>{False</em><em>, </em><em>True</em><em>, </em><em>'ascending'</em><em>, </em><em>'descending'}</em><em>, </em><em>optional</em>) – For the chosen sort_type, which mode should be used.
+False - Does no sorting
+‘ascending’ or True - The child with the minimum of the chosen sort
+parameter is plotted first
+‘descending’ - The child with the maximum of the chosen sort parameter is
+plotted first</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fig</strong> – Figure containing the dendrogram</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.pyplot Figure object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_cluster_h5_group">
+<code class="descname">plot_cluster_h5_group</code><span class="sig-paren">(</span><em>h5_group</em>, <em>centroids_together=True</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_cluster_h5_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_cluster_h5_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the cluster labels and mean response for each cluster</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_group</strong> (<em>h5py.Datagroup object</em>) – H5 group containing the labels and mean response</li>
+<li><strong>centroids_together</strong> (<em>Boolean</em><em>, </em><em>optional - default = True</em>) – Whether or nor to plot all centroids together on the same plot</li>
+<li><strong>cmap</strong> (<em>plt.cm object</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Colormap to use for the labels map and the centroid.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fig</strong> (<em>Figure</em>) – Figure containing the plots</li>
+<li><strong>axes</strong> (<em>1D array_like of axes objects</em>) – Axes of the individual plots within <cite>fig</cite></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_cluster_results_separate">
+<code class="descname">plot_cluster_results_separate</code><span class="sig-paren">(</span><em>label_mat</em>, <em>cluster_centroids</em>, <em>max_centroids=4</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em>, <em>spec_val=None</em>, <em>x_label='Excitation (a.u.)'</em>, <em>y_label='Response (a.u.)'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_cluster_results_separate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_cluster_results_separate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the provided labels mat and centroids from clustering</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>label_mat</strong> (<em>2D int numpy array</em>) – structured as [rows, cols]</li>
+<li><strong>cluster_centroids</strong> (<em>2D real numpy array</em>) – structured as [cluster,features]</li>
+<li><strong>max_centroids</strong> (<em>unsigned int</em>) – Number of centroids to plot</li>
+<li><strong>cmap</strong> (<em>plt.cm object</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Colormap to use for the labels map and the centroids</li>
+<li><strong>spec_val</strong> (<em>array-like</em>) – X axis to plot the centroids against
+If no value is specified, the data is plotted against the index</li>
+<li><strong>x_label</strong> (<em>String / unicode</em>) – X label for centroid plots</li>
+<li><strong>y_label</strong> (<em>String / unicode</em>) – Y label for centroid plots</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_cluster_results_together">
+<code class="descname">plot_cluster_results_together</code><span class="sig-paren">(</span><em>label_mat</em>, <em>mean_response</em>, <em>spec_val=None</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em>, <em>spec_label='Spectroscopic Value'</em>, <em>resp_label='Response'</em>, <em>pos_labels=('X'</em>, <em>'Y')</em>, <em>pos_ticks=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_cluster_results_together"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_cluster_results_together" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the cluster labels and mean response for each cluster in separate plots</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>label_mat</strong> (<em>2D ndarray</em><em> or </em><em>h5py.Dataset of ints</em>) – Spatial map of cluster labels structured as [rows, cols]</li>
+<li><strong>mean_response</strong> (<em>2D array</em><em> or </em><em>h5py.Dataset</em>) – Mean value of each cluster over all samples
+arranged as [cluster number, features]</li>
+<li><strong>spec_val</strong> (<em>1D array</em><em> or </em><em>h5py.Dataset of floats</em><em>, </em><em>optional</em>) – X axis to plot the centroids against
+If no value is specified, the data is plotted against the index</li>
+<li><strong>cmap</strong> (<em>plt.cm object</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Colormap to use for the labels map and the centroid.
+Advised to pick a map where the centroid plots show clearly.
+Default = matplotlib.pyplot.cm.jet</li>
+<li><strong>spec_label</strong> (<em>str</em><em>, </em><em>optional</em>) – Label to use for X axis on cluster centroid plot
+Default = ‘Spectroscopic Value’</li>
+<li><strong>resp_label</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="docutils">
+<dt>Label to use for Y axis on cluster centroid plot</dt>
+<dd>Default = ‘Response’</dd>
+</dl>
+</li>
+<li><strong>pos_labels</strong> (<em>array_like of str</em><em>, </em><em>optional</em>) – Labels to use for the X and Y axes on the Label map
+Default = (‘X’, ‘Y’)</li>
+<li><strong>pos_ticks</strong> (<em>array_like of int</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fig</strong> (<em>Figure</em>) – Figure containing the plots</li>
+<li><strong>axes</strong> (<em>1D array_like of axes objects</em>) – Axes of the individual plots within <cite>fig</cite></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_complex_loop_stack">
+<code class="descname">plot_complex_loop_stack</code><span class="sig-paren">(</span><em>loop_stack</em>, <em>x_axis</em>, <em>heading='BE Loops'</em>, <em>subtitle='Eigenvector'</em>, <em>num_comps=4</em>, <em>x_label=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_complex_loop_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_complex_loop_stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the provided spectrograms from SVD V vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>loop_stack</strong> (<em>3D numpy complex matrices</em>) – Loops rearranged as - [component, points]</li>
+<li><strong>x_axis</strong> (<em>1D real numpy array</em>) – The vector to plot against</li>
+<li><strong>heading</strong> (<em>str</em>) – Title to plot above everything else</li>
+<li><strong>subtitle</strong> (<em>str</em>) – Subtile to of Figure</li>
+<li><strong>num_comps</strong> (<em>int</em>) – Number of components to plot</li>
+<li><strong>x_label</strong> (<em>str</em>) – Label for x axis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_complex_map_stack">
+<code class="descname">plot_complex_map_stack</code><span class="sig-paren">(</span><em>map_stack</em>, <em>num_comps=4</em>, <em>title='Eigenvectors'</em>, <em>xlabel='UDVS Step'</em>, <em>stdevs=2</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_complex_map_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_complex_map_stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the provided spectrograms from SVD V vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>map_stack</strong> (<em>3D numpy complex matrices</em>) – Eigenvectors rearranged as - [row, col, component]</li>
+<li><strong>num_comps</strong> (<em>int</em>) – Number of components to plot</li>
+<li><strong>title</strong> (<em>String</em>) – Title to plot above everything else</li>
+<li><strong>xlabel</strong> (<em>String</em>) – Label for x axis</li>
+<li><strong>stdevs</strong> (<em>int</em>) – Number of standard deviations to consider for plotting</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_histgrams">
+<code class="descname">plot_histgrams</code><span class="sig-paren">(</span><em>p_hist</em>, <em>p_hbins</em>, <em>title</em>, <em>figure_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_histgrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_histgrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the position averaged spectrogram</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p_hist</strong> (<em>2D numpy array</em>) – histogram data arranged as [physical quantity, frequency bin]</li>
+<li><strong>p_hbins</strong> (<em>1D numpy array</em>) – BE frequency that serves as the X axis of the plot</li>
+<li><strong>title</strong> (<em>String</em>) – Plot group name</li>
+<li><strong>figure_path</strong> (<em>String / Unicode</em>) – Absolute path of the file to write the figure to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fig</strong> – Figure handle</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Matplotlib.pyplot figure</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_image_cleaning_results">
+<code class="descname">plot_image_cleaning_results</code><span class="sig-paren">(</span><em>raw_image</em>, <em>clean_image</em>, <em>stdevs=2</em>, <em>heading='Image Cleaning Results'</em>, <em>fig_mult=(4</em>, <em>4)</em>, <em>fig_args={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_image_cleaning_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_image_cleaning_results" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>raw_image</strong> – </li>
+<li><strong>clean_image</strong> – </li>
+<li><strong>stdevs</strong> – </li>
+<li><strong>fig_mult</strong> – </li>
+<li><strong>fig_args</strong> – </li>
+<li><strong>heading</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_line_family">
+<code class="descname">plot_line_family</code><span class="sig-paren">(</span><em>axis</em>, <em>x_axis</em>, <em>line_family</em>, <em>line_names=None</em>, <em>label_prefix='Line'</em>, <em>label_suffix=''</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em>, <em>y_offset=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_line_family"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_line_family" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a family of lines with a sequence of colors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>axis</strong> (<em>axis handle</em>) – Axis to plot the curve</li>
+<li><strong>x_axis</strong> (<em>array-like</em>) – Values to plot against</li>
+<li><strong>line_family</strong> (<em>2D numpy array</em>) – family of curves arranged as [curve_index, features]</li>
+<li><strong>line_names</strong> (<em>array-like</em>) – array of string or numbers that represent the identity of each curve in the family</li>
+<li><strong>label_prefix</strong> (<em>string / unicode</em>) – prefix for the legend (before the index of the curve)</li>
+<li><strong>label_suffix</strong> (<em>string / unicode</em>) – suffix for the legend (after the index of the curve)</li>
+<li><strong>cmap</strong> (<em>matplotlib.colors.LinearSegmentedColormap object</em>) – Colormap to be used</li>
+<li><strong>y_offset</strong> (<em>(</em><em>optional</em><em>) </em><em>number</em>) – quantity by which the lines are offset from each other vertically (useful for spectra)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_loops">
+<code class="descname">plot_loops</code><span class="sig-paren">(</span><em>excit_wfm</em>, <em>datasets</em>, <em>line_colors=[]</em>, <em>dataset_names=[]</em>, <em>evenly_spaced=True</em>, <em>plots_on_side=5</em>, <em>x_label=''</em>, <em>y_label=''</em>, <em>subtitles='Position'</em>, <em>title=''</em>, <em>central_resp_size=None</em>, <em>use_rainbow_plots=False</em>, <em>h5_pos=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_loops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_loops" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots loops from multiple datasets from up to 25 evenly spaced positions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>excit_wfm</strong> (<em>1D numpy float array</em>) – Excitation waveform in the time domain</li>
+<li><strong>datasets</strong> (<em>list of 2D numpy arrays</em><em> or </em><em>2D hyp5.Dataset objects</em>) – Datasets containing data arranged as (pixel, time)</li>
+<li><strong>line_colors</strong> (<em>list of strings</em>) – Colors to be used for each of the datasets</li>
+<li><strong>dataset_names</strong> (<em>(</em><em>Optional</em><em>) </em><em>list of strings</em>) – Names of the different datasets to be compared</li>
+<li><strong>h5_pos</strong> (<em>HDF5 dataset reference</em><em> or </em><em>2D numpy array</em>) – Dataset containing position indices</li>
+<li><strong>central_resp_size</strong> (<em>(</em><em>optional</em><em>) </em><em>unsigned integer</em>) – Number of responce sample points from the center of the waveform to show in plots. Useful for SPORC</li>
+<li><strong>evenly_spaced</strong> (<em>boolean</em>) – Evenly spaced positions or first N positions</li>
+<li><strong>plots_on_side</strong> (<em>unsigned int</em>) – Number of plots on each side</li>
+<li><strong>use_rainbow_plots</strong> (<em>(</em><em>optional</em><em>) </em><em>Boolean</em>) – Plot the lines as a function of spectral index (eg. time)</li>
+<li><strong>x_label</strong> (<em>(</em><em>optional</em><em>) </em><em>String</em>) – X Label for all plots</li>
+<li><strong>y_label</strong> (<em>(</em><em>optional</em><em>) </em><em>String</em>) – Y label for all plots</li>
+<li><strong>subtitles</strong> (<em>(</em><em>optional</em><em>) </em><em>String</em>) – prefix for title over each plot</li>
+<li><strong>title</strong> (<em>(</em><em>optional</em><em>) </em><em>String</em>) – Main plot title</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_map">
+<code class="descname">plot_map</code><span class="sig-paren">(</span><em>axis</em>, <em>data</em>, <em>stdevs=2</em>, <em>origin='lower'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a 2d map with a tight z axis, with or without color bars.
+Note that the direction of the y axis is flipped if the color bar is required</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>axis</strong> (<em>matplotlib.pyplot.axis object</em>) – Axis to plot this map onto</li>
+<li><strong>data</strong> (<em>2D real numpy array</em>) – Data to be plotted</li>
+<li><strong>stdevs</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = 2</em><em>)</em>) – Number of standard deviations to consider for plotting</li>
+<li><strong>origin</strong> (<em>str</em>) – Where should the origin of the image data be located.  ‘lower’ sets the origin to the
+bottom left, ‘upper’ sets it to the upper left.
+Default ‘lower’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.plot_map_stack">
+<code class="descname">plot_map_stack</code><span class="sig-paren">(</span><em>map_stack</em>, <em>num_comps=9</em>, <em>stdevs=2</em>, <em>color_bar_mode=None</em>, <em>evenly_spaced=False</em>, <em>reverse_dims=True</em>, <em>title='Component'</em>, <em>heading='Map Stack'</em>, <em>colorbar_label=''</em>, <em>fig_mult=(4</em>, <em>4)</em>, <em>pad_mult=(0.1</em>, <em>0.07)</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_map_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.plot_map_stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the provided stack of maps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>map_stack</strong> (<em>3D real numpy array</em>) – structured as [component, rows, cols]</li>
+<li><strong>num_comps</strong> (<em>unsigned int</em>) – Number of components to plot</li>
+<li><strong>stdevs</strong> (<em>int</em>) – Number of standard deviations to consider for plotting</li>
+<li><strong>color_bar_mode</strong> (<em>String</em><em>, </em><em>Optional</em>) – Options are None, single or each. Default None</li>
+<li><strong>evenly_spaced</strong> (<em>bool</em>) – Default False</li>
+<li><strong>reverse_dims</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>)</em>) – Set this to False to accept data structured as [component, rows, cols]</li>
+<li><strong>title</strong> (<em>String</em><em> or </em><em>list of strings</em>) – The titles for each of the plots.
+If a single string is provided, the plot titles become [‘title 01’, title 02’, …].
+if a list of strings (equal to the number of components) are provided, these are used instead.</li>
+<li><strong>heading</strong> (<em>String</em>) – ###Insert description here### Default ‘Map Stack’</li>
+<li><strong>colorbar_label</strong> (<em>String</em>) – label for colorbar. Default is an empty string.</li>
+<li><strong>fig_mult</strong> (<em>length 2 array_like of uints</em>) – Size multipliers for the figure.  Figure size is calculated as (num_rows*`fig_mult[0]`, num_cols*`fig_mult[1]`).
+Default (4, 4)</li>
+<li><strong>pad_mult</strong> (<em>length 2 array_like of floats</em>) – Multipliers for the axis padding between plots in the stack.  Padding is calculated as
+(pad_mult[0]*fig_mult[1], pad_mult[1]*fig_mult[0]) for the width and height padding respectively.
+Default (0.1, 0.07)</li>
+<li><strong>kwargs</strong> (<em>dictionary</em>) – Keyword arguments to be passed to either matplotlib.pyplot.figure, mpl_toolkits.axes_grid1.ImageGrid, or
+pycroscopy.vis.plot_utils.plot_map.  See specific function documentation for the relavent options.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.rainbow_plot">
+<code class="descname">rainbow_plot</code><span class="sig-paren">(</span><em>ax</em>, <em>ao_vec</em>, <em>ai_vec</em>, <em>num_steps=32</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#rainbow_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.rainbow_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the input against the output waveform (typically loops).
+The color of the curve changes as a function of time using the jet colorscheme</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<em>axis handle</em>) – Axis to plot the curve</li>
+<li><strong>ao_vec</strong> (<em>1D float numpy array</em>) – vector that forms the X axis</li>
+<li><strong>ai_vec</strong> (<em>1D float numpy array</em>) – vector that forms the Y axis</li>
+<li><strong>num_steps</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>)</em>) – Number of discrete color steps</li>
+<li><strong>cmap</strong> (<em>matplotlib.colors.LinearSegmentedColormap object</em>) – Colormap to be used</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.set_tick_font_size">
+<code class="descname">set_tick_font_size</code><span class="sig-paren">(</span><em>axes</em>, <em>font_size</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#set_tick_font_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.set_tick_font_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the font size of the ticks in the provided axes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>axes</strong> (<em>matplotlib.pyplot.axis object</em><em> or </em><em>list of axis objects</em>) – axes to set font sizes</li>
+<li><strong>font_size</strong> (<em>unigned int</em>) – Font size</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils.single_img_cbar_plot">
+<code class="descname">single_img_cbar_plot</code><span class="sig-paren">(</span><em>fig</em>, <em>axis</em>, <em>img</em>, <em>show_xy_ticks=True</em>, <em>show_cbar=True</em>, <em>x_size=1</em>, <em>y_size=1</em>, <em>num_ticks=4</em>, <em>cbar_label=None</em>, <em>tick_font_size=14</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#single_img_cbar_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils.single_img_cbar_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots an image within the given axis with a color bar + label and appropriate X, Y tick labels.
+This is particularly useful to get readily interpretable plots for papers</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fig</strong> (<em>matplotlib.figure object</em>) – Handle to figure</li>
+<li><strong>axis</strong> (<em>matplotlib.axis object</em>) – Axis to plot this image onto</li>
+<li><strong>img</strong> (<em>2D numpy array with real values</em>) – Data for the image plot</li>
+<li><strong>show_xy_ticks</strong> (<em>bool</em><em>, </em><em>Optional</em><em>, </em><em>default = True</em>) – Whether or not to show X, Y ticks</li>
+<li><strong>show_cbar</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default = True</em>) – Whether or not to show the colorbar</li>
+<li><strong>x_size</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default = 1</em>) – Extent of tick marks in the X axis. This could be something like 1.5 for 1.5 microns</li>
+<li><strong>y_size</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default = 1</em>) – Extent of tick marks in y axis</li>
+<li><strong>num_ticks</strong> (<em>unsigned int</em><em>, </em><em>optional</em><em>, </em><em>default = 4</em>) – Number of tick marks on the X and Y axes</li>
+<li><strong>cbar_label</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default = None</em>) – Labels for the colorbar. Use this for something like quantity (units)</li>
+<li><strong>tick_font_size</strong> (<em>unsigned int</em><em>, </em><em>optional</em><em>, </em><em>default = 14</em>) – Font size to apply to x, y, colorbar ticks and colorbar label</li>
+<li><strong>kwargs</strong> (<em>dictionary</em>) – Anything else that will be passed on to plot_map or imshow</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>im_handle</strong> (<em>handle to image plot</em>) – handle to image plot</li>
+<li><strong>cbar</strong> (<em>handle to color bar</em>) – handle to color bar</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.plot_utils._add_loop_parameters">
+<code class="descname">_add_loop_parameters</code><span class="sig-paren">(</span><em>axes</em>, <em>switching_coef_vec</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#_add_loop_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.plot_utils._add_loop_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the loop parameters for the given loop to a list of axes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>axes</strong> (<em>list of matplotlib.pyplo.axes</em>) – Plot axes to add the coeffients to</li>
+<li><strong>switching_coef_vec</strong> (<em>1D numpy.ndarray</em>) – Array of loop parameters arranged by position</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>axes</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of matplotlib.pyplo.axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">cmap_from_rgba</code><span class="sig-paren">(</span><em>name</em>, <em>interp_vals</em>, <em>normalization_val</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#cmap_from_rgba"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Generates a colormap given a matlab-style interpolation table</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>String / Unicode</em>) – Name of the desired colormap</li>
+<li><strong>interp_vals</strong> (<em>List of tuples</em>) – Interpolation table that describes the desired color map. Each entry in the table should be described as:
+(position in the colorbar, (red, green, blue, alpha))
+The position in the color bar, red, green, blue, and alpha vary from 0 to the normalization value</li>
+<li><strong>normalization_val</strong> (<em>number</em>) – The common maximum value for the position in the color bar, red, green, blue, and alpha</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_cmap</strong> – desired color map</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.colors.LinearSegmentedColormap object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">cmap_hot_desaturated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#cmap_hot_desaturated"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns a desaturated color map based on the hot colormap</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>new_cmap</strong> – Desaturated version of the hot color map</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">matplotlib.colors.LinearSegmentedColormap object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">cmap_jet_white_center</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#cmap_jet_white_center"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Generates the jet colormap with a white center</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>white_jet</strong> – color map object that can be used in place of the default colormap</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">matplotlib.colors.LinearSegmentedColormap object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">discrete_cmap</code><span class="sig-paren">(</span><em>num_bins</em>, <em>base_cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#discrete_cmap"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Create an N-bin discrete colormap from the specified input map</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_bins</strong> (<em>unsigned int</em>) – Number of discrete bins</li>
+<li><strong>base_cmap</strong> (<em>matplotlib.colors.LinearSegmentedColormap object</em>) – Base color map to discretize</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_cmap</strong> – Discretized color map</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">String or matplotlib.colors.LinearSegmentedColormap object</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Jake VanderPlas License: BSD-style
+<a class="reference external" href="https://gist.github.com/jakevdp/91077b0cae40f8f8244a">https://gist.github.com/jakevdp/91077b0cae40f8f8244a</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">get_cmap_object</code><span class="sig-paren">(</span><em>cmap</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#get_cmap_object"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Get the matplotlib.colors.LinearSegmentedColormap object regardless of the input</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>cmap</strong> – Requested / Default colormap object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">matplotlib.colors.LinearSegmentedColormap object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">make_linear_alpha_cmap</code><span class="sig-paren">(</span><em>name</em>, <em>solid_color</em>, <em>normalization_val</em>, <em>min_alpha=0</em>, <em>max_alpha=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#make_linear_alpha_cmap"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Generates a transparent to opaque color map based on a single solid color</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>String / Unicode</em>) – Name of the desired colormap</li>
+<li><strong>solid_color</strong> (<em>List of numbers</em>) – red, green, blue, and alpha values for a specific color</li>
+<li><strong>normalization_val</strong> (<em>number</em>) – The common maximum value for the red, green, blue, and alpha values. This is 1 in matplotlib</li>
+<li><strong>min_alpha</strong> (<em>float</em><em> (</em><em>optional. Default = 0 : ie- transparent</em><em>)</em>) – Lowest alpha value for the bottom of the color bar</li>
+<li><strong>max_alpha</strong> (<em>float</em><em> (</em><em>optional. Default = 1 : ie- opaque</em><em>)</em>) – Highest alpha value for the top of the color bar</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_cmap</strong> – transparent to opaque color map based on the provided color</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.colors.LinearSegmentedColormap object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plotScree</code><span class="sig-paren">(</span><em>scree</em>, <em>title='Scree'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plotScree"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the scree or scree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>scree</strong> (<em>1D real numpy array</em>) – The scree vector from SVD</li>
+<li><strong>title</strong> (<em>str</em>) – Figure title.  Default Scree</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_1d_spectrum</code><span class="sig-paren">(</span><em>data_vec</em>, <em>freq</em>, <em>title</em>, <em>figure_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_1d_spectrum"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the Step averaged BE response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_vec</strong> (<em>1D numpy array</em>) – Response of one BE pulse</li>
+<li><strong>freq</strong> (<em>1D numpy array</em>) – BE frequency that serves as the X axis of the plot</li>
+<li><strong>title</strong> (<em>String</em>) – Plot group name</li>
+<li><strong>figure_path</strong> (<em>String / Unicode</em>) – Absolute path of the file to write the figure to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fig</strong> (<em>Matplotlib.pyplot figure</em>) – Figure handle</li>
+<li><strong>ax</strong> (<em>Matplotlib.pyplot axis</em>) – Axis handle</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_2d_spectrogram</code><span class="sig-paren">(</span><em>mean_spectrogram</em>, <em>freq</em>, <em>title</em>, <em>figure_path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_2d_spectrogram"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the position averaged spectrogram</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mean_spectrogram</strong> (<em>2D numpy complex array</em>) – Means spectrogram arranged as [frequency, UDVS step]</li>
+<li><strong>freq</strong> (<em>1D numpy float array</em>) – BE frequency that serves as the X axis of the plot</li>
+<li><strong>title</strong> (<em>String</em>) – Plot group name</li>
+<li><strong>figure_path</strong> (<em>String / Unicode</em>) – Absolute path of the file to write the figure to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fig</strong> (<em>Matplotlib.pyplot figure</em>) – Figure handle</li>
+<li><strong>ax</strong> (<em>Matplotlib.pyplot axis</em>) – Axis handle</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_cluster_dendrogram</code><span class="sig-paren">(</span><em>label_mat</em>, <em>e_vals</em>, <em>num_comp</em>, <em>num_cluster</em>, <em>mode='Full'</em>, <em>last=None</em>, <em>sort_type='distance'</em>, <em>sort_mode=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_cluster_dendrogram"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Creates and plots the dendrograms for the given label_mat and
+eigenvalues</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>label_mat</strong> (<em>2D real numpy array</em>) – structured as [rows, cols], from KMeans clustering</li>
+<li><strong>e_vals</strong> (<em>3D real numpy array of eigenvalues</em>) – structured as [component, rows, cols]</li>
+<li><strong>num_comp</strong> (<em>int</em>) – Number of components used to make eigenvalues</li>
+<li><strong>num_cluster</strong> (<em>int</em>) – Number of cluster used to make the label_mat</li>
+<li><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – How should the dendrograms be created.
+“Full” – use all clusters when creating the dendrograms
+“Truncated” – stop showing clusters after ‘last’</li>
+<li><strong>last</strong> (<em>int</em><em>, </em><em>optional - should be provided when using &quot;Truncated&quot;</em>) – How many merged clusters should be shown when using
+“Truncated” mode</li>
+<li><strong>sort_type</strong> (<em>{'count'</em><em>, </em><em>'distance'}</em><em>, </em><em>optional</em>) – What type of sorting should be used when plotting the
+dendrograms.  Options are:
+count - Uses the count_sort from scipy.cluster.hierachy.dendrogram
+distance - Uses the distance_sort from scipy.cluster.hierachy.dendrogram</li>
+<li><strong>sort_mode</strong> (<em>{False</em><em>, </em><em>True</em><em>, </em><em>'ascending'</em><em>, </em><em>'descending'}</em><em>, </em><em>optional</em>) – For the chosen sort_type, which mode should be used.
+False - Does no sorting
+‘ascending’ or True - The child with the minimum of the chosen sort
+parameter is plotted first
+‘descending’ - The child with the maximum of the chosen sort parameter is
+plotted first</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fig</strong> – Figure containing the dendrogram</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.pyplot Figure object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_cluster_h5_group</code><span class="sig-paren">(</span><em>h5_group</em>, <em>centroids_together=True</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_cluster_h5_group"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the cluster labels and mean response for each cluster</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_group</strong> (<em>h5py.Datagroup object</em>) – H5 group containing the labels and mean response</li>
+<li><strong>centroids_together</strong> (<em>Boolean</em><em>, </em><em>optional - default = True</em>) – Whether or nor to plot all centroids together on the same plot</li>
+<li><strong>cmap</strong> (<em>plt.cm object</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Colormap to use for the labels map and the centroid.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fig</strong> (<em>Figure</em>) – Figure containing the plots</li>
+<li><strong>axes</strong> (<em>1D array_like of axes objects</em>) – Axes of the individual plots within <cite>fig</cite></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_cluster_results_separate</code><span class="sig-paren">(</span><em>label_mat</em>, <em>cluster_centroids</em>, <em>max_centroids=4</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em>, <em>spec_val=None</em>, <em>x_label='Excitation (a.u.)'</em>, <em>y_label='Response (a.u.)'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_cluster_results_separate"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the provided labels mat and centroids from clustering</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>label_mat</strong> (<em>2D int numpy array</em>) – structured as [rows, cols]</li>
+<li><strong>cluster_centroids</strong> (<em>2D real numpy array</em>) – structured as [cluster,features]</li>
+<li><strong>max_centroids</strong> (<em>unsigned int</em>) – Number of centroids to plot</li>
+<li><strong>cmap</strong> (<em>plt.cm object</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Colormap to use for the labels map and the centroids</li>
+<li><strong>spec_val</strong> (<em>array-like</em>) – X axis to plot the centroids against
+If no value is specified, the data is plotted against the index</li>
+<li><strong>x_label</strong> (<em>String / unicode</em>) – X label for centroid plots</li>
+<li><strong>y_label</strong> (<em>String / unicode</em>) – Y label for centroid plots</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_cluster_results_together</code><span class="sig-paren">(</span><em>label_mat</em>, <em>mean_response</em>, <em>spec_val=None</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em>, <em>spec_label='Spectroscopic Value'</em>, <em>resp_label='Response'</em>, <em>pos_labels=('X'</em>, <em>'Y')</em>, <em>pos_ticks=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_cluster_results_together"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot the cluster labels and mean response for each cluster in separate plots</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>label_mat</strong> (<em>2D ndarray</em><em> or </em><em>h5py.Dataset of ints</em>) – Spatial map of cluster labels structured as [rows, cols]</li>
+<li><strong>mean_response</strong> (<em>2D array</em><em> or </em><em>h5py.Dataset</em>) – Mean value of each cluster over all samples
+arranged as [cluster number, features]</li>
+<li><strong>spec_val</strong> (<em>1D array</em><em> or </em><em>h5py.Dataset of floats</em><em>, </em><em>optional</em>) – X axis to plot the centroids against
+If no value is specified, the data is plotted against the index</li>
+<li><strong>cmap</strong> (<em>plt.cm object</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Colormap to use for the labels map and the centroid.
+Advised to pick a map where the centroid plots show clearly.
+Default = matplotlib.pyplot.cm.jet</li>
+<li><strong>spec_label</strong> (<em>str</em><em>, </em><em>optional</em>) – Label to use for X axis on cluster centroid plot
+Default = ‘Spectroscopic Value’</li>
+<li><strong>resp_label</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="docutils">
+<dt>Label to use for Y axis on cluster centroid plot</dt>
+<dd>Default = ‘Response’</dd>
+</dl>
+</li>
+<li><strong>pos_labels</strong> (<em>array_like of str</em><em>, </em><em>optional</em>) – Labels to use for the X and Y axes on the Label map
+Default = (‘X’, ‘Y’)</li>
+<li><strong>pos_ticks</strong> (<em>array_like of int</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fig</strong> (<em>Figure</em>) – Figure containing the plots</li>
+<li><strong>axes</strong> (<em>1D array_like of axes objects</em>) – Axes of the individual plots within <cite>fig</cite></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_complex_loop_stack</code><span class="sig-paren">(</span><em>loop_stack</em>, <em>x_axis</em>, <em>heading='BE Loops'</em>, <em>subtitle='Eigenvector'</em>, <em>num_comps=4</em>, <em>x_label=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_complex_loop_stack"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the provided spectrograms from SVD V vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>loop_stack</strong> (<em>3D numpy complex matrices</em>) – Loops rearranged as - [component, points]</li>
+<li><strong>x_axis</strong> (<em>1D real numpy array</em>) – The vector to plot against</li>
+<li><strong>heading</strong> (<em>str</em>) – Title to plot above everything else</li>
+<li><strong>subtitle</strong> (<em>str</em>) – Subtile to of Figure</li>
+<li><strong>num_comps</strong> (<em>int</em>) – Number of components to plot</li>
+<li><strong>x_label</strong> (<em>str</em>) – Label for x axis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_complex_map_stack</code><span class="sig-paren">(</span><em>map_stack</em>, <em>num_comps=4</em>, <em>title='Eigenvectors'</em>, <em>xlabel='UDVS Step'</em>, <em>stdevs=2</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_complex_map_stack"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the provided spectrograms from SVD V vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>map_stack</strong> (<em>3D numpy complex matrices</em>) – Eigenvectors rearranged as - [row, col, component]</li>
+<li><strong>num_comps</strong> (<em>int</em>) – Number of components to plot</li>
+<li><strong>title</strong> (<em>String</em>) – Title to plot above everything else</li>
+<li><strong>xlabel</strong> (<em>String</em>) – Label for x axis</li>
+<li><strong>stdevs</strong> (<em>int</em>) – Number of standard deviations to consider for plotting</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_histgrams</code><span class="sig-paren">(</span><em>p_hist</em>, <em>p_hbins</em>, <em>title</em>, <em>figure_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_histgrams"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the position averaged spectrogram</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p_hist</strong> (<em>2D numpy array</em>) – histogram data arranged as [physical quantity, frequency bin]</li>
+<li><strong>p_hbins</strong> (<em>1D numpy array</em>) – BE frequency that serves as the X axis of the plot</li>
+<li><strong>title</strong> (<em>String</em>) – Plot group name</li>
+<li><strong>figure_path</strong> (<em>String / Unicode</em>) – Absolute path of the file to write the figure to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fig</strong> – Figure handle</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Matplotlib.pyplot figure</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_image_cleaning_results</code><span class="sig-paren">(</span><em>raw_image</em>, <em>clean_image</em>, <em>stdevs=2</em>, <em>heading='Image Cleaning Results'</em>, <em>fig_mult=(4</em>, <em>4)</em>, <em>fig_args={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_image_cleaning_results"><span class="viewcode-link">[source]</span></a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>raw_image</strong> – </li>
+<li><strong>clean_image</strong> – </li>
+<li><strong>stdevs</strong> – </li>
+<li><strong>fig_mult</strong> – </li>
+<li><strong>fig_args</strong> – </li>
+<li><strong>heading</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_line_family</code><span class="sig-paren">(</span><em>axis</em>, <em>x_axis</em>, <em>line_family</em>, <em>line_names=None</em>, <em>label_prefix='Line'</em>, <em>label_suffix=''</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em>, <em>y_offset=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_line_family"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots a family of lines with a sequence of colors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>axis</strong> (<em>axis handle</em>) – Axis to plot the curve</li>
+<li><strong>x_axis</strong> (<em>array-like</em>) – Values to plot against</li>
+<li><strong>line_family</strong> (<em>2D numpy array</em>) – family of curves arranged as [curve_index, features]</li>
+<li><strong>line_names</strong> (<em>array-like</em>) – array of string or numbers that represent the identity of each curve in the family</li>
+<li><strong>label_prefix</strong> (<em>string / unicode</em>) – prefix for the legend (before the index of the curve)</li>
+<li><strong>label_suffix</strong> (<em>string / unicode</em>) – suffix for the legend (after the index of the curve)</li>
+<li><strong>cmap</strong> (<em>matplotlib.colors.LinearSegmentedColormap object</em>) – Colormap to be used</li>
+<li><strong>y_offset</strong> (<em>(</em><em>optional</em><em>) </em><em>number</em>) – quantity by which the lines are offset from each other vertically (useful for spectra)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_loops</code><span class="sig-paren">(</span><em>excit_wfm</em>, <em>datasets</em>, <em>line_colors=[]</em>, <em>dataset_names=[]</em>, <em>evenly_spaced=True</em>, <em>plots_on_side=5</em>, <em>x_label=''</em>, <em>y_label=''</em>, <em>subtitles='Position'</em>, <em>title=''</em>, <em>central_resp_size=None</em>, <em>use_rainbow_plots=False</em>, <em>h5_pos=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_loops"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots loops from multiple datasets from up to 25 evenly spaced positions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>excit_wfm</strong> (<em>1D numpy float array</em>) – Excitation waveform in the time domain</li>
+<li><strong>datasets</strong> (<em>list of 2D numpy arrays</em><em> or </em><em>2D hyp5.Dataset objects</em>) – Datasets containing data arranged as (pixel, time)</li>
+<li><strong>line_colors</strong> (<em>list of strings</em>) – Colors to be used for each of the datasets</li>
+<li><strong>dataset_names</strong> (<em>(</em><em>Optional</em><em>) </em><em>list of strings</em>) – Names of the different datasets to be compared</li>
+<li><strong>h5_pos</strong> (<em>HDF5 dataset reference</em><em> or </em><em>2D numpy array</em>) – Dataset containing position indices</li>
+<li><strong>central_resp_size</strong> (<em>(</em><em>optional</em><em>) </em><em>unsigned integer</em>) – Number of responce sample points from the center of the waveform to show in plots. Useful for SPORC</li>
+<li><strong>evenly_spaced</strong> (<em>boolean</em>) – Evenly spaced positions or first N positions</li>
+<li><strong>plots_on_side</strong> (<em>unsigned int</em>) – Number of plots on each side</li>
+<li><strong>use_rainbow_plots</strong> (<em>(</em><em>optional</em><em>) </em><em>Boolean</em>) – Plot the lines as a function of spectral index (eg. time)</li>
+<li><strong>x_label</strong> (<em>(</em><em>optional</em><em>) </em><em>String</em>) – X Label for all plots</li>
+<li><strong>y_label</strong> (<em>(</em><em>optional</em><em>) </em><em>String</em>) – Y label for all plots</li>
+<li><strong>subtitles</strong> (<em>(</em><em>optional</em><em>) </em><em>String</em>) – prefix for title over each plot</li>
+<li><strong>title</strong> (<em>(</em><em>optional</em><em>) </em><em>String</em>) – Main plot title</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_map</code><span class="sig-paren">(</span><em>axis</em>, <em>data</em>, <em>stdevs=2</em>, <em>origin='lower'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_map"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots a 2d map with a tight z axis, with or without color bars.
+Note that the direction of the y axis is flipped if the color bar is required</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>axis</strong> (<em>matplotlib.pyplot.axis object</em>) – Axis to plot this map onto</li>
+<li><strong>data</strong> (<em>2D real numpy array</em>) – Data to be plotted</li>
+<li><strong>stdevs</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = 2</em><em>)</em>) – Number of standard deviations to consider for plotting</li>
+<li><strong>origin</strong> (<em>str</em>) – Where should the origin of the image data be located.  ‘lower’ sets the origin to the
+bottom left, ‘upper’ sets it to the upper left.
+Default ‘lower’</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_map_stack</code><span class="sig-paren">(</span><em>map_stack</em>, <em>num_comps=9</em>, <em>stdevs=2</em>, <em>color_bar_mode=None</em>, <em>evenly_spaced=False</em>, <em>reverse_dims=True</em>, <em>title='Component'</em>, <em>heading='Map Stack'</em>, <em>colorbar_label=''</em>, <em>fig_mult=(4</em>, <em>4)</em>, <em>pad_mult=(0.1</em>, <em>0.07)</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#plot_map_stack"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the provided stack of maps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>map_stack</strong> (<em>3D real numpy array</em>) – structured as [component, rows, cols]</li>
+<li><strong>num_comps</strong> (<em>unsigned int</em>) – Number of components to plot</li>
+<li><strong>stdevs</strong> (<em>int</em>) – Number of standard deviations to consider for plotting</li>
+<li><strong>color_bar_mode</strong> (<em>String</em><em>, </em><em>Optional</em>) – Options are None, single or each. Default None</li>
+<li><strong>evenly_spaced</strong> (<em>bool</em>) – Default False</li>
+<li><strong>reverse_dims</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>)</em>) – Set this to False to accept data structured as [component, rows, cols]</li>
+<li><strong>title</strong> (<em>String</em><em> or </em><em>list of strings</em>) – The titles for each of the plots.
+If a single string is provided, the plot titles become [‘title 01’, title 02’, …].
+if a list of strings (equal to the number of components) are provided, these are used instead.</li>
+<li><strong>heading</strong> (<em>String</em>) – ###Insert description here### Default ‘Map Stack’</li>
+<li><strong>colorbar_label</strong> (<em>String</em>) – label for colorbar. Default is an empty string.</li>
+<li><strong>fig_mult</strong> (<em>length 2 array_like of uints</em>) – Size multipliers for the figure.  Figure size is calculated as (num_rows*`fig_mult[0]`, num_cols*`fig_mult[1]`).
+Default (4, 4)</li>
+<li><strong>pad_mult</strong> (<em>length 2 array_like of floats</em>) – Multipliers for the axis padding between plots in the stack.  Padding is calculated as
+(pad_mult[0]*fig_mult[1], pad_mult[1]*fig_mult[0]) for the width and height padding respectively.
+Default (0.1, 0.07)</li>
+<li><strong>kwargs</strong> (<em>dictionary</em>) – Keyword arguments to be passed to either matplotlib.pyplot.figure, mpl_toolkits.axes_grid1.ImageGrid, or
+pycroscopy.vis.plot_utils.plot_map.  See specific function documentation for the relavent options.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">fig, axes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">rainbow_plot</code><span class="sig-paren">(</span><em>ax</em>, <em>ao_vec</em>, <em>ai_vec</em>, <em>num_steps=32</em>, <em>cmap=&lt;matplotlib.colors.ListedColormap object&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#rainbow_plot"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the input against the output waveform (typically loops).
+The color of the curve changes as a function of time using the jet colorscheme</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<em>axis handle</em>) – Axis to plot the curve</li>
+<li><strong>ao_vec</strong> (<em>1D float numpy array</em>) – vector that forms the X axis</li>
+<li><strong>ai_vec</strong> (<em>1D float numpy array</em>) – vector that forms the Y axis</li>
+<li><strong>num_steps</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>)</em>) – Number of discrete color steps</li>
+<li><strong>cmap</strong> (<em>matplotlib.colors.LinearSegmentedColormap object</em>) – Colormap to be used</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">set_tick_font_size</code><span class="sig-paren">(</span><em>axes</em>, <em>font_size</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#set_tick_font_size"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Sets the font size of the ticks in the provided axes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>axes</strong> (<em>matplotlib.pyplot.axis object</em><em> or </em><em>list of axis objects</em>) – axes to set font sizes</li>
+<li><strong>font_size</strong> (<em>unigned int</em>) – Font size</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">single_img_cbar_plot</code><span class="sig-paren">(</span><em>fig</em>, <em>axis</em>, <em>img</em>, <em>show_xy_ticks=True</em>, <em>show_cbar=True</em>, <em>x_size=1</em>, <em>y_size=1</em>, <em>num_ticks=4</em>, <em>cbar_label=None</em>, <em>tick_font_size=14</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/viz/plot_utils.html#single_img_cbar_plot"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots an image within the given axis with a color bar + label and appropriate X, Y tick labels.
+This is particularly useful to get readily interpretable plots for papers</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fig</strong> (<em>matplotlib.figure object</em>) – Handle to figure</li>
+<li><strong>axis</strong> (<em>matplotlib.axis object</em>) – Axis to plot this image onto</li>
+<li><strong>img</strong> (<em>2D numpy array with real values</em>) – Data for the image plot</li>
+<li><strong>show_xy_ticks</strong> (<em>bool</em><em>, </em><em>Optional</em><em>, </em><em>default = True</em>) – Whether or not to show X, Y ticks</li>
+<li><strong>show_cbar</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default = True</em>) – Whether or not to show the colorbar</li>
+<li><strong>x_size</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default = 1</em>) – Extent of tick marks in the X axis. This could be something like 1.5 for 1.5 microns</li>
+<li><strong>y_size</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default = 1</em>) – Extent of tick marks in y axis</li>
+<li><strong>num_ticks</strong> (<em>unsigned int</em><em>, </em><em>optional</em><em>, </em><em>default = 4</em>) – Number of tick marks on the X and Y axes</li>
+<li><strong>cbar_label</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default = None</em>) – Labels for the colorbar. Use this for something like quantity (units)</li>
+<li><strong>tick_font_size</strong> (<em>unsigned int</em><em>, </em><em>optional</em><em>, </em><em>default = 14</em>) – Font size to apply to x, y, colorbar ticks and colorbar label</li>
+<li><strong>kwargs</strong> (<em>dictionary</em>) – Anything else that will be passed on to plot_map or imshow</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>im_handle</strong> (<em>handle to image plot</em>) – handle to image plot</li>
+<li><strong>cbar</strong> (<em>handle to color bar</em>) – handle to color bar</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../auto_examples/index.html" class="btn btn-neutral float-right" title="Pycroscopy Gallery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pycroscopy.viz.be_viz_utils.html" class="btn btn-neutral" title="pycroscopy.viz.be_viz_utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

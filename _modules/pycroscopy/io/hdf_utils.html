@@ -1,0 +1,1830 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.hdf_utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.hdf_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.hdf_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Tue Nov  3 21:14:25 2015</span>
+
+<span class="sd">@author: Suhas Somnath, Chris Smith, Numan Laanait</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.microdata</span> <span class="k">import</span> <span class="n">MicroDataset</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;get_attr&#39;</span><span class="p">,</span> <span class="s1">&#39;getDataSet&#39;</span><span class="p">,</span> <span class="s1">&#39;getH5DsetRefs&#39;</span><span class="p">,</span> <span class="s1">&#39;getH5RegRefIndices&#39;</span><span class="p">,</span> <span class="s1">&#39;get_dimensionality&#39;</span><span class="p">,</span> <span class="s1">&#39;get_sort_order&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;getAuxData&#39;</span><span class="p">,</span> <span class="s1">&#39;get_attributes&#39;</span><span class="p">,</span> <span class="s1">&#39;getH5GroupRefs&#39;</span><span class="p">,</span> <span class="s1">&#39;checkIfMain&#39;</span><span class="p">,</span> <span class="s1">&#39;checkAndLinkAncillary&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;createRefFromIndices&#39;</span><span class="p">,</span> <span class="s1">&#39;copyAttributes&#39;</span><span class="p">,</span> <span class="s1">&#39;reshape_to_Ndims&#39;</span><span class="p">,</span> <span class="s1">&#39;linkRefs&#39;</span><span class="p">,</span> <span class="s1">&#39;linkRefAsAlias&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;findH5group&#39;</span><span class="p">,</span> <span class="s1">&#39;get_formatted_labels&#39;</span><span class="p">,</span> <span class="s1">&#39;reshape_from_Ndims&#39;</span><span class="p">,</span> <span class="s1">&#39;findDataset&#39;</span><span class="p">,</span> <span class="s1">&#39;print_tree&#39;</span><span class="p">,</span> <span class="s1">&#39;get_all_main&#39;</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="n">unicode</span> <span class="o">=</span> <span class="nb">str</span>
+
+
+<div class="viewcode-block" id="print_tree"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.print_tree">[docs]</a><span class="k">def</span> <span class="nf">print_tree</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple function to recursively print the contents of an hdf5 group</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : h5py.Group</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">parent</span><span class="o">.</span><span class="n">visititems</span><span class="p">(</span><span class="n">__print</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_all_main"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.get_all_main">[docs]</a><span class="k">def</span> <span class="nf">get_all_main</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple function to recursively print the contents of an hdf5 group</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : h5py.Group</span>
+<span class="sd">        HDF5 Group to search within</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        If true, extra print statements are enabled</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    main_list : list of h5py.Dataset</span>
+<span class="sd">        The datasets found in the file that meet the &#39;Main Data&#39; criteria.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">main_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__check</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;is an HDF5 Dataset.&#39;</span><span class="p">)</span>
+            <span class="n">ismain</span> <span class="o">=</span> <span class="n">checkIfMain</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ismain</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;is a `Main` dataset.&#39;</span><span class="p">)</span>
+                <span class="n">main_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Checking the group </span><span class="si">{}</span><span class="s1"> for `Main` datasets.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">parent</span><span class="o">.</span><span class="n">visititems</span><span class="p">(</span><span class="n">__check</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">main_list</span></div>
+
+
+<div class="viewcode-block" id="getDataSet"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.getDataSet">[docs]</a><span class="k">def</span> <span class="nf">getDataSet</span><span class="p">(</span><span class="n">h5_parent</span><span class="p">,</span> <span class="n">data_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Search for dataset objects in the hdf5 file with given name</span>
+<span class="sd">    and returns a list of reference(s).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_parent : h5py.File reference.</span>
+<span class="sd">        Reference to file, the file must be open and in read-mode.</span>
+<span class="sd">    data_name : string.</span>
+<span class="sd">        Name of Dataset object. If not unique, i.e. parent not specified,</span>
+<span class="sd">        then references to all Dataset objects that contain this name are returned.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of h5py.Reference of the dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_parent</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_parent</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Group</span><span class="p">):</span>
+        <span class="n">data_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">def</span> <span class="nf">findData</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">data_name</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+                <span class="n">data_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="n">h5_parent</span><span class="o">.</span><span class="n">visititems</span><span class="p">(</span><span class="n">findData</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_list</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not an hdf5 File or Group&#39;</span> <span class="o">%</span> <span class="n">h5_parent</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getAuxData"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.getAuxData">[docs]</a><span class="k">def</span> <span class="nf">getAuxData</span><span class="p">(</span><span class="n">parent_data</span><span class="p">,</span> <span class="n">auxDataName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns auxiliary dataset objects associated with some DataSet through its attributes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent_data : h5py.Dataset</span>
+<span class="sd">        Dataset object reference.</span>
+<span class="sd">    auxDataName : list of strings, optional, default = all (DataSet.attrs).</span>
+<span class="sd">        Name of auxiliary Dataset object to return.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of h5py.Reference of auxiliary dataset objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">auxDataName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">auxDataName</span> <span class="o">=</span> <span class="n">parent_data</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">auxDataName</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">]:</span>
+        <span class="n">auxDataName</span> <span class="o">=</span> <span class="p">[</span><span class="n">auxDataName</span><span class="p">]</span>  <span class="c1"># typically a single string</span>
+    <span class="n">data_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">file_ref</span> <span class="o">=</span> <span class="n">parent_data</span><span class="o">.</span><span class="n">file</span>
+        <span class="k">for</span> <span class="n">auxName</span> <span class="ow">in</span> <span class="n">auxDataName</span><span class="p">:</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">parent_data</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">auxName</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Reference</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_ref</span><span class="p">[</span><span class="n">ref</span><span class="p">],</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+                <span class="n">data_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_ref</span><span class="p">[</span><span class="n">ref</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not an attribute of </span><span class="si">%s</span><span class="s1">&#39;</span>
+             <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">auxName</span><span class="p">),</span> <span class="n">parent_data</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span>
+
+    <span class="k">return</span> <span class="n">data_list</span></div>
+
+
+<div class="viewcode-block" id="get_attr"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.get_attr">[docs]</a><span class="k">def</span> <span class="nf">get_attr</span><span class="p">(</span><span class="n">h5_object</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the attribute from the h5py object</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_object : h5py object</span>
+<span class="sd">        dataset or datagroup object</span>
+<span class="sd">    attr_name : str</span>
+<span class="sd">        Name of the attribute of interest</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    att_val : object</span>
+<span class="sd">        value of attribute, in certain cases (byte strings or list of byte strings) reformatted to readily usable forms</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">att_val</span> <span class="o">=</span> <span class="n">h5_object</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">att_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; is not an attribute in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">h5_object</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">att_val</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bytes_</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">att_val</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="n">att_val</span> <span class="o">=</span> <span class="n">att_val</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">att_val</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">att_val</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bytes_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">object_</span><span class="p">]:</span>
+            <span class="n">att_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">att_val</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">att_val</span></div>
+
+
+<div class="viewcode-block" id="get_attributes"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.get_attributes">[docs]</a><span class="k">def</span> <span class="nf">get_attributes</span><span class="p">(</span><span class="n">parent_data</span><span class="p">,</span> <span class="n">attr_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns attribute associated with some DataSet.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent_data : h5py.Dataset</span>
+<span class="sd">        Dataset object reference.</span>
+<span class="sd">    attr_names : string or list of strings, optional, default = all (DataSet.attrs).</span>
+<span class="sd">        Name of attribute object to return.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Dictionary containing (name,value) pairs of attributes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">attr_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">attr_names</span> <span class="o">=</span> <span class="n">parent_data</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">attr_names</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">attr_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">attr_names</span><span class="p">]</span>
+
+    <span class="n">att_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attr_names</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">att_dict</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">parent_data</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not an attribute of </span><span class="si">%s</span><span class="s1">&#39;</span>
+                 <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="p">),</span> <span class="n">parent_data</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+
+    <span class="k">return</span> <span class="n">att_dict</span></div>
+
+
+<div class="viewcode-block" id="getH5DsetRefs"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.getH5DsetRefs">[docs]</a><span class="k">def</span> <span class="nf">getH5DsetRefs</span><span class="p">(</span><span class="n">ds_names</span><span class="p">,</span> <span class="n">h5_refs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a list of H5 dataset references and a list of dataset names,</span>
+<span class="sd">    this method returns H5 Dataset objects corresponding to the names</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_names : List of strings</span>
+<span class="sd">        names of target datasets</span>
+<span class="sd">    h5_refs : List of H5 dataset references</span>
+<span class="sd">        list containing the target reference</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    aux_dset : List of HDF5 dataset references</span>
+<span class="sd">        Corresponding references</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">aux_dset</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ds_name</span> <span class="ow">in</span> <span class="n">ds_names</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">h5_refs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dset</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">ds_name</span><span class="p">:</span>
+                <span class="n">aux_dset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">aux_dset</span></div>
+
+
+<div class="viewcode-block" id="getH5GroupRefs"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.getH5GroupRefs">[docs]</a><span class="k">def</span> <span class="nf">getH5GroupRefs</span><span class="p">(</span><span class="n">group_name</span><span class="p">,</span> <span class="n">h5_refs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a list of H5 references and a group name,</span>
+<span class="sd">    this method returns H5 Datagroup object corresponding to the names.</span>
+<span class="sd">    This function is especially useful when the suffix of the written group</span>
+<span class="sd">    is unknown (due to the autoindexing in ioHDF5)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    group_name : unicode / string</span>
+<span class="sd">        Names of the datagroup</span>
+<span class="sd">    h5_refs : List of H5 dataset references</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    h5_grp : HDF5 Object Reference</span>
+<span class="sd">        reference to group that matches the `group_name`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">group_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">h5_refs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">group_name</span><span class="p">):</span>
+            <span class="n">group_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">group_list</span></div>
+
+
+<div class="viewcode-block" id="findDataset"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.findDataset">[docs]</a><span class="k">def</span> <span class="nf">findDataset</span><span class="p">(</span><span class="n">h5_group</span><span class="p">,</span> <span class="n">ds_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uses visit() to find all datasets with the desired name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># print &#39;Finding all instances of&#39;, ds_name</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">__find_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ds_name</span> <span class="ow">in</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">])</span>
+        <span class="k">return</span>
+
+    <span class="n">h5_group</span><span class="o">.</span><span class="n">visititems</span><span class="p">(</span><span class="n">__find_name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+
+<div class="viewcode-block" id="findH5group"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.findH5group">[docs]</a><span class="k">def</span> <span class="nf">findH5group</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">tool_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a dataset and a tool name, return the list of all groups</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_main : h5 dataset reference</span>
+<span class="sd">        Reference to the target dataset to which the tool was applied</span>
+<span class="sd">    tool_name : String / unicode</span>
+<span class="sd">        Name of the tool applied to the target dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    groups : list of references to h5 group objects</span>
+<span class="sd">        groups whose name contains the tool name and the dataset name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dset_name</span> <span class="o">=</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">parent_grp</span> <span class="o">=</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">parent</span>
+    <span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent_grp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">dset_name</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="n">tool_name</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent_grp</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">groups</span></div>
+
+
+<div class="viewcode-block" id="getH5RegRefIndices"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.getH5RegRefIndices">[docs]</a><span class="k">def</span> <span class="nf">getH5RegRefIndices</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">h5_main</span><span class="p">,</span> <span class="n">return_method</span><span class="o">=</span><span class="s1">&#39;slices&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given an hdf5 region reference and the dataset it refers to,</span>
+<span class="sd">    return an array of indices within that dataset that</span>
+<span class="sd">    correspond to the reference.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref : HDF5 Region Reference</span>
+<span class="sd">    h5_main : HDF5 Dataset</span>
+<span class="sd">        dataset that the reference can be returned from</span>
+<span class="sd">    return_method : {&#39;slices&#39;, &#39;corners&#39;, &#39;points&#39;}</span>
+<span class="sd">        slices : the reference is return as pairs of slices</span>
+
+<span class="sd">        corners : the reference is returned as pairs of corners representing</span>
+<span class="sd">        the starting and ending indices of each block</span>
+
+<span class="sd">        points : the reference is returns as a list of tuples of points</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ref_inds : Numpy Array</span>
+<span class="sd">        array of indices in the source dataset that ref accesses</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">return_method</span> <span class="o">==</span> <span class="s1">&#39;points&#39;</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__corners_to_point_array</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Convert a pair of tuples representing two opposite corners of an HDF5 region reference</span>
+<span class="sd">            into a list of arrays for each dimension.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            start : Tuple</span>
+<span class="sd">                the starting indices of the region</span>
+<span class="sd">            stop : Tuple</span>
+<span class="sd">                the final indices of the region</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            inds : Tuple of arrays</span>
+<span class="sd">                the list of points in each dimension</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">ranges</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">start</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">start</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">stop</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">ranges</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">stop</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ranges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">stop</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint</span><span class="p">))</span>
+            <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="n">ranges</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+
+            <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">flat</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">grid</span><span class="p">)))</span>
+
+            <span class="k">return</span> <span class="n">ref_inds</span>
+
+        <span class="n">return_func</span> <span class="o">=</span> <span class="n">__corners_to_point_array</span>
+    <span class="k">elif</span> <span class="n">return_method</span> <span class="o">==</span> <span class="s1">&#39;corners&#39;</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__corners_to_corners</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span>
+
+        <span class="n">return_func</span> <span class="o">=</span> <span class="n">__corners_to_corners</span>
+    <span class="k">elif</span> <span class="n">return_method</span> <span class="o">==</span> <span class="s1">&#39;slices&#39;</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__corners_to_slices</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Convert a pair of tuples representing two opposite corners of an HDF5 region reference</span>
+<span class="sd">            into a pair of slices.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            start : Tuple</span>
+<span class="sd">                the starting indices of the region</span>
+<span class="sd">            stop : Tuple</span>
+<span class="sd">                the final indices of the region</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            slices : list</span>
+<span class="sd">                pair of slices representing the region</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">slices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">idim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">start</span><span class="p">)):</span>
+                <span class="n">slices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="n">idim</span><span class="p">],</span> <span class="n">stop</span><span class="p">[</span><span class="n">idim</span><span class="p">]))</span>
+
+            <span class="k">return</span> <span class="n">slices</span>
+
+        <span class="n">return_func</span> <span class="o">=</span> <span class="n">__corners_to_slices</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">RegionReference</span><span class="p">):</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">h5r</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">reg_type</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">get_select_type</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">reg_type</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Reference is hyperslabs</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">ref_inds</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">region</span><span class="o">.</span><span class="n">get_select_hyper_blocklist</span><span class="p">():</span>
+                <span class="n">ref_inds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">return_func</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+            <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ref_inds</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="n">reg_type</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Reference is single block</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">get_select_bounds</span><span class="p">()</span>
+
+            <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">return_func</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;No method currently exists for converting this type of reference.&#39;</span><span class="p">)</span>
+            <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input ref must be an HDF5 Region Reference&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ref_inds</span></div>
+
+
+<div class="viewcode-block" id="checkAndLinkAncillary"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.checkAndLinkAncillary">[docs]</a><span class="k">def</span> <span class="nf">checkAndLinkAncillary</span><span class="p">(</span><span class="n">h5_dset</span><span class="p">,</span> <span class="n">anc_names</span><span class="p">,</span> <span class="n">h5_main</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">anc_refs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function will add references to auxilliary datasets as attributes</span>
+<span class="sd">    of an input dataset.</span>
+<span class="sd">    If the entries in anc_refs are valid references, they will be added</span>
+<span class="sd">    as attributes with the name taken from the corresponding entry in</span>
+<span class="sd">    anc_names.</span>
+<span class="sd">    If an entry in anc_refs is not a valid reference, the function will</span>
+<span class="sd">    attempt to get the attribute with the same name from the h5_main</span>
+<span class="sd">    dataset</span>
+
+<span class="sd">    @author: Suhas Somnath</span>
+<span class="sd">    edited - Chris Smith</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_dset : HDF5 Dataset</span>
+<span class="sd">        dataset to which the attributes will be written</span>
+<span class="sd">    anc_names : list of str</span>
+<span class="sd">        the attribute names to be used</span>
+<span class="sd">    h5_main : HDF5 Dataset, optional</span>
+<span class="sd">        dataset from which attributes will be copied if `anc_refs` is None</span>
+<span class="sd">    anc_refs : list of HDF5 Object References, optional</span>
+<span class="sd">        references that correspond to the strings in `anc_names`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Either `h5_main` or `anc_refs` MUST be provided and `anc_refs` has the</span>
+<span class="sd">    higher priority if both are present.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__check_and_link_single</span><span class="p">(</span><span class="n">h5_ref</span><span class="p">,</span> <span class="n">ref_name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_ref</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Reference</span><span class="p">):</span>
+            <span class="n">h5_dset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">ref_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5_ref</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_ref</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="n">h5_dset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">ref_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5_ref</span><span class="o">.</span><span class="n">ref</span>
+        <span class="k">elif</span> <span class="n">h5_main</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">h5_anc</span> <span class="o">=</span> <span class="n">getAuxData</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">auxDataName</span><span class="o">=</span><span class="p">[</span><span class="n">ref_name</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h5_anc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">linkRefAsAlias</span><span class="p">(</span><span class="n">h5_dset</span><span class="p">,</span> <span class="n">h5_anc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ref_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnstring</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a valid h5py Reference and will be skipped.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">h5_ref</span><span class="p">))</span>
+            <span class="n">warn</span><span class="p">(</span><span class="n">warnstring</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">iterable</span><span class="p">(</span><span class="n">anc_refs</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">anc_refs</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        anc_refs can be iterated over</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ref_name</span><span class="p">,</span> <span class="n">h5_ref</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">anc_names</span><span class="p">,</span> <span class="n">anc_refs</span><span class="p">):</span>
+            <span class="n">__check_and_link_single</span><span class="p">(</span><span class="n">h5_ref</span><span class="p">,</span> <span class="n">ref_name</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">anc_refs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        anc_refs is just a single value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">__check_and_link_single</span><span class="p">(</span><span class="n">anc_refs</span><span class="p">,</span> <span class="n">anc_names</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">anc_names</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">anc_names</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Single name provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">__check_and_link_single</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">anc_names</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterable of names provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">anc_names</span><span class="p">:</span>
+            <span class="n">__check_and_link_single</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="n">h5_dset</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="createRefFromIndices"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.createRefFromIndices">[docs]</a><span class="k">def</span> <span class="nf">createRefFromIndices</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">ref_inds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a region reference in the destination dataset using an iterable of pairs of indices</span>
+<span class="sd">    representing the start and end points of a hyperslab block</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_main : HDF5 dataset</span>
+<span class="sd">        dataset the region will be created in</span>
+<span class="sd">    ref_inds : Iterable</span>
+<span class="sd">        index pairs, [start indices, final indices] for each block in the</span>
+<span class="sd">        hyperslab</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    new_ref : HDF5 Region reference</span>
+<span class="sd">        reference in `h5_main` for the blocks of points defined by `ref_inds`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">h5_space</span> <span class="o">=</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">get_space</span><span class="p">()</span>
+    <span class="n">h5_space</span><span class="o">.</span><span class="n">select_none</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="n">ref_inds</span><span class="p">:</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">stop</span> <span class="o">-</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">h5_space</span><span class="o">.</span><span class="n">select_hyperslab</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">block</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">block</span><span class="p">),</span> <span class="n">op</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">h5_space</span><span class="o">.</span><span class="n">select_valid</span><span class="p">():</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Could not create new region reference.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">new_ref</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">h5r</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">h5r</span><span class="o">.</span><span class="n">DATASET_REGION</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="n">h5_space</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_ref</span></div>
+
+
+<div class="viewcode-block" id="get_data_descriptor"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.get_data_descriptor">[docs]</a><span class="k">def</span> <span class="nf">get_data_descriptor</span><span class="p">(</span><span class="n">h5_dset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a string of the form &#39;quantity (unit)&#39;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_dset : h5py.Dataset object</span>
+<span class="sd">        A &#39;main&#39; dataset in pycroscopy</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    descriptor : String</span>
+<span class="sd">        string of the form &#39;quantity (unit)&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">quant</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_dset</span><span class="p">,</span> <span class="s1">&#39;quantity&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">quant</span> <span class="o">=</span> <span class="s1">&#39;Unknown quantity&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_dset</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="s1">&#39;unknown units&#39;</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">quant</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_formatted_labels"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.get_formatted_labels">[docs]</a><span class="k">def</span> <span class="nf">get_formatted_labels</span><span class="p">(</span><span class="n">h5_dset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes any dataset which has the labels and units attributes and returns a list of strings</span>
+<span class="sd">    formatted as &#39;label k (unit k)&#39;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_dset : h5py.Dataset object</span>
+<span class="sd">        dataset which has labels and units attributes</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    labels : list</span>
+<span class="sd">        list of strings formatted as &#39;label k (unit k)&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">labs</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_dset</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_dset</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;units attribute was missing&#39;</span><span class="p">)</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">labs</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">units</span><span class="p">):</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Labels and units have different sizes!&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">lab</span><span class="p">,</span> <span class="n">unit</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labs</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">labels</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;labels attribute was missing&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="reshape_to_Ndims"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.reshape_to_Ndims">[docs]</a><span class="k">def</span> <span class="nf">reshape_to_Ndims</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">h5_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reshape the input 2D matrix to be N-dimensions based on the</span>
+<span class="sd">    position and spectroscopic datasets.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_main : HDF5 Dataset</span>
+<span class="sd">        2D data to be reshaped</span>
+<span class="sd">    h5_pos : HDF5 Dataset, optional</span>
+<span class="sd">        Position indices corresponding to rows in `h5_main`</span>
+<span class="sd">    h5_spec : HDF5 Dataset, optional</span>
+<span class="sd">        Spectroscopic indices corresponding to columns in `h5_main`</span>
+<span class="sd">    get_labels : bool, optional</span>
+<span class="sd">        Whether or not to return the dimension labels.  Default False</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Whether or not to print debugging statements</span>
+<span class="sd">    sort_dims : bool</span>
+<span class="sd">        If True, the data is sorted so that the dimensions are in order from fastest to slowest</span>
+<span class="sd">        If `get_labels` is also True, the labels are sorted as well.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ds_Nd : N-D numpy array</span>
+<span class="sd">        N dimensional numpy array arranged as [positions slowest to fastest, spectroscopic slowest to fastest]</span>
+<span class="sd">    success : boolean or string</span>
+<span class="sd">        True if full reshape was successful</span>
+
+<span class="sd">        &quot;Positions&quot; if it was only possible to reshape by</span>
+<span class="sd">        the position dimensions</span>
+
+<span class="sd">        False if no reshape was possible</span>
+<span class="sd">    ds_labels : list of str</span>
+<span class="sd">        List of the labels of each dimension of `ds_Nd`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If either `h5_pos` or `h5_spec` are not provided, the function will first</span>
+<span class="sd">    attempt to find them as attributes of `h5_main`.  If that fails, it will</span>
+<span class="sd">    generate dummy values for them.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">h5_pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the Position datasets from the references if possible</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">h5_pos</span> <span class="o">=</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">file</span><span class="p">[</span><span class="n">h5_main</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Position_Indices&#39;</span><span class="p">]]</span>
+                <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">h5_pos</span><span class="p">[()]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No position datasets found as attributes of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Position Indices dataset was provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">h5_pos</span><span class="p">[()]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">h5_pos</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Position Indices must be either h5py.Dataset or None&#39;</span><span class="p">)</span>
+
+    <span class="c1">##################################################</span>
+
+    <span class="k">if</span> <span class="n">h5_spec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the Spectroscopic datasets from the references if possible</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">h5_spec</span> <span class="o">=</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">file</span><span class="p">[</span><span class="n">h5_main</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">]]</span>
+                <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">h5_spec</span><span class="p">[()]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No spectroscopic datasets found as attributes of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Spectroscopic Indices dataset was provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">h5_spec</span><span class="p">[()]</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">h5_spec</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Spectroscopic Indices must be either h5py.Dataset or None&#39;</span><span class="p">)</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Sort the indices from fastest to slowest</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pos_sort</span> <span class="o">=</span> <span class="n">get_sort_order</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">ds_pos</span><span class="p">))</span>
+    <span class="n">spec_sort</span> <span class="o">=</span> <span class="n">get_sort_order</span><span class="p">(</span><span class="n">ds_spec</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Position dimensions:&#39;</span><span class="p">,</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Position sort order:&#39;</span><span class="p">,</span> <span class="n">pos_sort</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Spectroscopic Dimensions:&#39;</span><span class="p">,</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Spectroscopic sort order:&#39;</span><span class="p">,</span> <span class="n">spec_sort</span><span class="p">)</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the size of each dimension in the sorted order</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pos_dims</span> <span class="o">=</span> <span class="n">get_dimensionality</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">ds_pos</span><span class="p">),</span> <span class="n">pos_sort</span><span class="p">)</span>
+    <span class="n">spec_dims</span> <span class="o">=</span> <span class="n">get_dimensionality</span><span class="p">(</span><span class="n">ds_spec</span><span class="p">,</span> <span class="n">spec_sort</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Position dimensions (sort applied):&#39;</span><span class="p">,</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)[</span><span class="n">pos_sort</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Position dimensionality (sort applied):&#39;</span><span class="p">,</span> <span class="n">pos_dims</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Spectroscopic dimensions (sort applied):&#39;</span><span class="p">,</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)[</span><span class="n">spec_sort</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Spectroscopic dimensionality (sort applied):&#39;</span><span class="p">,</span> <span class="n">spec_dims</span><span class="p">)</span>
+
+        <span class="n">all_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">get_attr</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)[</span><span class="n">pos_sort</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)[</span><span class="n">spec_sort</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="n">ds_main</span> <span class="o">=</span> <span class="n">h5_main</span><span class="p">[()]</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Now we reshape the dataset based on those dimensions</span>
+<span class="sd">    numpy reshapes correctly when the dimensions are arranged from slowest to fastest. </span>
+<span class="sd">    Since the sort orders we have are from fastest to slowest, we need to reverse the orders</span>
+<span class="sd">    for both the position and spectroscopic dimensions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ds_Nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ds_main</span><span class="p">,</span> <span class="n">pos_dims</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">spec_dims</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Could not reshape dataset to full N-dimensional form.  Attempting reshape based on position only.&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ds_Nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ds_main</span><span class="p">,</span> <span class="n">pos_dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">ds_Nd</span><span class="p">,</span> <span class="s1">&#39;Positions&#39;</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Reshape by position only also failed.  Will keep dataset in 2d form.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ds_main</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">After first reshape, labels are&#39;</span><span class="p">,</span> <span class="n">all_labels</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data shape is&#39;</span><span class="p">,</span> <span class="n">ds_Nd</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Now we transpose the axes for both the position and spectroscopic dimensions</span>
+<span class="sd">    so that they are in the same order as in the index array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sort_dims</span><span class="p">:</span>
+        <span class="n">swap_axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos_sort</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pos_sort</span><span class="p">,</span>
+                              <span class="n">spec_sort</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">spec_sort</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_dims</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">swap_axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos_sort</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">spec_sort</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_dims</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Axes will permuted in this order:&#39;</span><span class="p">,</span> <span class="n">swap_axes</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New labels ordering:&#39;</span><span class="p">,</span> <span class="n">all_labels</span><span class="p">[</span><span class="n">swap_axes</span><span class="p">])</span>
+
+    <span class="n">ds_Nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">ds_Nd</span><span class="p">,</span> <span class="n">swap_axes</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">ds_Nd</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dataset now of shape:&#39;</span><span class="p">,</span> <span class="n">ds_Nd</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">get_labels</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the labels in the proper order</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="n">pos_labs</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pos_labs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pos_dims</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="n">spec_labs</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">spec_labs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">spec_dims</span><span class="p">])</span>
+
+        <span class="n">ds_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">pos_labs</span><span class="p">[</span><span class="n">pos_sort</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">spec_labs</span><span class="p">[</span><span class="n">spec_sort</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]]])</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds_labels</span><span class="p">[</span><span class="n">swap_axes</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="reshape_from_Ndims"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.reshape_from_Ndims">[docs]</a><span class="k">def</span> <span class="nf">reshape_from_Ndims</span><span class="p">(</span><span class="n">ds_Nd</span><span class="p">,</span> <span class="n">h5_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">h5_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reshape the input 2D matrix to be N-dimensions based on the</span>
+<span class="sd">    position and spectroscopic datasets.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_Nd : numpy.array</span>
+<span class="sd">        N dimensional numpy array arranged as [positions slowest to fastest, spectroscopic slowest to fastest]</span>
+<span class="sd">    h5_pos : HDF5 Dataset</span>
+<span class="sd">        Position indices corresponding to rows in the final 2d array</span>
+<span class="sd">    h5_spec : HDF5 Dataset</span>
+<span class="sd">        Spectroscopic indices corresponding to columns in the final 2d array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ds_2d : numpy.array</span>
+<span class="sd">        2 dimensional numpy array arranged as [positions, spectroscopic]</span>
+<span class="sd">    success : boolean or string</span>
+<span class="sd">        True if full reshape was successful</span>
+
+<span class="sd">        &quot;Positions&quot; if it was only possible to reshape by</span>
+<span class="sd">        the position dimensions</span>
+
+<span class="sd">        False if no reshape was possible</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If either `h5_pos` or `h5_spec` are not provided, the function will</span>
+<span class="sd">    assume the first dimension is position and the remaining are spectroscopic already</span>
+<span class="sd">    in order from fastest to slowest.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">h5_pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the Position datasets from the references if possible</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ds_Nd</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Position Indices dataset was provided</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">h5_pos</span><span class="p">[()]</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_pos</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">ds_pos</span> <span class="o">=</span> <span class="n">h5_pos</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Position Indices must be either h5py.Dataset or None&#39;</span><span class="p">)</span>
+
+    <span class="c1">##################################################</span>
+
+    <span class="k">if</span> <span class="n">h5_spec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the Spectroscopic datasets from the references if possible</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ds_Nd</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Spectroscopic Indices dataset was provided</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">h5_spec</span><span class="p">[()]</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_spec</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">ds_spec</span> <span class="o">=</span> <span class="n">h5_spec</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Spectroscopic Indices must be either h5py.Dataset or None&#39;</span><span class="p">)</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Sort the indices from fastest to slowest</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pos_sort</span> <span class="o">=</span> <span class="n">get_sort_order</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">ds_pos</span><span class="p">))</span>
+    <span class="n">spec_sort</span> <span class="o">=</span> <span class="n">get_sort_order</span><span class="p">(</span><span class="n">ds_spec</span><span class="p">)</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Now we transpose the axes associated with the spectroscopic dimensions</span>
+<span class="sd">    so that they are in the same order as in the index array</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">swap_axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pos_sort</span><span class="p">),</span>
+                          <span class="n">spec_sort</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_sort</span><span class="p">))</span>
+
+    <span class="n">ds_Nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">ds_Nd</span><span class="p">,</span> <span class="n">swap_axes</span><span class="p">)</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Now we reshape the dataset based on those dimensions</span>
+<span class="sd">    We must use the spectroscopic dimensions in reverse order</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ds_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ds_Nd</span><span class="p">,</span> <span class="p">[</span><span class="n">ds_pos</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ds_spec</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Could not reshape dataset to full N-dimensional form.  Attempting reshape based on position only.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span>
+
+    <span class="k">return</span> <span class="n">ds_2d</span><span class="p">,</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="get_dimensionality"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.get_dimensionality">[docs]</a><span class="k">def</span> <span class="nf">get_dimensionality</span><span class="p">(</span><span class="n">ds_index</span><span class="p">,</span> <span class="n">index_sort</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the size of each index dimension in a specified sort order</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_index : 2D HDF5 Dataset or numpy array</span>
+<span class="sd">        Row matrix of indices</span>
+<span class="sd">    index_sort : Iterable of unsigned integers (Optional)</span>
+<span class="sd">        Order of rows sorted from fastest to slowest</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sorted_dims : list of unsigned integers</span>
+<span class="sd">        Dimensionality of each row in ds_index.  If index_sort is supplied, it will be in the sorted order</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">index_sort</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">index_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ds_index</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">sorted_dims</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">col</span><span class="p">))</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ds_index</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="n">index_sort</span><span class="p">]]</span>
+
+    <span class="k">return</span> <span class="n">sorted_dims</span></div>
+
+
+<div class="viewcode-block" id="get_sort_order"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.get_sort_order">[docs]</a><span class="k">def</span> <span class="nf">get_sort_order</span><span class="p">(</span><span class="n">ds_spec</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find how quickly the spectroscopic values are changing in each row</span>
+<span class="sd">    and the order of rows from fastest changing to slowest.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_spec : 2D HDF5 dataset or numpy array</span>
+<span class="sd">        Rows of indices to be sorted from fastest changing to slowest</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    change_sort : List of unsigned integers</span>
+<span class="sd">        Order of rows sorted from fastest changing to slowest</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">change_count</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">))])[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ds_spec</span><span class="p">]</span>
+    <span class="n">change_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">change_count</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">change_sort</span></div>
+
+
+<div class="viewcode-block" id="create_empty_dataset"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.create_empty_dataset">[docs]</a><span class="k">def</span> <span class="nf">create_empty_dataset</span><span class="p">(</span><span class="n">source_dset</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">dset_name</span><span class="p">,</span> <span class="n">new_attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="n">skip_refs</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates an empty dataset in the h5 file based in the same group as the provided dataset</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    source_dset : h5py.Dataset object</span>
+<span class="sd">        Source object that provides information on the group and shape of the dataset</span>
+<span class="sd">    dtype : dtype</span>
+<span class="sd">        Data type of the fit / guess datasets</span>
+<span class="sd">    dset_name : String / Unicode</span>
+<span class="sd">        Name of the dataset</span>
+<span class="sd">    new_attrs : dictionary (Optional)</span>
+<span class="sd">        Any new attributes that need to be written to the dataset</span>
+<span class="sd">    skip_refs : boolean, optional</span>
+<span class="sd">        Should ObjectReferences and RegionReferences be skipped when copying attributes from the</span>
+<span class="sd">        `source_dset`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    h5_new_dset : h5py.Dataset object</span>
+<span class="sd">        Newly created dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">h5_group</span> <span class="o">=</span> <span class="n">source_dset</span><span class="o">.</span><span class="n">parent</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Check if the dataset already exists</span>
+        <span class="n">h5_new_dset</span> <span class="o">=</span> <span class="n">h5_group</span><span class="p">[</span><span class="n">dset_name</span><span class="p">]</span>
+        <span class="c1"># Make sure it has the correct shape and dtype</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">((</span><span class="n">source_dset</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">h5_new_dset</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">source_dset</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">h5_new_dset</span><span class="o">.</span><span class="n">dtype</span><span class="p">)):</span>
+            <span class="k">del</span> <span class="n">h5_new_dset</span><span class="p">,</span> <span class="n">h5_group</span><span class="p">[</span><span class="n">dset_name</span><span class="p">]</span>
+            <span class="n">h5_new_dset</span> <span class="o">=</span> <span class="n">h5_group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dset_name</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">source_dset</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+                                                  <span class="n">compression</span><span class="o">=</span><span class="n">source_dset</span><span class="o">.</span><span class="n">compression</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">source_dset</span><span class="o">.</span><span class="n">chunks</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">h5_new_dset</span> <span class="o">=</span> <span class="n">h5_group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dset_name</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">source_dset</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+                                              <span class="n">compression</span><span class="o">=</span><span class="n">source_dset</span><span class="o">.</span><span class="n">compression</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">source_dset</span><span class="o">.</span><span class="n">chunks</span><span class="p">)</span>
+
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span>
+    <span class="c1"># This should link the ancillary datasets correctly</span>
+    <span class="n">h5_new_dset</span> <span class="o">=</span> <span class="n">copyAttributes</span><span class="p">(</span><span class="n">source_dset</span><span class="p">,</span> <span class="n">h5_new_dset</span><span class="p">,</span> <span class="n">skip_refs</span><span class="o">=</span><span class="n">skip_refs</span><span class="p">)</span>
+    <span class="n">h5_new_dset</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_attrs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">h5_new_dset</span></div>
+
+
+<div class="viewcode-block" id="copyAttributes"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.copyAttributes">[docs]</a><span class="k">def</span> <span class="nf">copyAttributes</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">skip_refs</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copy attributes from one h5object to another</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">atval</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Don&#39;t copy references unless asked</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atval</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Reference</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atval</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">RegionReference</span><span class="p">)</span> <span class="ow">or</span> <span class="n">skip_refs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atval</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">RegionReference</span><span class="p">):</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Dereference old reference, get the appropriate data</span>
+<span class="sd">                slice and create new reference.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">region</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">h5r</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">atval</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+                    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">get_select_bounds</span><span class="p">()</span>
+                    <span class="n">ref_slice</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">start</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="n">start</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">end</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                            <span class="n">ref_slice</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">ref_slice</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Could not create new region reference for </span><span class="si">{}</span><span class="s1"> in </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="n">dest</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">dest</span><span class="o">.</span><span class="n">regionref</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">ref_slice</span><span class="p">)]</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dest</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">atval</span>
+                <span class="k">continue</span>
+        <span class="n">dest</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">atval</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_refs</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">copyRegionRefs</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Could not create new region reference for </span><span class="si">{}</span><span class="s1"> in </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">dest</span></div>
+
+
+<div class="viewcode-block" id="checkIfMain"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.checkIfMain">[docs]</a><span class="k">def</span> <span class="nf">checkIfMain</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks the input dataset to see if it has all the neccessary</span>
+<span class="sd">    features to be considered a Main dataset.  This means it is</span>
+<span class="sd">    2D and has the following attributes</span>
+<span class="sd">    Position_Indices</span>
+<span class="sd">    Position_Values</span>
+<span class="sd">    Spectroscopic_Indices</span>
+<span class="sd">    Spectroscopic_Values</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_main : HDF5 Dataset</span>
+<span class="sd">        Dataset of interest</span>
+<span class="sd">    verbose : Boolean (Optional. Default = False)</span>
+<span class="sd">        Whether or not to print statements</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    success : Boolean</span>
+<span class="sd">        True if all tests pass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check that h5_main is a dataset</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not an HDF5 Dataset object.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h5_main</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">success</span>
+
+    <span class="n">h5_name</span> <span class="o">=</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Check dimensionality</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="n">success</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not 2D.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h5_name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">success</span>
+
+    <span class="c1"># Check for Datasets</span>
+    <span class="n">dset_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Position_Indices&#39;</span><span class="p">,</span> <span class="s1">&#39;Position_Values&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">,</span> <span class="s1">&#39;Spectroscopic_Values&#39;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dset_names</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">file</span><span class="p">[</span><span class="n">h5_main</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="n">success</span><span class="p">,</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)])</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> not found as an attribute of </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">h5_name</span><span class="p">))</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">success</span></div>
+
+
+<div class="viewcode-block" id="linkRefs"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.linkRefs">[docs]</a><span class="k">def</span> <span class="nf">linkRefs</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">trg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates Dataset attributes that contain references to other Dataset Objects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    src : Reference to h5.objects</span>
+<span class="sd">        Reference to the the object to which attributes will be added</span>
+<span class="sd">    trg : list of references to h5.objects</span>
+<span class="sd">        objects whose references that can be accessed from src.attrs</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">itm</span> <span class="ow">in</span> <span class="n">trg</span><span class="p">:</span>
+        <span class="n">src</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">itm</span><span class="o">.</span><span class="n">ref</span></div>
+
+
+<div class="viewcode-block" id="linkRefAsAlias"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.linkRefAsAlias">[docs]</a><span class="k">def</span> <span class="nf">linkRefAsAlias</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">trg</span><span class="p">,</span> <span class="n">trg_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates Dataset attributes that contain references to other Dataset Objects.</span>
+<span class="sd">    This function is useful when the reference attribute must have a reserved name.</span>
+<span class="sd">    Such as linking &#39;SHO_Indices&#39; as &#39;Spectroscopic_Indices&#39;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    src : h5py.Dataset</span>
+<span class="sd">        Reference to the the object to which attributes will be added</span>
+<span class="sd">    trg : h5py.Dataset</span>
+<span class="sd">        object whose reference that can be accessed from src.attrs</span>
+<span class="sd">    trg_name : String</span>
+<span class="sd">        Alias / alternate name for trg</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">src</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">trg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">trg</span><span class="o">.</span><span class="n">ref</span></div>
+
+
+<div class="viewcode-block" id="copyRegionRefs"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.copyRegionRefs">[docs]</a><span class="k">def</span> <span class="nf">copyRegionRefs</span><span class="p">(</span><span class="n">h5_source</span><span class="p">,</span> <span class="n">h5_target</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check the input dataset for plot groups, copy them if they exist</span>
+<span class="sd">    Also make references in the Spectroscopic Values and Indices tables</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_source : HDF5 Dataset</span>
+<span class="sd">            source dataset to copy references from</span>
+<span class="sd">    h5_target : HDF5 Dataset</span>
+<span class="sd">            target dataset the references from h5_source are copied to</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Check both h5_source and h5_target to ensure that are Main</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">checkIfMain</span><span class="p">(</span><span class="n">h5_source</span><span class="p">),</span> <span class="n">checkIfMain</span><span class="p">(</span><span class="n">h5_target</span><span class="p">)]):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Inputs to copyRegionRefs must be HDF5 Datasets.&#39;</span><span class="p">)</span>
+
+    <span class="n">h5_source_inds</span> <span class="o">=</span> <span class="n">h5_source</span><span class="o">.</span><span class="n">file</span><span class="p">[</span><span class="n">h5_source</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">]]</span>
+
+    <span class="n">h5_spec_inds</span> <span class="o">=</span> <span class="n">h5_target</span><span class="o">.</span><span class="n">file</span><span class="p">[</span><span class="n">h5_target</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">]]</span>
+    <span class="n">h5_spec_vals</span> <span class="o">=</span> <span class="n">h5_target</span><span class="o">.</span><span class="n">file</span><span class="p">[</span><span class="n">h5_target</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Spectroscopic_Values&#39;</span><span class="p">]]</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">h5_source</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">&#39;_Plot_Group&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">h5_source_inds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">h5_spec_inds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Spectroscopic dimensions are identical.</span>
+<span class="sd">            Do direct copy.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">simpleRefCopy</span><span class="p">(</span><span class="n">h5_source</span><span class="p">,</span> <span class="n">h5_target</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Spectroscopic dimensions are different.</span>
+<span class="sd">        Do the dimenion reducing copy.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">reducingRefCopy</span><span class="p">(</span><span class="n">h5_source</span><span class="p">,</span> <span class="n">h5_target</span><span class="p">,</span> <span class="n">h5_source_inds</span><span class="p">,</span> <span class="n">h5_spec_inds</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Create references for Spectroscopic Indices and Values</span>
+<span class="sd">        Set the end-point of each hyperslab in the position dimension to the number of</span>
+<span class="sd">        rows in the index array</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ref_inds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">][</span><span class="n">ref_inds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">h5_spec_inds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">h5_spec_inds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">spec_inds_ref</span> <span class="o">=</span> <span class="n">createRefFromIndices</span><span class="p">(</span><span class="n">h5_spec_inds</span><span class="p">,</span> <span class="n">ref_inds</span><span class="p">)</span>
+        <span class="n">h5_spec_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">spec_inds_ref</span>
+        <span class="n">spec_vals_ref</span> <span class="o">=</span> <span class="n">createRefFromIndices</span><span class="p">(</span><span class="n">h5_spec_vals</span><span class="p">,</span> <span class="n">ref_inds</span><span class="p">)</span>
+        <span class="n">h5_spec_vals</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">spec_vals_ref</span></div>
+
+
+<div class="viewcode-block" id="reducingRefCopy"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.reducingRefCopy">[docs]</a><span class="k">def</span> <span class="nf">reducingRefCopy</span><span class="p">(</span><span class="n">h5_source</span><span class="p">,</span> <span class="n">h5_target</span><span class="p">,</span> <span class="n">h5_source_inds</span><span class="p">,</span> <span class="n">h5_target_inds</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copies a region reference from one dataset to another taking into account that a dimension</span>
+<span class="sd">    has been lost from source to target</span>
+
+<span class="sd">    Parameter</span>
+<span class="sd">    ---------</span>
+<span class="sd">    h5_source : HDF5 Dataset</span>
+<span class="sd">            source dataset for region reference copy</span>
+<span class="sd">    h5_target : HDF5 Dataset</span>
+<span class="sd">            target dataset for region reference copy</span>
+<span class="sd">    h5_source_inds : HDF5 Dataset</span>
+<span class="sd">            indices of each dimension of the h5_source dataset</span>
+<span class="sd">    h5_target_inds : HDF5 Dataset</span>
+<span class="sd">            indices of each dimension of the h5_target dataset</span>
+<span class="sd">    key : String</span>
+<span class="sd">            Name of attribute in h5_source that contains</span>
+<span class="sd">            the Region Reference to copy</span>
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    ref_inds : Nx2x2 array of unsigned integers</span>
+<span class="sd">            Array containing pairs of points that define</span>
+<span class="sd">            the corners of each hyperslab in the region</span>
+<span class="sd">            reference</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Determine which dimension is missing from the target</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">lost_dim</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">h5_source_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">h5_target_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]:</span>
+            <span class="n">lost_dim</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">h5_source_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">dim</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">h5_source</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">getH5RegRefIndices</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">h5_source</span><span class="p">,</span> <span class="n">return_method</span><span class="o">=</span><span class="s1">&#39;corners&#39;</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Convert to proper spectroscopic dimensions</span>
+<span class="sd">    First is special case for a region reference that spans the entire dataset</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_inds</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">ref_inds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">ref_inds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">h5_source</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+        <span class="n">ref_inds</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5_target</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">ref_inds</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    More common case of reference made of hyperslabs</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">spec_ind_zeroes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">h5_source_inds</span><span class="p">[</span><span class="n">lost_dim</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">ref_inds</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="n">ref_inds</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">spec_ind_zeroes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">stop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">stop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">spec_ind_zeroes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="n">ref_inds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ref_inds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">spec_ind_zeroes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ref_inds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">spec_ind_zeroes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">stop</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">stop</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spec_ind_zeroes</span><span class="p">)</span>
+        <span class="n">ref_inds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">stop</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create the new reference from the indices</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">h5_target</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">createRefFromIndices</span><span class="p">(</span><span class="n">h5_target</span><span class="p">,</span> <span class="n">ref_inds</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ref_inds</span></div>
+
+
+<div class="viewcode-block" id="simpleRefCopy"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.simpleRefCopy">[docs]</a><span class="k">def</span> <span class="nf">simpleRefCopy</span><span class="p">(</span><span class="n">h5_source</span><span class="p">,</span> <span class="n">h5_target</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copies a region reference from one dataset to another</span>
+<span class="sd">    without alteration</span>
+
+<span class="sd">    Parameter</span>
+<span class="sd">    ---------</span>
+<span class="sd">    h5_source : HDF5 Dataset</span>
+<span class="sd">            source dataset for region reference copy</span>
+<span class="sd">    h5_target : HDF5 Dataset</span>
+<span class="sd">            target dataset for region reference copy</span>
+<span class="sd">    key : String</span>
+<span class="sd">            Name of attribute in h5_source that contains</span>
+<span class="sd">            the Region Reference to copy</span>
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    ref_inds : Nx2x2 array of unsigned integers</span>
+<span class="sd">            Array containing pairs of points that define</span>
+<span class="sd">            the corners of each hyperslab in the region</span>
+<span class="sd">            reference</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">h5_source</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">getH5RegRefIndices</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">h5_source</span><span class="p">,</span> <span class="n">return_method</span><span class="o">=</span><span class="s1">&#39;corners&#39;</span><span class="p">)</span>
+    <span class="n">ref_inds</span> <span class="o">=</span> <span class="n">ref_inds</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">ref_inds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5_target</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">target_ref</span> <span class="o">=</span> <span class="n">createRefFromIndices</span><span class="p">(</span><span class="n">h5_target</span><span class="p">,</span> <span class="n">ref_inds</span><span class="p">)</span>
+    <span class="n">h5_target</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_ref</span>
+    <span class="k">return</span> <span class="n">ref_inds</span></div>
+
+
+<div class="viewcode-block" id="buildReducedSpec"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.buildReducedSpec">[docs]</a><span class="k">def</span> <span class="nf">buildReducedSpec</span><span class="p">(</span><span class="n">h5_spec_inds</span><span class="p">,</span> <span class="n">h5_spec_vals</span><span class="p">,</span> <span class="n">keep_dim</span><span class="p">,</span> <span class="n">step_starts</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;Spectroscopic&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates new Spectroscopic Indices and Values datasets from the input datasets</span>
+<span class="sd">    and keeps the dimensions specified in not_freq</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_spec_inds : HDF5 Dataset</span>
+<span class="sd">            Spectroscopic indices dataset</span>
+<span class="sd">    h5_spec_vals : HDF5 Dataset</span>
+<span class="sd">            Spectroscopic values dataset</span>
+<span class="sd">    keep_dim : Numpy Array, Boolean</span>
+<span class="sd">            Array designating which rows of the input spectroscopic datasets to keep</span>
+<span class="sd">    step_starts : Numpy Array, Unsigned Integers</span>
+<span class="sd">            Array specifying the start of each step in the reduced datasets</span>
+<span class="sd">    basename : String</span>
+<span class="sd">            String to which &#39;_Indices&#39; and &#39;_Values&#39; will be appended to get the names</span>
+<span class="sd">            of the new datasets</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ds_inds : MicroDataset</span>
+<span class="sd">            Reduced Spectroscopic indices dataset</span>
+<span class="sd">    ds_vals : MicroDataset</span>
+<span class="sd">            Reduces Spectroscopic values dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">h5_spec_inds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Extract all rows that we want to keep from input indices and values</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ind_mat</span> <span class="o">=</span> <span class="n">h5_spec_inds</span><span class="p">[</span><span class="n">keep_dim</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">step_starts</span><span class="p">]</span>
+        <span class="n">val_mat</span> <span class="o">=</span> <span class="n">h5_spec_vals</span><span class="p">[</span><span class="n">keep_dim</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">step_starts</span><span class="p">]</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Create new MicroDatasets to hold the data</span>
+<span class="sd">        Name them based on basename</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ds_inds</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;_Indices&#39;</span><span class="p">,</span> <span class="n">ind_mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">h5_spec_inds</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">ds_vals</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;_Values&#39;</span><span class="p">,</span> <span class="n">val_mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">h5_spec_vals</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="c1"># Extracting the labels from the original spectroscopic data sets</span>
+        <span class="n">sho_inds_labs</span> <span class="o">=</span> <span class="n">h5_spec_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">keep_dim</span><span class="p">]</span>
+        <span class="c1"># Creating the dimension slices for the new spectroscopic data sets</span>
+        <span class="n">inds_slices</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">row_ind</span><span class="p">,</span> <span class="n">row_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sho_inds_labs</span><span class="p">):</span>
+            <span class="n">inds_slices</span><span class="p">[</span><span class="n">row_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">row_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+
+        <span class="c1"># Adding the labels and units to the new spectroscopic data sets</span>
+        <span class="n">ds_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inds_slices</span>
+        <span class="n">ds_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5_spec_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="n">keep_dim</span><span class="p">]</span>
+        <span class="n">ds_vals</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inds_slices</span>
+        <span class="n">ds_vals</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5_spec_vals</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="n">keep_dim</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Single spectroscopic dimension:</span>
+        <span class="n">ds_inds</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">))</span>
+        <span class="n">ds_vals</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Spectroscopic_Values&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+        <span class="n">ds_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Single_Step&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">))}</span>
+        <span class="n">ds_vals</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Single_Step&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">))}</span>
+        <span class="n">ds_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">ds_vals</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="n">ds_inds</span><span class="p">,</span> <span class="n">ds_vals</span></div>
+
+
+<div class="viewcode-block" id="calc_chunks"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.calc_chunks">[docs]</a><span class="k">def</span> <span class="nf">calc_chunks</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">data_size</span><span class="p">,</span> <span class="n">unit_chunks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_chunk_mem</span><span class="o">=</span><span class="mi">10240</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the chunk size for the HDF5 dataset based on the dimensions and the</span>
+<span class="sd">    maximum chunk size in memory</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dimensions : array_like of int</span>
+<span class="sd">        Shape of the data to be chunked</span>
+<span class="sd">    data_size : int</span>
+<span class="sd">        Size of an entry in the data in bytes</span>
+<span class="sd">    unit_chunks : array_like of int, optional</span>
+<span class="sd">        Unit size of the chunking in each dimension.  Must be the same size as</span>
+<span class="sd">        the shape of `ds_main`.  Default None, `unit_chunks` is set to 1 in all</span>
+<span class="sd">        dimensions</span>
+<span class="sd">    max_chunk_mem : int, optional</span>
+<span class="sd">        Maximum size of the chunk in memory in bytes.  Default 10240b or 10kb</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    chunking : tuple of int</span>
+<span class="sd">        Calculated maximum size of a chunk in each dimension that is as close to the</span>
+<span class="sd">        requested `max_chunk_mem` as posible while having steps based on the input</span>
+<span class="sd">        `unit_chunks`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Ensure that dimensions is an array</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">dimensions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set the unit_chunks to all ones if not given.  Ensure it is an array if it is.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">unit_chunks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">unit_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">unit_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">unit_chunks</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">unit_chunks</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">dimensions</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unit chunk size must have the same shape as the input dataset.&#39;</span><span class="p">)</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Save the original size of unit_chunks to use for incrementing the chunk size during</span>
+<span class="sd">     loop</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">base_chunks</span> <span class="o">=</span> <span class="n">unit_chunks</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Loop until chunk_size is greater than the maximum chunk_mem or the chunk_size is equal to</span>
+<span class="sd">    that of dimensions</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">unit_chunks</span><span class="p">)</span> <span class="o">*</span> <span class="n">data_size</span> <span class="o">&lt;=</span> <span class="n">max_chunk_mem</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Check if all chunk dimensions are greater or equal to the</span>
+<span class="sd">        actual dimensions.  Exit the loop if true.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">unit_chunks</span> <span class="o">&gt;=</span> <span class="n">dimensions</span><span class="p">):</span>
+            <span class="k">break</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Find the index of the next chunk to be increased and increment it by the base_chunk</span>
+<span class="sd">        size</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ichunk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dimensions</span> <span class="o">/</span> <span class="n">unit_chunks</span><span class="p">)</span>
+        <span class="n">unit_chunks</span><span class="p">[</span><span class="n">ichunk</span><span class="p">]</span> <span class="o">+=</span> <span class="n">base_chunks</span><span class="p">[</span><span class="n">ichunk</span><span class="p">]</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Ensure that the size of the chunks is between one and the dimension size.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">unit_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">unit_chunks</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">unit_chunks</span><span class="p">),</span> <span class="n">dimensions</span><span class="p">)</span>
+
+    <span class="n">chunking</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">unit_chunks</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">chunking</span></div>
+
+
+<div class="viewcode-block" id="link_as_main"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.link_as_main">[docs]</a><span class="k">def</span> <span class="nf">link_as_main</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5_pos_inds</span><span class="p">,</span> <span class="n">h5_pos_vals</span><span class="p">,</span> <span class="n">h5_spec_inds</span><span class="p">,</span> <span class="n">h5_spec_vals</span><span class="p">,</span> <span class="n">anc_dsets</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Links the object references to the four position and spectrosocpic datasets as</span>
+<span class="sd">    attributes of `h5_main`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_main : h5py.Dataset</span>
+<span class="sd">        2D Dataset which will have the references added as attributes</span>
+<span class="sd">    h5_pos_inds : h5py.Dataset</span>
+<span class="sd">        Dataset that will be linked with the name &#39;Position_Indices&#39;</span>
+<span class="sd">    h5_pos_vals : h5py.Dataset</span>
+<span class="sd">        Dataset that will be linked with the name &#39;Position_Values&#39;</span>
+<span class="sd">    h5_spec_inds : h5py.Dataset</span>
+<span class="sd">        Dataset that will be linked with the name &#39;Spectroscopic_Indices&#39;</span>
+<span class="sd">    h5_spec_vals : h5py.Dataset</span>
+<span class="sd">        Dataset that will be linked with the name &#39;Spectroscopic_Values&#39;</span>
+<span class="sd">    anc_dsets : (Optional) list of h5py.Dataset objects</span>
+<span class="sd">        Datasets that will be linked with their own names</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">linkRefAsAlias</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5_pos_inds</span><span class="p">,</span> <span class="s1">&#39;Position_Indices&#39;</span><span class="p">)</span>
+    <span class="n">linkRefAsAlias</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5_pos_vals</span><span class="p">,</span> <span class="s1">&#39;Position_Values&#39;</span><span class="p">)</span>
+    <span class="n">linkRefAsAlias</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5_spec_inds</span><span class="p">,</span> <span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">)</span>
+    <span class="n">linkRefAsAlias</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5_spec_vals</span><span class="p">,</span> <span class="s1">&#39;Spectroscopic_Values&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">anc_dsets</span><span class="p">:</span>
+        <span class="n">linkRefs</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">dset</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="copy_main_attributes"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.copy_main_attributes">[docs]</a><span class="k">def</span> <span class="nf">copy_main_attributes</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">h5_new</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copies the units and quantity name from one dataset to another</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_main : h5py.Dataset</span>
+<span class="sd">        Dataset containing the target attributes</span>
+<span class="sd">    h5_new : h5py.Dataset</span>
+<span class="sd">        Dataset to which the target attributes are to be copied</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">att_name</span><span class="p">,</span> <span class="n">default_val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;quantity&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Unknown&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">default_val</span>
+        <span class="k">if</span> <span class="n">att_name</span> <span class="ow">in</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">att_name</span><span class="p">]</span>
+        <span class="n">h5_new</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">att_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="check_for_old"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.check_for_old">[docs]</a><span class="k">def</span> <span class="nf">check_for_old</span><span class="p">(</span><span class="n">h5_base</span><span class="p">,</span> <span class="n">tool_name</span><span class="p">,</span> <span class="n">new_parms</span><span class="o">=</span><span class="nb">dict</span><span class="p">()):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check to see if the results of a tool already exist and if they </span>
+<span class="sd">    were performed with the same parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_base</span>
+<span class="sd">    tool_name</span>
+<span class="sd">    new_parms</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    group : h5py.Group or None</span>
+<span class="sd">    Group with parameters matching those in `new_parms`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">groups</span> <span class="o">=</span> <span class="n">findH5group</span><span class="p">(</span><span class="n">h5_base</span><span class="p">,</span> <span class="n">tool_name</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+
+        <span class="n">tests</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">new_parms</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">old_parm</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old_parm</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="n">new_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_parms</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">old_parm</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">():</span>
+                    <span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">old_parm</span><span class="p">,</span> <span class="n">new_array</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_parms</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="n">old_parm</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">tests</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">group</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="create_spec_inds_from_vals"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.create_spec_inds_from_vals">[docs]</a><span class="k">def</span> <span class="nf">create_spec_inds_from_vals</span><span class="p">(</span><span class="n">ds_spec_val_mat</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create new Spectroscopic Indices table from the changes in the</span>
+<span class="sd">    Spectroscopic Values</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_spec_val_mat : array-like,</span>
+<span class="sd">        Holds the spectroscopic values to be indexed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ds_spec_inds_mat : numpy array of uints the same shape as ds_spec_val_mat</span>
+<span class="sd">        Indices corresponding to the values in ds_spec_val_mat</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ds_spec_inds_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">ds_spec_val_mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find how quickly the spectroscopic values are changing in each row </span>
+<span class="sd">    and the order of row from fastest changing to slowest.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">change_count</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">))])[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ds_spec_val_mat</span><span class="p">]</span>
+    <span class="n">change_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">change_count</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine everywhere the spectroscopic values change and build </span>
+<span class="sd">    index table based on those changed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ds_spec_val_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">jcol</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ds_spec_val_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">this_col</span> <span class="o">=</span> <span class="n">ds_spec_val_mat</span><span class="p">[</span><span class="n">change_sort</span><span class="p">,</span> <span class="n">jcol</span><span class="p">]</span>
+        <span class="n">last_col</span> <span class="o">=</span> <span class="n">ds_spec_val_mat</span><span class="p">[</span><span class="n">change_sort</span><span class="p">,</span> <span class="n">jcol</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if current column values are different than those </span>
+<span class="sd">        in last column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">changed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">this_col</span> <span class="o">!=</span> <span class="n">last_col</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If only one row changed, increment the index for that </span>
+<span class="sd">        column</span>
+<span class="sd">        If more than one row has changed, increment the index for </span>
+<span class="sd">        the last row that changed and set all others to zero</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">changed</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">indices</span><span class="p">[</span><span class="n">changed</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">changed</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changed</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">indices</span><span class="p">[</span><span class="n">change</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">indices</span><span class="p">[</span><span class="n">changed</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Store the indices for the current column in the dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ds_spec_inds_mat</span><span class="p">[</span><span class="n">change_sort</span><span class="p">,</span> <span class="n">jcol</span><span class="p">]</span> <span class="o">=</span> <span class="n">indices</span>
+
+    <span class="k">return</span> <span class="n">ds_spec_inds_mat</span></div>
+
+
+<div class="viewcode-block" id="get_unit_values"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.hdf_utils.html#pycroscopy.io.hdf_utils.get_unit_values">[docs]</a><span class="k">def</span> <span class="nf">get_unit_values</span><span class="p">(</span><span class="n">h5_spec_ind</span><span class="p">,</span> <span class="n">h5_spec_val</span><span class="p">,</span> <span class="n">dim_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets the unit arrays of values that describe the spectroscopic dimensions</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_spec_ind : h5py.Dataset</span>
+<span class="sd">        Spectroscopic Indices dataset</span>
+<span class="sd">    h5_spec_val : h5py.Dataset</span>
+<span class="sd">        Spectroscopic Values dataset</span>
+<span class="sd">    dim_names : str, or list of str, Optional</span>
+<span class="sd">        Names of the dimensions of interest</span>
+
+<span class="sd">    Note - this function can be extended / modified for ancillary position dimensions as well</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    unit_values : dict</span>
+<span class="sd">        Dictionary containing the unit array for each dimension. The name of the dimensions are the keys.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># For all dimensions, find where the index = 0</span>
+    <span class="c1"># basically, we are indexing all dimensions to 0</span>
+    <span class="n">first_indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dim_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">h5_spec_ind</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">first_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h5_spec_ind</span><span class="p">[</span><span class="n">dim_ind</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">first_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">first_indices</span><span class="p">)</span>
+
+    <span class="n">spec_dim_names</span> <span class="o">=</span> <span class="n">get_attr</span><span class="p">(</span><span class="n">h5_spec_ind</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dim_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dim_names</span> <span class="o">=</span> <span class="n">spec_dim_names</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim_names</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dim_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">dim_names</span><span class="p">]</span>
+
+    <span class="n">unit_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">dim_name</span> <span class="ow">in</span> <span class="n">dim_names</span><span class="p">:</span>
+        <span class="c1"># Find the row in the spectroscopic indices that corresponds to the dimensions we want to slice:</span>
+        <span class="n">desired_row_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spec_dim_names</span> <span class="o">==</span> <span class="n">dim_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Find indices of all other dimensions</span>
+        <span class="n">remaining_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">h5_spec_ind</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">remaining_dims</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">desired_row_ind</span><span class="p">)</span>
+
+        <span class="c1"># The intersection of all these indices should give the desired index for the desired row</span>
+        <span class="n">intersections</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">first_indices</span><span class="p">[</span><span class="n">remaining_dims</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># apply this slicing to the values dataset:</span>
+        <span class="n">unit_values</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5_spec_val</span><span class="p">[</span><span class="n">desired_row_ind</span><span class="p">,</span> <span class="n">intersections</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">unit_values</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,835 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.be_hdf_utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.io.be_hdf_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.io.be_hdf_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.io.be_hdf_utils">
+<span id="pycroscopy-io-be-hdf-utils"></span><h1>pycroscopy.io.be_hdf_utils<a class="headerlink" href="#module-pycroscopy.io.be_hdf_utils" title="Permalink to this headline">¶</a></h1>
+<p>Created on Tue Dec 15 11:10:37 2015</p>
+<p>&#64;author: Suhas Somnath</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.generateTestSpectroscopicData">
+<code class="descname">generateTestSpectroscopicData</code><span class="sig-paren">(</span><em>num_bins=7</em>, <em>num_steps=3</em>, <em>num_pos=4</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#generateTestSpectroscopicData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.generateTestSpectroscopicData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a (preferably small) test data set using the given parameters.
+Data is filled with indices (with base 1 for simplicity).
+Use this for testing reshape operations etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_bins</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = 7</em><em>)</em>) – Number of bins</li>
+<li><strong>num_steps</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = 3</em><em>)</em>) – Number of spectroscopic steps</li>
+<li><strong>num_pos</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = 4</em><em>)</em>) – Number of fictional positions</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>full_data</strong> – Data organized as [steps x bins, positions]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.getActiveUDVSsteps">
+<code class="descname">getActiveUDVSsteps</code><span class="sig-paren">(</span><em>h5_raw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getActiveUDVSsteps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.getActiveUDVSsteps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all the active UDVS steps in the data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>h5_raw</strong> (<em>HDF5 dataset reference</em>) – Reference to the raw data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>steps</strong> – Active UDVS steps</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">1D numpy array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.getDataIndicesForUDVSstep">
+<code class="descname">getDataIndicesForUDVSstep</code><span class="sig-paren">(</span><em>h5_udvs_inds</em>, <em>udvs_step_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getDataIndicesForUDVSstep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.getDataIndicesForUDVSstep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the spectroscopic indices that correspond to the given udvs_step_index
+that can be used to slice the main data matrix.
+* Developer note - Replace the first parameter with the Raw_Data dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_udvs_inds</strong> (<em>Reference to HDF5 dataset</em>) – UDVS_Indices dataset</li>
+<li><strong>udvs_step_index</strong> (<em>usigned int</em>) – UDVS step index (base 0)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ans</strong> – Spectroscopic indices</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.getForExcitWfm">
+<code class="descname">getForExcitWfm</code><span class="sig-paren">(</span><em>h5_main</em>, <em>h5_other</em>, <em>wave_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getForExcitWfm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.getForExcitWfm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slices the provided H5 dataset by the provided wave type.
+Note that this is applicable to only certain H5 datasets such as the bin frequences, bin FFT etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>Reference to HDF5 dataset</em>) – Raw_Data dataset</li>
+<li><strong>h5_other</strong> (<em>Reference to HDF5 dataset</em>) – The dataset that needs to be sliced such as bin frequencies</li>
+<li><strong>wave_type</strong> (<em>unsigned int</em>) – Excitation waveform type</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>freq_vec</strong> – data specific to specified excitation waveform</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.getIndicesforPlotGroup">
+<code class="descname">getIndicesforPlotGroup</code><span class="sig-paren">(</span><em>h5_udvs_inds</em>, <em>ds_udvs</em>, <em>plt_grp_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getIndicesforPlotGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.getIndicesforPlotGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a provided plot group name in the udvs table, this function
+returns the corresponding spectroscopic indices that can be used to index / slice the main data set
+and the data within the udvs table for the requested plot group
+* Developer note - Replace the first parameter with the Raw_Data dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_udvs_inds</strong> (<em>Reference to HDF5 dataset</em>) – containing the UDVS indices</li>
+<li><strong>ds_udvs</strong> (<em>Reference to HDF5 dataset</em>) – containing the UDVS table</li>
+<li><strong>plt_grp_name</strong> (<em>string</em>) – name of the plot group in the UDVS table</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>step_bin_indices</strong> (<em>2D numpy array</em>) – Indices arranged as [step, bin] in the spectroscopic_indices table
+This is useful for knowing the number of bins and steps in this plot group.
+We are allowed to assume that the number of bins does NOT change within the plot group</li>
+<li><strong>oneD_indices</strong> (<em>1D numpy array</em>) – spectroscopic indices corresponding to the requested plot group</li>
+<li><strong>udvs_plt_grp_col</strong> (<em>1D numpy array</em>) – data contained within the udvs table for the requested plot group</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.getSliceForExcWfm">
+<code class="descname">getSliceForExcWfm</code><span class="sig-paren">(</span><em>h5_bin_wfm</em>, <em>excit_wfm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getSliceForExcWfm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.getSliceForExcWfm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indices that correspond to the given excitation waveform
+that can be used to slice the bin datasets
+* Developer note - Replace the first parameter with the Raw_Data dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_bin_wfm</strong> (<em>Reference to HDF5 dataset</em>) – Bin Waveform Indices</li>
+<li><strong>excit_wfm</strong> (<em>integer</em>) – excitation waveform / wave type</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>slc</strong> – Slice with the start and end indices</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">slice object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.getSpecSliceForUDVSstep">
+<code class="descname">getSpecSliceForUDVSstep</code><span class="sig-paren">(</span><em>h5_udvs_inds</em>, <em>udvs_step_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getSpecSliceForUDVSstep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.getSpecSliceForUDVSstep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the spectroscopic indices that correspond to the given udvs_step_index
+that can be used to slice the main data matrix
+* Developer note - Replace the first parameter with the Raw_Data dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_udvs_inds</strong> (<em>Reference to HDF5 dataset</em>) – UDVS_Indices dataset</li>
+<li><strong>udvs_step_index</strong> (<em>unsigned int</em>) – UDVS step index (base 0)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>slc</strong> – Object containing the start and end indices</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">slice object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.isReshapable">
+<code class="descname">isReshapable</code><span class="sig-paren">(</span><em>h5_main</em>, <em>step_start_inds=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#isReshapable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.isReshapable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A BE dataset is said to be reshape-able if the number of bins per steps is constant. Even if the dataset contains
+multiple excitation waveforms (harmonics), We know that the measurement is always at the resonance peak, so the
+frequency vector should not change.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset object</em>) – Reference to the main dataset</li>
+<li><strong>step_start_inds</strong> (<em>list</em><em> or </em><em>1D array</em>) – Indices that correspond to the start of each BE pulse / UDVS step</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reshapable</strong> – Whether or not the number of bins per step are constant in this dataset</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.isSimpleDataset">
+<code class="descname">isSimpleDataset</code><span class="sig-paren">(</span><em>h5_main</em>, <em>isBEPS=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#isSimpleDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.isSimpleDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function figures out if a single number defines the bins for all UDVS steps
+In such cases (udvs_steps x bins, pos) can be reshaped to (bins, positions x steps)
+for (theoretically) faster computation, especially for large datasets</p>
+<p>Actually, things are a lot simpler. Only need to check if number of bins for all excitation waveforms are equal</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>Reference to HDF5 dataset</em>) – Raw_Data dataset</li>
+<li><strong>isBEPS</strong> (<em>Boolean</em><em> (</em><em>default = True</em><em>)</em>) – Whether or not this dataset is BEPS</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>data_type</strong> – Whether or not this dataset can be unraveled / flattened</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.maxReadPixels">
+<code class="descname">maxReadPixels</code><span class="sig-paren">(</span><em>max_memory</em>, <em>tot_pix</em>, <em>bins_per_step</em>, <em>bytes_per_bin=4</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#maxReadPixels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.maxReadPixels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the maximum number of pixels that can be loaded into the
+specified memory size. This is particularly useful when applying a
+(typically parallel) operation / processing on each pixel.
+Example - Fitting response to a model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_memory</strong> (<em>unsigned int</em>) – Maximum memory (in bytes) that can be used.
+For example 4 GB would be = 4*((2**10)**3) bytes</li>
+<li><strong>tot_pix</strong> (<em>unsigned int</em>) – Total number of pixels in dataset</li>
+<li><strong>bins_per_step</strong> (<em>unsigned int</em>) – Number of bins that will be read (can be portion of each pixel)</li>
+<li><strong>bytes_per_bin</strong> (<em>(</em><em>Optional</em><em>) </em><em>unsigned int</em>) – size of each bin - set to 4 bytes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>max_pix</strong> – Maximum number of pixels that will be loaded</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">unsigned int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.reshapeToNsteps">
+<code class="descname">reshapeToNsteps</code><span class="sig-paren">(</span><em>raw_mat</em>, <em>num_steps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#reshapeToNsteps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.reshapeToNsteps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reshapes provided data from (positions * step, bin) to (positions, step * bin).
+Use this to restructure data back to its original form after parallel computing</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw_mat</strong> (<em>2D numpy array</em>) – Data organized as (positions * step, bin)</li>
+<li><strong>num_steps</strong> (<em>unsigned int</em>) – Number of spectroscopic steps per pixel (eg - UDVS steps)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>twoD</strong> – Data rearranged as (positions, step * bin)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.be_hdf_utils.reshapeToOneStep">
+<code class="descname">reshapeToOneStep</code><span class="sig-paren">(</span><em>raw_mat</em>, <em>num_steps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#reshapeToOneStep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.be_hdf_utils.reshapeToOneStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reshapes provided data from (pos, step * bin) to (pos * step, bin).
+This is useful when unraveling data for parallel processing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw_mat</strong> (<em>2D numpy array</em>) – Data organized as (positions, step * bins)</li>
+<li><strong>num_steps</strong> (<em>unsigned int</em>) – Number of spectroscopic steps per pixel (eg - UDVS steps)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>twoD</strong> – Data rearranged as (positions * step, bin)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt>
+<code class="descname">maxReadPixels</code><span class="sig-paren">(</span><em>max_memory</em>, <em>tot_pix</em>, <em>bins_per_step</em>, <em>bytes_per_bin=4</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#maxReadPixels"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Calculates the maximum number of pixels that can be loaded into the
+specified memory size. This is particularly useful when applying a
+(typically parallel) operation / processing on each pixel.
+Example - Fitting response to a model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_memory</strong> (<em>unsigned int</em>) – Maximum memory (in bytes) that can be used.
+For example 4 GB would be = 4*((2**10)**3) bytes</li>
+<li><strong>tot_pix</strong> (<em>unsigned int</em>) – Total number of pixels in dataset</li>
+<li><strong>bins_per_step</strong> (<em>unsigned int</em>) – Number of bins that will be read (can be portion of each pixel)</li>
+<li><strong>bytes_per_bin</strong> (<em>(</em><em>Optional</em><em>) </em><em>unsigned int</em>) – size of each bin - set to 4 bytes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>max_pix</strong> – Maximum number of pixels that will be loaded</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">unsigned int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getActiveUDVSsteps</code><span class="sig-paren">(</span><em>h5_raw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getActiveUDVSsteps"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns all the active UDVS steps in the data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>h5_raw</strong> (<em>HDF5 dataset reference</em>) – Reference to the raw data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>steps</strong> – Active UDVS steps</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">1D numpy array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getDataIndicesForUDVSstep</code><span class="sig-paren">(</span><em>h5_udvs_inds</em>, <em>udvs_step_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getDataIndicesForUDVSstep"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns the spectroscopic indices that correspond to the given udvs_step_index
+that can be used to slice the main data matrix.
+* Developer note - Replace the first parameter with the Raw_Data dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_udvs_inds</strong> (<em>Reference to HDF5 dataset</em>) – UDVS_Indices dataset</li>
+<li><strong>udvs_step_index</strong> (<em>usigned int</em>) – UDVS step index (base 0)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ans</strong> – Spectroscopic indices</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getForExcitWfm</code><span class="sig-paren">(</span><em>h5_main</em>, <em>h5_other</em>, <em>wave_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getForExcitWfm"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Slices the provided H5 dataset by the provided wave type.
+Note that this is applicable to only certain H5 datasets such as the bin frequences, bin FFT etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>Reference to HDF5 dataset</em>) – Raw_Data dataset</li>
+<li><strong>h5_other</strong> (<em>Reference to HDF5 dataset</em>) – The dataset that needs to be sliced such as bin frequencies</li>
+<li><strong>wave_type</strong> (<em>unsigned int</em>) – Excitation waveform type</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>freq_vec</strong> – data specific to specified excitation waveform</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getIndicesforPlotGroup</code><span class="sig-paren">(</span><em>h5_udvs_inds</em>, <em>ds_udvs</em>, <em>plt_grp_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getIndicesforPlotGroup"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>For a provided plot group name in the udvs table, this function
+returns the corresponding spectroscopic indices that can be used to index / slice the main data set
+and the data within the udvs table for the requested plot group
+* Developer note - Replace the first parameter with the Raw_Data dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_udvs_inds</strong> (<em>Reference to HDF5 dataset</em>) – containing the UDVS indices</li>
+<li><strong>ds_udvs</strong> (<em>Reference to HDF5 dataset</em>) – containing the UDVS table</li>
+<li><strong>plt_grp_name</strong> (<em>string</em>) – name of the plot group in the UDVS table</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>step_bin_indices</strong> (<em>2D numpy array</em>) – Indices arranged as [step, bin] in the spectroscopic_indices table
+This is useful for knowing the number of bins and steps in this plot group.
+We are allowed to assume that the number of bins does NOT change within the plot group</li>
+<li><strong>oneD_indices</strong> (<em>1D numpy array</em>) – spectroscopic indices corresponding to the requested plot group</li>
+<li><strong>udvs_plt_grp_col</strong> (<em>1D numpy array</em>) – data contained within the udvs table for the requested plot group</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getSliceForExcWfm</code><span class="sig-paren">(</span><em>h5_bin_wfm</em>, <em>excit_wfm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getSliceForExcWfm"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns the indices that correspond to the given excitation waveform
+that can be used to slice the bin datasets
+* Developer note - Replace the first parameter with the Raw_Data dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_bin_wfm</strong> (<em>Reference to HDF5 dataset</em>) – Bin Waveform Indices</li>
+<li><strong>excit_wfm</strong> (<em>integer</em>) – excitation waveform / wave type</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>slc</strong> – Slice with the start and end indices</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">slice object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">generateTestSpectroscopicData</code><span class="sig-paren">(</span><em>num_bins=7</em>, <em>num_steps=3</em>, <em>num_pos=4</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#generateTestSpectroscopicData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Generates a (preferably small) test data set using the given parameters.
+Data is filled with indices (with base 1 for simplicity).
+Use this for testing reshape operations etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_bins</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = 7</em><em>)</em>) – Number of bins</li>
+<li><strong>num_steps</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = 3</em><em>)</em>) – Number of spectroscopic steps</li>
+<li><strong>num_pos</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = 4</em><em>)</em>) – Number of fictional positions</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>full_data</strong> – Data organized as [steps x bins, positions]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getSpecSliceForUDVSstep</code><span class="sig-paren">(</span><em>h5_udvs_inds</em>, <em>udvs_step_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#getSpecSliceForUDVSstep"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns the spectroscopic indices that correspond to the given udvs_step_index
+that can be used to slice the main data matrix
+* Developer note - Replace the first parameter with the Raw_Data dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_udvs_inds</strong> (<em>Reference to HDF5 dataset</em>) – UDVS_Indices dataset</li>
+<li><strong>udvs_step_index</strong> (<em>unsigned int</em>) – UDVS step index (base 0)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>slc</strong> – Object containing the start and end indices</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">slice object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">isSimpleDataset</code><span class="sig-paren">(</span><em>h5_main</em>, <em>isBEPS=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#isSimpleDataset"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This function figures out if a single number defines the bins for all UDVS steps
+In such cases (udvs_steps x bins, pos) can be reshaped to (bins, positions x steps)
+for (theoretically) faster computation, especially for large datasets</p>
+<p>Actually, things are a lot simpler. Only need to check if number of bins for all excitation waveforms are equal</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>Reference to HDF5 dataset</em>) – Raw_Data dataset</li>
+<li><strong>isBEPS</strong> (<em>Boolean</em><em> (</em><em>default = True</em><em>)</em>) – Whether or not this dataset is BEPS</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>data_type</strong> – Whether or not this dataset can be unraveled / flattened</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">reshapeToNsteps</code><span class="sig-paren">(</span><em>raw_mat</em>, <em>num_steps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#reshapeToNsteps"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Reshapes provided data from (positions * step, bin) to (positions, step * bin).
+Use this to restructure data back to its original form after parallel computing</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw_mat</strong> (<em>2D numpy array</em>) – Data organized as (positions * step, bin)</li>
+<li><strong>num_steps</strong> (<em>unsigned int</em>) – Number of spectroscopic steps per pixel (eg - UDVS steps)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>twoD</strong> – Data rearranged as (positions, step * bin)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">reshapeToOneStep</code><span class="sig-paren">(</span><em>raw_mat</em>, <em>num_steps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/be_hdf_utils.html#reshapeToOneStep"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Reshapes provided data from (pos, step * bin) to (pos * step, bin).
+This is useful when unraveling data for parallel processing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw_mat</strong> (<em>2D numpy array</em>) – Data organized as (positions, step * bins)</li>
+<li><strong>num_steps</strong> (<em>unsigned int</em>) – Number of spectroscopic steps per pixel (eg - UDVS steps)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>twoD</strong> – Data rearranged as (positions * step, bin)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

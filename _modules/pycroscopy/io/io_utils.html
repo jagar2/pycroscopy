@@ -1,0 +1,578 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.io_utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.io_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.io_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Tue Nov  3 21:14:25 2015</span>
+
+<span class="sd">@author: Suhas Somnath, Chris Smith</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">cpu_count</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">strftime</span>
+<span class="kn">from</span> <span class="nn">psutil</span> <span class="k">import</span> <span class="n">virtual_memory</span> <span class="k">as</span> <span class="n">vm</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;getAvailableMem&#39;</span><span class="p">,</span> <span class="s1">&#39;getTimeStamp&#39;</span><span class="p">,</span> <span class="s1">&#39;transformToTargetType&#39;</span><span class="p">,</span> <span class="s1">&#39;transformToReal&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;complex_to_float&#39;</span><span class="p">,</span> <span class="s1">&#39;compound_to_scalar&#39;</span><span class="p">,</span> <span class="s1">&#39;realToComplex&#39;</span><span class="p">,</span> <span class="s1">&#39;realToCompound&#39;</span><span class="p">,</span> <span class="s1">&#39;check_dtype&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;recommendCores&#39;</span><span class="p">,</span> <span class="s1">&#39;uiGetFile&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="check_ssh"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.check_ssh">[docs]</a><span class="k">def</span> <span class="nf">check_ssh</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;SSH_CLIENT&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">or</span> <span class="s1">&#39;SSH_TTY&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span></div>
+
+
+<div class="viewcode-block" id="uiGetFile"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.uiGetFile">[docs]</a><span class="k">def</span> <span class="nf">uiGetFile</span><span class="p">(</span><span class="n">file_filter</span><span class="o">=</span><span class="s1">&#39;H5 file (*.h5)&#39;</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="s1">&#39;Select File&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Presents a File dialog used for selecting the .mat file</span>
+<span class="sd">    and returns the absolute filepath of the selecte file\n</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_filter : String or list of strings</span>
+<span class="sd">        file extensions to look for</span>
+<span class="sd">    caption : (Optional) String</span>
+<span class="sd">        Title for the file browser window</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    file_path : String</span>
+<span class="sd">        Absolute path of the chosen file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Only try to use the GUI options if not over an SSH connection.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">check_ssh</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtWidgets</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The required package PyQt5 could not be imported.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;The code will check for PyQt4.&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">app</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="p">([])</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="n">caption</span><span class="o">=</span><span class="n">caption</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">file_filter</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">closeAllWindows</span><span class="p">()</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+            <span class="k">del</span> <span class="n">app</span>
+
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">PyQt4</span> <span class="k">import</span> <span class="n">QtGui</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;PyQt4 also not found.  Will use standard text input.&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">([])</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="n">caption</span><span class="o">=</span><span class="n">caption</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">file_filter</span><span class="p">)</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+            <span class="k">del</span> <span class="n">app</span>
+
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter path to datafile.  Raw Data (*.txt, *.mat, *.xls, *.xlsx) or Translated file (*.h5)&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getTimeStamp"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.getTimeStamp">[docs]</a><span class="k">def</span> <span class="nf">getTimeStamp</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Teturns the current date and time as a string formatted as:</span>
+<span class="sd">    Year_Month_Dat-Hour_Minute_Second</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    String</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y_%m_</span><span class="si">%d</span><span class="s1">-%H_%M_%S&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getAvailableMem"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.getAvailableMem">[docs]</a><span class="k">def</span> <span class="nf">getAvailableMem</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the available memory</span>
+
+<span class="sd">    Chris Smith -- csmith55@utk.edu</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mem : unsigned int</span>
+<span class="sd">        Memory in bytes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">mem</span> <span class="o">=</span> <span class="n">vm</span><span class="p">()</span><span class="o">.</span><span class="n">available</span>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span><span class="p">:</span>
+        <span class="n">mem</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">mem</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">mem</span></div>
+
+
+<div class="viewcode-block" id="recommendCores"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.recommendCores">[docs]</a><span class="k">def</span> <span class="nf">recommendCores</span><span class="p">(</span><span class="n">num_jobs</span><span class="p">,</span> <span class="n">requested_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lengthy_computation</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decides the number of cores to use for parallel computing</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_jobs : unsigned int</span>
+<span class="sd">        Number of times a parallel operation needs to be performed</span>
+<span class="sd">    requested_cores : unsigned int (Optional. Default = None)</span>
+<span class="sd">        Number of logical cores to use for computation</span>
+<span class="sd">    lengthy_computation : Boolean (Optional. Default = False)</span>
+<span class="sd">        Whether or not each computation takes a long time. If each computation is quick, it may not make sense to take</span>
+<span class="sd">        a hit in terms of starting and using a larger number of cores, so use fewer cores instead.</span>
+<span class="sd">        Eg- BE SHO fitting is fast (&lt;1 sec) so set this value to False,</span>
+<span class="sd">        Eg- Bayesian Inference is very slow (~ 10-20 sec)so set this to True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    requested_cores : unsigned int</span>
+<span class="sd">        Number of logical cores to use for computation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_cores</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">requested_cores</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># conservative allocation</span>
+        <span class="n">requested_cores</span> <span class="o">=</span> <span class="n">max_cores</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Respecting the explicit request</span>
+        <span class="n">requested_cores</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">requested_cores</span><span class="p">)),</span> <span class="n">cpu_count</span><span class="p">())</span>
+
+    <span class="n">recom_chunks</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_jobs</span> <span class="o">/</span> <span class="n">requested_cores</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lengthy_computation</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">requested_cores</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">recom_chunks</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">recom_chunks</span> <span class="o">=</span> <span class="mi">20</span>
+            <span class="c1"># intelligently set the cores now.</span>
+            <span class="n">requested_cores</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">requested_cores</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_jobs</span> <span class="o">/</span> <span class="n">recom_chunks</span><span class="p">))</span>
+            <span class="c1"># print(&#39;Not enough jobs per core. Reducing cores to {}&#39;.format(recom_cores))</span>
+
+    <span class="k">return</span> <span class="n">requested_cores</span></div>
+
+
+<div class="viewcode-block" id="complex_to_float"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.complex_to_float">[docs]</a><span class="k">def</span> <span class="nf">complex_to_float</span><span class="p">(</span><span class="n">ds_main</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to convert a complex ND numpy array or HDF5 dataset into a scalar dataset</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_main : complex ND numpy array or ND HDF5 dataset</span>
+<span class="sd">        Dataset of interest</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    retval : ND real numpy array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">ds_main</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">ds_main</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="compound_to_scalar"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.compound_to_scalar">[docs]</a><span class="k">def</span> <span class="nf">compound_to_scalar</span><span class="p">(</span><span class="n">ds_main</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a compound ND numpy array or HDF5 dataset into a real scalar dataset</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_main : ND numpy array or ND HDF5 dataset object of compound datatype</span>
+<span class="sd">        Dataset of interest</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    retval : ND real numpy array</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds_main</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">ds_main</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds_main</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">ds_main</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Datatype </span><span class="si">{}</span><span class="s1"> not supported in compound_to_scalar&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ds_main</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="check_dtype"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.check_dtype">[docs]</a><span class="k">def</span> <span class="nf">check_dtype</span><span class="p">(</span><span class="n">ds_main</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks the datatype of the input dataset and provides the appropriate</span>
+<span class="sd">    function calls to convert it to a float</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_main : HDF5 Dataset</span>
+<span class="sd">        Dataset of interest</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    func : function</span>
+<span class="sd">        function that will convert the dataset to a float</span>
+<span class="sd">    is_complex : Boolean</span>
+<span class="sd">        is the input dataset complex?</span>
+<span class="sd">    is_compound : Boolean</span>
+<span class="sd">        is the input dataset compound?</span>
+<span class="sd">    n_features : Unsigned integer, the length of the 2nd dimension of</span>
+<span class="sd">        the data after func is called on it</span>
+<span class="sd">    n_samples : Unsigned integer</span>
+<span class="sd">        the length of the 1st dimension of the data</span>
+<span class="sd">    type_mult : Unsigned integer</span>
+<span class="sd">        multiplier that converts from the typesize of the input dtype to the</span>
+<span class="sd">        typesize of the data after func is run on it</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">is_complex</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">is_compound</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">in_dtype</span> <span class="o">=</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="n">new_dtype</span> <span class="o">=</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">if</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">]:</span>
+        <span class="n">is_complex</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">new_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">ds_main</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="n">type_mult</span> <span class="o">=</span> <span class="n">new_dtype</span><span class="o">.</span><span class="n">itemsize</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">complex_to_float</span>
+        <span class="n">n_features</span> <span class="o">*=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Some form of compound datatype is in use</span>
+<span class="sd">        We only support real scalars for the component types at the current time</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">is_compound</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">new_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+        <span class="n">type_mult</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_dtype</span><span class="p">)</span> <span class="o">*</span> <span class="n">new_dtype</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">itemsize</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">compound_to_scalar</span>
+        <span class="n">n_features</span> <span class="o">*=</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_dtype</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+            <span class="n">new_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_dtype</span> <span class="o">=</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span>
+
+        <span class="n">type_mult</span> <span class="o">=</span> <span class="n">new_dtype</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">itemsize</span>
+
+        <span class="n">func</span> <span class="o">=</span> <span class="n">new_dtype</span>
+
+    <span class="k">return</span> <span class="n">func</span><span class="p">,</span> <span class="n">is_complex</span><span class="p">,</span> <span class="n">is_compound</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">type_mult</span></div>
+
+
+<div class="viewcode-block" id="realToComplex"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.realToComplex">[docs]</a><span class="k">def</span> <span class="nf">realToComplex</span><span class="p">(</span><span class="n">ds_real</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Puts the real and imaginary sections together to make complex dataset</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    ds_real : 2D real numpy array or HDF5 dataset</span>
+<span class="sd">        Data arranged as [instance, 2 x features]</span>
+<span class="sd">        where the first half of the features are the real component and the</span>
+<span class="sd">        second half contains the imaginary components</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_compound : 2D complex numpy array</span>
+<span class="sd">        Data arranged as [sample, features]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ds_real</span><span class="p">[:,</span> <span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ds_real</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">ds_real</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ds_real</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):]</span></div>
+
+
+<div class="viewcode-block" id="realToCompound"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.realToCompound">[docs]</a><span class="k">def</span> <span class="nf">realToCompound</span><span class="p">(</span><span class="n">ds_real</span><span class="p">,</span> <span class="n">compound_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a real dataset to a compound dataset of the provided compound d-type</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    ds_real : 2D real numpy array or HDF5 dataset</span>
+<span class="sd">        Data arranged as [instance, features]</span>
+<span class="sd">    compound_type : dtype</span>
+<span class="sd">        Target complex datatype</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_compound : 2D complex numpy array</span>
+<span class="sd">        Data arranged as [sample, features]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_spec_length</span> <span class="o">=</span> <span class="n">ds_real</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">compound_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">new_spec_length</span> <span class="o">%</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Provided compound type was not compatible by numbr of elements&#39;</span><span class="p">)</span>
+
+    <span class="n">new_spec_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_spec_length</span><span class="p">)</span>
+    <span class="n">ds_compound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="n">ds_real</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_spec_length</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">compound_type</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">iname</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">compound_type</span><span class="o">.</span><span class="n">names</span><span class="p">):</span>
+        <span class="n">istart</span> <span class="o">=</span> <span class="n">iname</span> <span class="o">*</span> <span class="n">ds_compound</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">iend</span> <span class="o">=</span> <span class="p">(</span><span class="n">iname</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">ds_compound</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">ds_compound</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds_real</span><span class="p">[:,</span> <span class="n">istart</span><span class="p">:</span><span class="n">iend</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">ds_compound</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="transformToTargetType"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.transformToTargetType">[docs]</a><span class="k">def</span> <span class="nf">transformToTargetType</span><span class="p">(</span><span class="n">ds_real</span><span class="p">,</span> <span class="n">new_dtype</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms real data into the target dtype</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_real : nD real numpy array or HDF5 dataset</span>
+<span class="sd">        Source dataset</span>
+<span class="sd">    new_dtype : dtype</span>
+<span class="sd">        Target data type</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ret_val : nD numpy array</span>
+<span class="sd">        Data of the target data type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">new_dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">realToComplex</span><span class="p">(</span><span class="n">ds_real</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_dtype</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">realToCompound</span><span class="p">(</span><span class="n">ds_real</span><span class="p">,</span> <span class="n">new_dtype</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">new_dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">ds_real</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="transformToReal"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_utils.html#pycroscopy.io.io_utils.transformToReal">[docs]</a><span class="k">def</span> <span class="nf">transformToReal</span><span class="p">(</span><span class="n">ds_main</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms real data into the target dtype</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_main : nD compound, complex or real numpy array or HDF5 dataset</span>
+<span class="sd">        Data that could be compound, complex or real</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds_main : nD numpy array</span>
+<span class="sd">        Data raveled to a float data type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">complex_to_float</span><span class="p">(</span><span class="n">ds_main</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds_main</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">compound_to_scalar</span><span class="p">(</span><span class="n">ds_main</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ds_main</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

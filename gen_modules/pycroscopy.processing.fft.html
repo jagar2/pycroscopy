@@ -1,0 +1,547 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing.fft &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.processing.fft</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.processing.fft.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.processing.fft">
+<span id="pycroscopy-processing-fft"></span><h1>pycroscopy.processing.fft<a class="headerlink" href="#module-pycroscopy.processing.fft" title="Permalink to this headline">¶</a></h1>
+<p>Created on Tue Oct 20 17:42:41 2015</p>
+<p>&#64;author: Suhas Somnath</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.processing.fft.downSample">
+<code class="descname">downSample</code><span class="sig-paren">(</span><em>fft_vec</em>, <em>freq_ratio</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#downSample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.fft.downSample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downsamples the provided data vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fft_vec</strong> (<em>1D complex numpy array</em>) – Waveform that is already FFT shifted</li>
+<li><strong>freq_ratio</strong> (<em>float</em>) – new sampling rate / old sampling rate (less than 1)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fft_vec</strong> – downsampled waveform</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.fft.getNoiseFloor">
+<code class="descname">getNoiseFloor</code><span class="sig-paren">(</span><em>fft_data</em>, <em>tolerance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#getNoiseFloor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.fft.getNoiseFloor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the noise floor from the FFT data. Algorithm originally written by Mahmut Okatan Baris</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fft_data</strong> (<em>1D</em><em> or </em><em>2D complex numpy array</em>) – Signal in frequency space (ie - after FFT shifting) arranged as (channel or repetition, signal)</li>
+<li><strong>tolerance</strong> (<em>unsigned float</em>) – Tolerance to noise. A smaller value gets rid of more noise.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>noise_floor</strong> – One value per channel / repetition</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D real numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.fft.get_fft_stack">
+<code class="descname">get_fft_stack</code><span class="sig-paren">(</span><em>image_stack</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#get_fft_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.fft.get_fft_stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the 2D FFT for a stack of images by applying a blackman window</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image_stack</strong> (<em>2D</em><em> or </em><em>3D real numpy array</em>) – Either a 2D matrix [x, y] or a stack of 2D images arranged as [x, y, z or spectral]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>fft_stack</strong> – 2 or 3 dimensional matrix arranged as [x, y, spectral dimension]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">2D or 3D real numpy array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.fft.harmonicsPassFilter">
+<code class="descname">harmonicsPassFilter</code><span class="sig-paren">(</span><em>num_pts</em>, <em>samp_rate</em>, <em>first_freq</em>, <em>band_width</em>, <em>num_harm</em>, <em>do_plots=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#harmonicsPassFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.fft.harmonicsPassFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a filter that only keeps N harmonics</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_pts</strong> (<em>unsigned int</em>) – Number of points in the FFt signal</li>
+<li><strong>samp_rate</strong> (<em>unsigned int</em>) – Sampling rate</li>
+<li><strong>first_freq</strong> (<em>unsigned int</em>) – Frequency of the first harmonic</li>
+<li><strong>band_width</strong> (<em>unsigned int</em>) – Frequency band around each harmonic that needs to be preserved</li>
+<li><strong>num_harm</strong> (<em>unsigned int</em>) – Number of harmonics to preserve</li>
+<li><strong>do_plots</strong> (<em>Boolean</em><em> (</em><em>optional</em><em>)</em>) – Whether or not to generate plots. Not necessary after debugging</li>
+<li><strong>that the frequency values must all have the same units</strong> (<em>Note</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>harm_filter</strong> – 0s where the signal is to be rejected and 1s at harmonics</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.fft.makeLPF">
+<code class="descname">makeLPF</code><span class="sig-paren">(</span><em>num_pts</em>, <em>samp_rate</em>, <em>f_cutoff</em>, <em>roll_off=0.05</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#makeLPF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.fft.makeLPF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a low pass filter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_pts</strong> (<em>unsigned int</em>) – Points in the FFT. Assuming Signal in frequency space (ie - after FFT shifting)</li>
+<li><strong>samp_rate</strong> (<em>unsigned integer</em>) – Sampling rate</li>
+<li><strong>f_cutoff</strong> (<em>unsigned integer</em>) – Cutoff frequency for filter</li>
+<li><strong>roll_off</strong> (<em>0 &lt; float &lt; 1</em>) – Frequency band over which the filter rolls off. rol off = 0.05 on a
+100 kHz low pass filter -&gt; roll off from 95 kHz (1) to 100 kHz (0)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>LPF</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array describing the low pass filter</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.fft.noiseBandFilter">
+<code class="descname">noiseBandFilter</code><span class="sig-paren">(</span><em>num_pts</em>, <em>samp_rate</em>, <em>freqs</em>, <em>freq_widths</em>, <em>show_plots=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#noiseBandFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.fft.noiseBandFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a filter that removes specified noise frequencies</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>num_pts</strong> (<em>unsigned int</em>) – Number of points in the FFT signal</li>
+<li><strong>samp_rate</strong> (<em>unsigned int</em>) – sampling rate</li>
+<li><strong>freqs</strong> (<em>1D array</em><em> or </em><em>list</em>) – Target frequencies as unsigned ints</li>
+<li><strong>freq_widths</strong> (<em>1D array</em><em> or </em><em>list</em>) – Width around the target frequency that should be set to 0</li>
+<li><strong>show_plots</strong> (<em>bool</em>) – If True, plots will be displayed during calculation.  Default False</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">sampRate, freqs, freq_widths have same units - eg MHz</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>noise_filter</strong> – Array of ones set to 0 at noise bands</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">1D numpy array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt>
+<code class="descname">downSample</code><span class="sig-paren">(</span><em>fft_vec</em>, <em>freq_ratio</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#downSample"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Downsamples the provided data vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fft_vec</strong> (<em>1D complex numpy array</em>) – Waveform that is already FFT shifted</li>
+<li><strong>freq_ratio</strong> (<em>float</em>) – new sampling rate / old sampling rate (less than 1)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fft_vec</strong> – downsampled waveform</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getNoiseFloor</code><span class="sig-paren">(</span><em>fft_data</em>, <em>tolerance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#getNoiseFloor"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Calculate the noise floor from the FFT data. Algorithm originally written by Mahmut Okatan Baris</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fft_data</strong> (<em>1D</em><em> or </em><em>2D complex numpy array</em>) – Signal in frequency space (ie - after FFT shifting) arranged as (channel or repetition, signal)</li>
+<li><strong>tolerance</strong> (<em>unsigned float</em>) – Tolerance to noise. A smaller value gets rid of more noise.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>noise_floor</strong> – One value per channel / repetition</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D real numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">get_fft_stack</code><span class="sig-paren">(</span><em>image_stack</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#get_fft_stack"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Gets the 2D FFT for a stack of images by applying a blackman window</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image_stack</strong> (<em>2D</em><em> or </em><em>3D real numpy array</em>) – Either a 2D matrix [x, y] or a stack of 2D images arranged as [x, y, z or spectral]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>fft_stack</strong> – 2 or 3 dimensional matrix arranged as [x, y, spectral dimension]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">2D or 3D real numpy array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">harmonicsPassFilter</code><span class="sig-paren">(</span><em>num_pts</em>, <em>samp_rate</em>, <em>first_freq</em>, <em>band_width</em>, <em>num_harm</em>, <em>do_plots=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#harmonicsPassFilter"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Builds a filter that only keeps N harmonics</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_pts</strong> (<em>unsigned int</em>) – Number of points in the FFt signal</li>
+<li><strong>samp_rate</strong> (<em>unsigned int</em>) – Sampling rate</li>
+<li><strong>first_freq</strong> (<em>unsigned int</em>) – Frequency of the first harmonic</li>
+<li><strong>band_width</strong> (<em>unsigned int</em>) – Frequency band around each harmonic that needs to be preserved</li>
+<li><strong>num_harm</strong> (<em>unsigned int</em>) – Number of harmonics to preserve</li>
+<li><strong>do_plots</strong> (<em>Boolean</em><em> (</em><em>optional</em><em>)</em>) – Whether or not to generate plots. Not necessary after debugging</li>
+<li><strong>that the frequency values must all have the same units</strong> (<em>Note</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>harm_filter</strong> – 0s where the signal is to be rejected and 1s at harmonics</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">makeLPF</code><span class="sig-paren">(</span><em>num_pts</em>, <em>samp_rate</em>, <em>f_cutoff</em>, <em>roll_off=0.05</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#makeLPF"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Builds a low pass filter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_pts</strong> (<em>unsigned int</em>) – Points in the FFT. Assuming Signal in frequency space (ie - after FFT shifting)</li>
+<li><strong>samp_rate</strong> (<em>unsigned integer</em>) – Sampling rate</li>
+<li><strong>f_cutoff</strong> (<em>unsigned integer</em>) – Cutoff frequency for filter</li>
+<li><strong>roll_off</strong> (<em>0 &lt; float &lt; 1</em>) – Frequency band over which the filter rolls off. rol off = 0.05 on a
+100 kHz low pass filter -&gt; roll off from 95 kHz (1) to 100 kHz (0)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>LPF</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array describing the low pass filter</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">noiseBandFilter</code><span class="sig-paren">(</span><em>num_pts</em>, <em>samp_rate</em>, <em>freqs</em>, <em>freq_widths</em>, <em>show_plots=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/fft.html#noiseBandFilter"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Builds a filter that removes specified noise frequencies</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>num_pts</strong> (<em>unsigned int</em>) – Number of points in the FFT signal</li>
+<li><strong>samp_rate</strong> (<em>unsigned int</em>) – sampling rate</li>
+<li><strong>freqs</strong> (<em>1D array</em><em> or </em><em>list</em>) – Target frequencies as unsigned ints</li>
+<li><strong>freq_widths</strong> (<em>1D array</em><em> or </em><em>list</em>) – Width around the target frequency that should be set to 0</li>
+<li><strong>show_plots</strong> (<em>bool</em>) – If True, plots will be displayed during calculation.  Default False</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">sampRate, freqs, freq_widths have same units - eg MHz</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>noise_filter</strong> – Array of ones set to 0 at noise bands</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">1D numpy array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

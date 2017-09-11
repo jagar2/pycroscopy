@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.microdata &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.io.microdata</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.io.microdata.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.io.microdata">
+<span id="pycroscopy-io-microdata"></span><h1>pycroscopy.io.microdata<a class="headerlink" href="#module-pycroscopy.io.microdata" title="Permalink to this headline">¶</a></h1>
+<p>Created on Wed Dec 16 10:42:03 2015</p>
+<p>&#64;author: Suhas Somnath, Numan Laanait</p>
+<p>The MicroData classes</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pycroscopy.io.microdata.MicroData">
+<em class="property">class </em><code class="descname">MicroData</code><span class="sig-paren">(</span><em>name</em>, <em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.microdata.MicroData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Generic class that is extended by the MicroDataGroup and MicroDataset objects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>String</em>) – Name of the data group / dataset object</li>
+<li><strong>parent</strong> (<em>String</em>) – HDF5 path to the parent of this object. Typically used when
+appending to an existing HDF5 file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.io.microdata.MicroDataGroup">
+<em class="property">class </em><code class="descname">MicroDataGroup</code><span class="sig-paren">(</span><em>name</em>, <em>parent='/'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroDataGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.microdata.MicroDataGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycroscopy.io.microdata.MicroData" title="pycroscopy.io.microdata.MicroData"><code class="xref py py-class docutils literal"><span class="pre">pycroscopy.io.microdata.MicroData</span></code></a></p>
+<p>Holds data that will be converted to a h5.Group by io.ioHDF5
+Note that it can also hold information (e.g. attributes) of an h5.File.
+This is consistent with class hierarchy of HDF5, i.e. h5.File extends h5.Group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>String</em>) – Name of the data group</li>
+<li><strong>parent</strong> (<em>(</em><em>Optional</em><em>) </em><em>String</em>) – HDF5 path to the parent of this object. Typically used when
+appending to an existing HDF5 file
+Default value assumes that this group sits at the root of the file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycroscopy.io.microdata.MicroDataGroup.addChildren">
+<code class="descname">addChildren</code><span class="sig-paren">(</span><em>children</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroDataGroup.addChildren"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.microdata.MicroDataGroup.addChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds Children to the class to make a tree structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>children</strong> (<em>list of MicroData objects</em>) – Children can be a mixture of groups and datasets</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.microdata.MicroDataGroup.showTree">
+<code class="descname">showTree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroDataGroup.showTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.microdata.MicroDataGroup.showTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the tree structure given by MicroDataGroup.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.io.microdata.MicroDataset">
+<em class="property">class </em><code class="descname">MicroDataset</code><span class="sig-paren">(</span><em>name</em>, <em>data</em>, <em>dtype=None</em>, <em>compression=None</em>, <em>chunking=None</em>, <em>parent=None</em>, <em>resizable=False</em>, <em>maxshape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.microdata.MicroDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycroscopy.io.microdata.MicroData" title="pycroscopy.io.microdata.MicroData"><code class="xref py py-class docutils literal"><span class="pre">pycroscopy.io.microdata.MicroData</span></code></a></p>
+<p>Holds data (i.e. numpy.ndarray) as well as instructions on writing, attributes, etc…
+This gets converted to a h5.Dataset by io.ioHDF5.</p>
+<p>Region references need to be specified using the ‘labels’ attribute. See example below</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>String</em>) – Name of the dataset</li>
+<li><strong>data</strong> (<em>Object</em>) – See supported objects in h5py</li>
+<li><strong>dtype</strong> (<em>datatype</em><em>,</em>) – typically a datatype of a numpy array =None</li>
+<li><strong>compression</strong> (<em>(</em><em>Optional</em><em>) </em><em>String</em>) – See h5py compression. Leave as ‘gzip’ as a default mode of compression</li>
+<li><strong>chunking</strong> (<em>(</em><em>Optional</em><em>) </em><em>tuple of ints</em>) – Chunking in each dimension of the dataset. If not provided,
+default chunking is used by h5py when writing this dataset</li>
+<li><strong>parent</strong> (<em>(</em><em>Optional</em><em>) </em><em>String</em>) – HDF5 path to the parent of this object. This value is overwritten
+when this dataset is made the child of a datagroup.</li>
+<li><strong>resizable</strong> (<em>Boolean</em><em> (</em><em>Optional. default = False</em><em>)</em>) – Whether or not this dataset is expected to be resizeable.
+Note - if the dataset is resizable the specified maxsize will be ignored.</li>
+<li><strong>maxshape</strong> (<em>(</em><em>Optional</em><em>) </em><em>tuple of ints</em>) – Maximum size in each axis this dataset is expected to be
+if this parameter is provided, io will ONLY allocate space.
+Make sure to specify the dtype appropriately. The provided data will be ignored</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<ol class="arabic simple">
+<li>Small auxillary datasets :</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds_ex_efm</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Excitation_Waveform&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Datasets with slicing information :</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds_spec_inds</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">,</span> <span class="n">spec_ind_mat</span><span class="p">)</span>
+<span class="go">    ds_spec_inds.attrs[&#39;labels&#39;] = {&#39;Time Index&#39;:(slice(0,1), slice(None))}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Initializing large primary datasets of known sizes :</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds_raw_data</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Raw_Data&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[],</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">16384</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                           <span class="n">chunking</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">16384</span><span class="p">),</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Intializing large datasets whose size is unknown in one or more dimensions:</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds_raw_data</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Raw_Data&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">16384</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>                           <span class="n">chunking</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">16384</span><span class="p">),</span> <span class="n">resizable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">MicroData</code><span class="sig-paren">(</span><em>name</em>, <em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Generic class that is extended by the MicroDataGroup and MicroDataset objects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>String</em>) – Name of the data group / dataset object</li>
+<li><strong>parent</strong> (<em>String</em>) – HDF5 path to the parent of this object. Typically used when
+appending to an existing HDF5 file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">MicroDataGroup</code><span class="sig-paren">(</span><em>name</em>, <em>parent='/'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroDataGroup"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycroscopy.io.microdata.MicroData" title="pycroscopy.io.microdata.MicroData"><code class="xref py py-class docutils literal"><span class="pre">pycroscopy.io.microdata.MicroData</span></code></a></p>
+<p>Holds data that will be converted to a h5.Group by io.ioHDF5
+Note that it can also hold information (e.g. attributes) of an h5.File.
+This is consistent with class hierarchy of HDF5, i.e. h5.File extends h5.Group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>String</em>) – Name of the data group</li>
+<li><strong>parent</strong> (<em>(</em><em>Optional</em><em>) </em><em>String</em>) – HDF5 path to the parent of this object. Typically used when
+appending to an existing HDF5 file
+Default value assumes that this group sits at the root of the file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt>
+<code class="descname">addChildren</code><span class="sig-paren">(</span><em>children</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroDataGroup.addChildren"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Adds Children to the class to make a tree structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>children</strong> (<em>list of MicroData objects</em>) – Children can be a mixture of groups and datasets</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">showTree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroDataGroup.showTree"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Return the tree structure given by MicroDataGroup.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">MicroDataset</code><span class="sig-paren">(</span><em>name</em>, <em>data</em>, <em>dtype=None</em>, <em>compression=None</em>, <em>chunking=None</em>, <em>parent=None</em>, <em>resizable=False</em>, <em>maxshape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/microdata.html#MicroDataset"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycroscopy.io.microdata.MicroData" title="pycroscopy.io.microdata.MicroData"><code class="xref py py-class docutils literal"><span class="pre">pycroscopy.io.microdata.MicroData</span></code></a></p>
+<p>Holds data (i.e. numpy.ndarray) as well as instructions on writing, attributes, etc…
+This gets converted to a h5.Dataset by io.ioHDF5.</p>
+<p>Region references need to be specified using the ‘labels’ attribute. See example below</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>String</em>) – Name of the dataset</li>
+<li><strong>data</strong> (<em>Object</em>) – See supported objects in h5py</li>
+<li><strong>dtype</strong> (<em>datatype</em><em>,</em>) – typically a datatype of a numpy array =None</li>
+<li><strong>compression</strong> (<em>(</em><em>Optional</em><em>) </em><em>String</em>) – See h5py compression. Leave as ‘gzip’ as a default mode of compression</li>
+<li><strong>chunking</strong> (<em>(</em><em>Optional</em><em>) </em><em>tuple of ints</em>) – Chunking in each dimension of the dataset. If not provided,
+default chunking is used by h5py when writing this dataset</li>
+<li><strong>parent</strong> (<em>(</em><em>Optional</em><em>) </em><em>String</em>) – HDF5 path to the parent of this object. This value is overwritten
+when this dataset is made the child of a datagroup.</li>
+<li><strong>resizable</strong> (<em>Boolean</em><em> (</em><em>Optional. default = False</em><em>)</em>) – Whether or not this dataset is expected to be resizeable.
+Note - if the dataset is resizable the specified maxsize will be ignored.</li>
+<li><strong>maxshape</strong> (<em>(</em><em>Optional</em><em>) </em><em>tuple of ints</em>) – Maximum size in each axis this dataset is expected to be
+if this parameter is provided, io will ONLY allocate space.
+Make sure to specify the dtype appropriately. The provided data will be ignored</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<ol class="arabic simple">
+<li>Small auxillary datasets :</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds_ex_efm</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Excitation_Waveform&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Datasets with slicing information :</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds_spec_inds</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">,</span> <span class="n">spec_ind_mat</span><span class="p">)</span>
+<span class="go">    ds_spec_inds.attrs[&#39;labels&#39;] = {&#39;Time Index&#39;:(slice(0,1), slice(None))}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Initializing large primary datasets of known sizes :</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds_raw_data</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Raw_Data&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[],</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">16384</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                           <span class="n">chunking</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">16384</span><span class="p">),</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Intializing large datasets whose size is unknown in one or more dimensions:</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds_raw_data</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Raw_Data&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">16384</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>                           <span class="n">chunking</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">16384</span><span class="p">),</span> <span class="n">resizable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

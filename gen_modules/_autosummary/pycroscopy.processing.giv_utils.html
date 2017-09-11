@@ -1,0 +1,580 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing.giv_utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../index.html"/>
+        <link rel="up" title="pycroscopy.processing" href="../pycroscopy.processing.html"/>
+        <link rel="next" title="pycroscopy.processing.gmode_utils" href="pycroscopy.processing.gmode_utils.html"/>
+        <link rel="prev" title="pycroscopy.processing.fft" href="pycroscopy.processing.fft.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../pycroscopy.html">pycroscopy package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../pycroscopy.html#description">0. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pycroscopy.html#package-structure">1. Package Structure</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../pycroscopy.html#pycroscopy-modules">2. Pycroscopy Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.analysis.html">pycroscopy.analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.io.html">pycroscopy.io</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../pycroscopy.processing.html">pycroscopy.processing</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../pycroscopy.processing.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pycroscopy.processing.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.viz.html">pycroscopy.viz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../pycroscopy.html">pycroscopy package</a> &raquo;</li>
+        
+          <li><a href="../pycroscopy.processing.html">pycroscopy.processing</a> &raquo;</li>
+        
+      <li>pycroscopy.processing.giv_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/gen_modules/_autosummary/pycroscopy.processing.giv_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.processing.giv_utils">
+<span id="pycroscopy-processing-giv-utils"></span><h1>pycroscopy.processing.giv_utils<a class="headerlink" href="#module-pycroscopy.processing.giv_utils" title="Permalink to this headline">¶</a></h1>
+<p>Created on Thu Jan 12 15:31:55 2017</p>
+<p>&#64;author: Kody Law, Suhas Somnath, Rama K. Vasudevan</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.processing.giv_utils.bayesian_inference_dataset">
+<code class="descname">bayesian_inference_dataset</code><span class="sig-paren">(</span><em>h5_main</em>, <em>ex_freq</em>, <em>gain</em>, <em>split_directions=False</em>, <em>num_cores=None</em>, <em>num_x_steps=251</em>, <em>gam=0.03</em>, <em>e=10.0</em>, <em>sigma=10.0</em>, <em>sigmaC=1.0</em>, <em>num_samples=2000.0</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#bayesian_inference_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.giv_utils.bayesian_inference_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Reference to the dataset containing the IV spectroscopy data</li>
+<li><strong>ex_freq</strong> (<em>float</em>) – frequency of applied waveform</li>
+<li><strong>gain</strong> (<em>unsigned int</em>) – Amplifier gain such as 8 or 9, not 10^8 or 10^9</li>
+<li><strong>split_directions</strong> (<em>Boolean</em><em> (</em><em>Optional. Default = False</em><em>)</em>) – Whether or not to compute the forward and reverse portions of the loop separately</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = None</em><em>)</em>) – Number of cores to use for computation. Leave as None for adaptive decision.</li>
+<li><strong>num_x_steps</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1E+3</em><em>)</em>) – Number of steps in x vector (interpolating V)</li>
+<li><strong>gam</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 0.03</em><em>)</em>) – gamma value for reconstruction</li>
+<li><strong>e</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 10.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>sigma</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 10.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>sigmaC</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>num_samples</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1E4</em><em>)</em>) – Number of samples. 1E+4 is more than sufficient</li>
+<li><strong>verbose</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>, </em><em>Default = False</em><em>)</em>) – Whether or not to print the status messages for debugging purposes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_bayes_grp</strong> – Reference to the group containing all the results of the Bayesian Inference</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">h5py.DataGroup object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.giv_utils.bayesian_inference_unit">
+<code class="descname">bayesian_inference_unit</code><span class="sig-paren">(</span><em>single_parm</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#bayesian_inference_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.giv_utils.bayesian_inference_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper around the original Bayesian inference function for parallel computing purposes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>single_parm</strong> (<em>tuple</em>) – The first index of the tuple should contain the IV data to be processed
+The second index of the tuple should contain the parameter dictionary necessary for the bayesian function.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">See the econ results of the original Bayesian Inference function</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.giv_utils.do_bayesian_inference">
+<code class="descname">do_bayesian_inference</code><span class="sig-paren">(</span><em>V</em>, <em>IV_point</em>, <em>freq</em>, <em>num_x_steps=251</em>, <em>gam=0.03</em>, <em>e=10.0</em>, <em>sigma=10.0</em>, <em>sigmaC=1.0</em>, <em>num_samples=2000.0</em>, <em>show_plots=False</em>, <em>econ=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#do_bayesian_inference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.giv_utils.do_bayesian_inference" title="Permalink to this definition">¶</a></dt>
+<dd><p>this function accepts a Voltage vector and current vector
+and returns a Bayesian inferred result for R(V) and capacitance
+Used for solving the situation I = V/R(V) + CdV/dt
+to recover R(V) and C, where C is constant.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>V</strong> (<em>1D array</em><em> or </em><em>list</em>) – voltage values</li>
+<li><strong>IV_point</strong> (<em>1D array</em><em> or </em><em>list</em>) – current values, should be in nA</li>
+<li><strong>freq</strong> (<em>float</em>) – frequency of applied waveform</li>
+<li><strong>num_x_steps</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>, </em><em>Default = 251</em><em>)</em>) – Number of steps in x vector (interpolating V)</li>
+<li><strong>gam</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 0.03</em><em>)</em>) – gamma value for reconstruction</li>
+<li><strong>e</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 10.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>sigma</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 10.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>sigmaC</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>num_samples</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1E4</em><em>)</em>) – Number of samples. 1E+4 is more than sufficient</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>, </em><em>Default = False</em><em>)</em>) – Whether or not to show plots</li>
+<li><strong>econ</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>, </em><em>Default = False</em><em>)</em>) – Whether or not extra datasets are returned. Turn this on when running on multiple datasets</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>results_dict</strong> – Dictionary iterms are
+‘x’ : 1D float array.  Voltage vector interpolated with num_samples number of points
+‘m’ : Ask Kody
+‘mR’ : 1D float array.  Bayesian inference of the resistance. This is the one you want
+‘vR’ : 2D float array.  varaiance ? of inferred resistance
+‘Irec’ : 1D array or float.  Reconstructed current without capacitance
+‘Sigma’ : Ask Kody
+‘cValue’ : float.  Capacitance value
+‘m2R’ : Ask Kody
+‘SI’ : Ask Kody</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Dictionary</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.giv_utils.plot_bayesian_results">
+<code class="descname">plot_bayesian_results</code><span class="sig-paren">(</span><em>orig_bias, possibly_rolled_bias, i_meas, bias_interp, mr_vec, i_recon, vr_vec, split_directions, cap_val, freq, r_extra, pix_pos=[0, 0], broken_resistance=True, **kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#plot_bayesian_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.giv_utils.plot_bayesian_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the basic Bayesian Inference results for a specific pixel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>orig_bias</strong> (<em>1D float numpy array</em>) – Original bias vector used for experiment</li>
+<li><strong>possibly_rolled_bias</strong> (<em>1D float numpy array</em>) – Bias vector used for Bayesian inference</li>
+<li><strong>i_meas</strong> (<em>1D float numpy array</em>) – Current measured from experiment</li>
+<li><strong>bias_interp</strong> (<em>1D float numpy array</em>) – Interpolated bias</li>
+<li><strong>mr_vec</strong> (<em>1D float numpy array</em>) – Inferred resistance</li>
+<li><strong>i_recon</strong> (<em>1D float numpy array</em>) – Reconstructed current</li>
+<li><strong>vr_vec</strong> (<em>1D float numpy array</em>) – Variance of the resistance</li>
+<li><strong>split_directions</strong> (<em>Boolean</em>) – Whether or not to compute the forward and reverse portions of the loop separately</li>
+<li><strong>cap_val</strong> (<em>float</em>) – Inferred capacitance in nF</li>
+<li><strong>freq</strong> (<em>float</em>) – Excitation frequency</li>
+<li><strong>r_extra</strong> (<em>float</em>) – Resistance of extra resistor [Ohms] necessary to get correct resistance values</li>
+<li><strong>pix_pos</strong> (<em>list of two numbers</em>) – Pixel row and column positions or values</li>
+<li><strong>broken_resistance</strong> (<em>bool</em><em>, </em><em>Optional</em>) – Whether or not to break the resistance plots into sections so as to avoid plotting areas with high variance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fig</strong> – Handle to figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.pyplot figure handle</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.giv_utils.plot_bayesian_spot_from_h5">
+<code class="descname">plot_bayesian_spot_from_h5</code><span class="sig-paren">(</span><em>h5_bayesian_grp</em>, <em>h5_resh</em>, <em>pix_ind</em>, <em>r_extra_override=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#plot_bayesian_spot_from_h5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.giv_utils.plot_bayesian_spot_from_h5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the basic Bayesian Inference results for a specific pixel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_bayesian_grp</strong> (<em>h5py.Datagroup reference</em>) – Group containing the Bayesian Inference results</li>
+<li><strong>h5_resh</strong> (<em>h5py.Dataset reference</em>) – Dataset containing the raw / filtered measured current split by pixel</li>
+<li><strong>pix_ind</strong> (<em>unsigned int</em>) – Integer index of the desired pixel</li>
+<li><strong>r_extra_override</strong> (<em>float</em><em>, </em><em>Optional</em>) – Default - will not override</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fig</strong> – Handle to figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.pyplot figure handle</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt>
+<code class="descname">bayesian_inference_dataset</code><span class="sig-paren">(</span><em>h5_main</em>, <em>ex_freq</em>, <em>gain</em>, <em>split_directions=False</em>, <em>num_cores=None</em>, <em>num_x_steps=251</em>, <em>gam=0.03</em>, <em>e=10.0</em>, <em>sigma=10.0</em>, <em>sigmaC=1.0</em>, <em>num_samples=2000.0</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#bayesian_inference_dataset"><span class="viewcode-link">[source]</span></a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Reference to the dataset containing the IV spectroscopy data</li>
+<li><strong>ex_freq</strong> (<em>float</em>) – frequency of applied waveform</li>
+<li><strong>gain</strong> (<em>unsigned int</em>) – Amplifier gain such as 8 or 9, not 10^8 or 10^9</li>
+<li><strong>split_directions</strong> (<em>Boolean</em><em> (</em><em>Optional. Default = False</em><em>)</em>) – Whether or not to compute the forward and reverse portions of the loop separately</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = None</em><em>)</em>) – Number of cores to use for computation. Leave as None for adaptive decision.</li>
+<li><strong>num_x_steps</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1E+3</em><em>)</em>) – Number of steps in x vector (interpolating V)</li>
+<li><strong>gam</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 0.03</em><em>)</em>) – gamma value for reconstruction</li>
+<li><strong>e</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 10.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>sigma</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 10.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>sigmaC</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>num_samples</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1E4</em><em>)</em>) – Number of samples. 1E+4 is more than sufficient</li>
+<li><strong>verbose</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>, </em><em>Default = False</em><em>)</em>) – Whether or not to print the status messages for debugging purposes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_bayes_grp</strong> – Reference to the group containing all the results of the Bayesian Inference</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">h5py.DataGroup object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">bayesian_inference_unit</code><span class="sig-paren">(</span><em>single_parm</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#bayesian_inference_unit"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Wrapper around the original Bayesian inference function for parallel computing purposes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>single_parm</strong> (<em>tuple</em>) – The first index of the tuple should contain the IV data to be processed
+The second index of the tuple should contain the parameter dictionary necessary for the bayesian function.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">See the econ results of the original Bayesian Inference function</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">do_bayesian_inference</code><span class="sig-paren">(</span><em>V</em>, <em>IV_point</em>, <em>freq</em>, <em>num_x_steps=251</em>, <em>gam=0.03</em>, <em>e=10.0</em>, <em>sigma=10.0</em>, <em>sigmaC=1.0</em>, <em>num_samples=2000.0</em>, <em>show_plots=False</em>, <em>econ=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#do_bayesian_inference"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>this function accepts a Voltage vector and current vector
+and returns a Bayesian inferred result for R(V) and capacitance
+Used for solving the situation I = V/R(V) + CdV/dt
+to recover R(V) and C, where C is constant.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>V</strong> (<em>1D array</em><em> or </em><em>list</em>) – voltage values</li>
+<li><strong>IV_point</strong> (<em>1D array</em><em> or </em><em>list</em>) – current values, should be in nA</li>
+<li><strong>freq</strong> (<em>float</em>) – frequency of applied waveform</li>
+<li><strong>num_x_steps</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>, </em><em>Default = 251</em><em>)</em>) – Number of steps in x vector (interpolating V)</li>
+<li><strong>gam</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 0.03</em><em>)</em>) – gamma value for reconstruction</li>
+<li><strong>e</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 10.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>sigma</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 10.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>sigmaC</strong> (<em>float</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1.0</em><em>)</em>) – Ask Kody</li>
+<li><strong>num_samples</strong> (<em>unsigned int</em><em> (</em><em>Optional</em><em>, </em><em>Default = 1E4</em><em>)</em>) – Number of samples. 1E+4 is more than sufficient</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>, </em><em>Default = False</em><em>)</em>) – Whether or not to show plots</li>
+<li><strong>econ</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>, </em><em>Default = False</em><em>)</em>) – Whether or not extra datasets are returned. Turn this on when running on multiple datasets</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>results_dict</strong> – Dictionary iterms are
+‘x’ : 1D float array.  Voltage vector interpolated with num_samples number of points
+‘m’ : Ask Kody
+‘mR’ : 1D float array.  Bayesian inference of the resistance. This is the one you want
+‘vR’ : 2D float array.  varaiance ? of inferred resistance
+‘Irec’ : 1D array or float.  Reconstructed current without capacitance
+‘Sigma’ : Ask Kody
+‘cValue’ : float.  Capacitance value
+‘m2R’ : Ask Kody
+‘SI’ : Ask Kody</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Dictionary</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_bayesian_results</code><span class="sig-paren">(</span><em>orig_bias, possibly_rolled_bias, i_meas, bias_interp, mr_vec, i_recon, vr_vec, split_directions, cap_val, freq, r_extra, pix_pos=[0, 0], broken_resistance=True, **kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#plot_bayesian_results"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the basic Bayesian Inference results for a specific pixel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>orig_bias</strong> (<em>1D float numpy array</em>) – Original bias vector used for experiment</li>
+<li><strong>possibly_rolled_bias</strong> (<em>1D float numpy array</em>) – Bias vector used for Bayesian inference</li>
+<li><strong>i_meas</strong> (<em>1D float numpy array</em>) – Current measured from experiment</li>
+<li><strong>bias_interp</strong> (<em>1D float numpy array</em>) – Interpolated bias</li>
+<li><strong>mr_vec</strong> (<em>1D float numpy array</em>) – Inferred resistance</li>
+<li><strong>i_recon</strong> (<em>1D float numpy array</em>) – Reconstructed current</li>
+<li><strong>vr_vec</strong> (<em>1D float numpy array</em>) – Variance of the resistance</li>
+<li><strong>split_directions</strong> (<em>Boolean</em>) – Whether or not to compute the forward and reverse portions of the loop separately</li>
+<li><strong>cap_val</strong> (<em>float</em>) – Inferred capacitance in nF</li>
+<li><strong>freq</strong> (<em>float</em>) – Excitation frequency</li>
+<li><strong>r_extra</strong> (<em>float</em>) – Resistance of extra resistor [Ohms] necessary to get correct resistance values</li>
+<li><strong>pix_pos</strong> (<em>list of two numbers</em>) – Pixel row and column positions or values</li>
+<li><strong>broken_resistance</strong> (<em>bool</em><em>, </em><em>Optional</em>) – Whether or not to break the resistance plots into sections so as to avoid plotting areas with high variance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fig</strong> – Handle to figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.pyplot figure handle</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_bayesian_spot_from_h5</code><span class="sig-paren">(</span><em>h5_bayesian_grp</em>, <em>h5_resh</em>, <em>pix_ind</em>, <em>r_extra_override=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/processing/giv_utils.html#plot_bayesian_spot_from_h5"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the basic Bayesian Inference results for a specific pixel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_bayesian_grp</strong> (<em>h5py.Datagroup reference</em>) – Group containing the Bayesian Inference results</li>
+<li><strong>h5_resh</strong> (<em>h5py.Dataset reference</em>) – Dataset containing the raw / filtered measured current split by pixel</li>
+<li><strong>pix_ind</strong> (<em>unsigned int</em>) – Integer index of the desired pixel</li>
+<li><strong>r_extra_override</strong> (<em>float</em><em>, </em><em>Optional</em>) – Default - will not override</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fig</strong> – Handle to figure</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matplotlib.pyplot figure handle</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pycroscopy.processing.gmode_utils.html" class="btn btn-neutral float-right" title="pycroscopy.processing.gmode_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pycroscopy.processing.fft.html" class="btn btn-neutral" title="pycroscopy.processing.fft" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

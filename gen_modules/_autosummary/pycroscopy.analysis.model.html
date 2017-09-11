@@ -1,0 +1,747 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.analysis.model &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../index.html"/>
+        <link rel="up" title="pycroscopy.analysis" href="../pycroscopy.analysis.html"/>
+        <link rel="next" title="pycroscopy.analysis.optimize" href="pycroscopy.analysis.optimize.html"/>
+        <link rel="prev" title="pycroscopy.analysis.guess_methods" href="pycroscopy.analysis.guess_methods.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../pycroscopy.html">pycroscopy package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../pycroscopy.html#description">0. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pycroscopy.html#package-structure">1. Package Structure</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../pycroscopy.html#pycroscopy-modules">2. Pycroscopy Modules</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../pycroscopy.analysis.html">pycroscopy.analysis</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../pycroscopy.analysis.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.io.html">pycroscopy.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.processing.html">pycroscopy.processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pycroscopy.viz.html">pycroscopy.viz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../pycroscopy.html">pycroscopy package</a> &raquo;</li>
+        
+          <li><a href="../pycroscopy.analysis.html">pycroscopy.analysis</a> &raquo;</li>
+        
+      <li>pycroscopy.analysis.model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/gen_modules/_autosummary/pycroscopy.analysis.model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.analysis.model">
+<span id="pycroscopy-analysis-model"></span><h1>pycroscopy.analysis.model<a class="headerlink" href="#module-pycroscopy.analysis.model" title="Permalink to this headline">¶</a></h1>
+<p>Created on 7/17/16 10:08 AM
+&#64;author: Numan Laanait, Suhas Somnath, Chris Smith</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pycroscopy.analysis.model.Model">
+<em class="property">class </em><code class="descname">Model</code><span class="sig-paren">(</span><em>h5_main, variables=['Frequency'], parallel=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Encapsulates the typical routines performed during model-dependent analysis of data.
+This abstract class should be extended to cover different types of imaging modalities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset instance</em>) – The dataset over which the analysis will be performed. This dataset should be linked to the spectroscopic
+indices and values, and position indices and values datasets.</li>
+<li><strong>variables</strong> (<em>list</em><em>(</em><em>string</em><em>)</em><em>, </em><em>Default</em><em> [</em><em>'Frequency'</em><em>]</em>) – Lists of attributes that h5_main should possess so that it may be analyzed by Model.</li>
+<li><strong>parallel</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should the parallel implementation of the fitting be used.  Default True.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For now, we assume that the guess dataset has not been generated for this dataset but we will relax this
+requirement after testing the basic components.</p>
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._create_fit_dataset">
+<code class="descname">_create_fit_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._create_fit_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._create_fit_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model specific call that will write the HDF5 fit dataset. pycroscopy requires that the h5 group, guess dataset,
+corresponding spectroscopic and position datasets be created and populated at this point.
+This function will create the HDF5 dataset for the fit and link it to same ancillary datasets as the guess.
+The fit dataset will NOT be populated here but will instead be populated using the __setData function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._create_fit_datasets">
+<code class="descname">_create_fit_datasets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._create_fit_datasets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._create_fit_datasets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model specific call that will write the h5 group, fit dataset, corresponding spectroscopic datasets and also
+link the fit dataset to the spectroscopic datasets. It is recommended that the ancillary datasets be populated
+within this function.</p>
+<p>The fit dataset will NOT be populated here but will be populated by the __setData function
+The guess dataset should NOT be populated here unless the user calls the optimize function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._create_guess_datasets">
+<code class="descname">_create_guess_datasets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._create_guess_datasets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._create_guess_datasets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model specific call that will write the h5 group, guess dataset, corresponding spectroscopic datasets and also
+link the guess dataset to the spectroscopic datasets. It is recommended that the ancillary datasets be populated
+within this function.</p>
+<p>The guess dataset will NOT be populated here but will be populated by the __setData function
+The fit dataset should NOT be populated here unless the user calls the optimize function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._get_data_chunk">
+<code class="descname">_get_data_chunk</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._get_data_chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._get_data_chunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the next chunk of data for the guess or the fit into memory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to print log statements</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._get_guess_chunk">
+<code class="descname">_get_guess_chunk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._get_guess_chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._get_guess_chunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a chunk of guess dataset corresponding to the main dataset.
+Should be called BEFORE _get_data_chunk since it relies upon current values of
+<cite>self._start_pos</cite>, <cite>self._end_pos</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._is_legal">
+<code class="descname">_is_legal</code><span class="sig-paren">(</span><em>h5_main</em>, <em>variables</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._is_legal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._is_legal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether or not the provided object can be analyzed by this Model class.
+Classes that extend this class will do additional checks to ensure that the supplied dataset is legal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset instance</em>) – The dataset over which the analysis will be performed. This dataset should be linked to the spectroscopic
+indices and values, and position indices and values datasets.</li>
+<li><strong>variables</strong> (<em>list</em><em>(</em><em>string</em><em>)</em>) – The dimensions needed to be present in the attributes of h5_main to analyze the data with Model.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>legal</strong> – Whether or not this dataset satisfies the necessary conditions for analysis</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._reformat_results">
+<code class="descname">_reformat_results</code><span class="sig-paren">(</span><em>results</em>, <em>strategy='wavelet_peaks'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._reformat_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._reformat_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model specific restructuring / reformatting of the parallel compute results</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>results</strong> (<em>array-like</em>) – Results to be formatted for writing</li>
+<li><strong>strategy</strong> (<em>str</em>) – The strategy used in the fit.  Determines how the results will be reformatted.
+Default ‘wavelet_peaks’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>results</strong> – Formatted array that is ready to be writen to the HDF5 file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._set_memory_and_cores">
+<code class="descname">_set_memory_and_cores</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._set_memory_and_cores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._set_memory_and_cores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks hardware limitations such as memory, # cpus and sets the recommended datachunk sizes and the
+number of cores to be used by analysis methods.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>)</em>) – Whether or not to print log statements</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model._set_results">
+<code class="descname">_set_results</code><span class="sig-paren">(</span><em>is_guess=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._set_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model._set_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the provided guess or fit results into appropriate datasets.
+Given that the guess and fit datasets are relatively small, we should be able to hold them in memory just fine</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>is_guess</strong> (<em>bool</em><em>, </em><em>optional</em>) – Default - False
+Flag that differentiates the guess from the fit</li>
+<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Default - False
+Whether or not to print log statements</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model.do_fit">
+<code class="descname">do_fit</code><span class="sig-paren">(</span><em>processors=None</em>, <em>solver_type='least_squares'</em>, <em>solver_options={'jac': '2-point'}</em>, <em>obj_func={'class': 'Fit_Methods'</em>, <em>'obj_func': 'SHO'</em>, <em>'xvals': array([]</em>, <em>dtype=float64)}</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model.do_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model.do_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the fit for the given dataset and writes back to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>processors</strong> (<em>int</em>) – Number of cpu cores the user wishes to run on.  The minimum of this and self._maxCpus is used.</li>
+<li><strong>solver_type</strong> (<em>str</em>) – The name of the solver in scipy.optimize to use for the fit</li>
+<li><strong>solver_options</strong> (<em>dict</em>) – Dictionary of parameters to pass to the solver specified by <cite>solver_type</cite></li>
+<li><strong>obj_func</strong> (<em>dict</em>) – Dictionary defining the class and method containing the function to be fit as well as any
+additional function parameters.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.model.Model.do_guess">
+<code class="descname">do_guess</code><span class="sig-paren">(</span><em>processors=None</em>, <em>strategy='wavelet_peaks'</em>, <em>options={'peak_widths': array([ 10</em>, <em>200])</em>, <em>'peak_step': 20}</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model.do_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.model.Model.do_guess" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>strategy</strong> (<em>string</em><em> (</em><em>optional</em><em>)</em>) – Default is ‘Wavelet_Peaks’.
+Can be one of [‘wavelet_peaks’, ‘relative_maximum’, ‘gaussian_processes’].
+For updated list, run GuessMethods.methods</li>
+<li><strong>processors</strong> (<em>int</em><em> (</em><em>optional</em><em>)</em>) – Number of cores to use for computing. Default = all available - 2 cores</li>
+<li><strong>options</strong> (<em>dict</em>) – Default, options for wavelet_peaks {“peaks_widths”: np.array([10,200]), “peak_step”:20}.
+Dictionary of options passed to strategy. For more info see GuessMethods documentation.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">Model</code><span class="sig-paren">(</span><em>h5_main, variables=['Frequency'], parallel=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Encapsulates the typical routines performed during model-dependent analysis of data.
+This abstract class should be extended to cover different types of imaging modalities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset instance</em>) – The dataset over which the analysis will be performed. This dataset should be linked to the spectroscopic
+indices and values, and position indices and values datasets.</li>
+<li><strong>variables</strong> (<em>list</em><em>(</em><em>string</em><em>)</em><em>, </em><em>Default</em><em> [</em><em>'Frequency'</em><em>]</em>) – Lists of attributes that h5_main should possess so that it may be analyzed by Model.</li>
+<li><strong>parallel</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should the parallel implementation of the fitting be used.  Default True.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For now, we assume that the guess dataset has not been generated for this dataset but we will relax this
+requirement after testing the basic components.</p>
+<dl class="method">
+<dt>
+<code class="descname">_create_fit_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._create_fit_dataset"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Model specific call that will write the HDF5 fit dataset. pycroscopy requires that the h5 group, guess dataset,
+corresponding spectroscopic and position datasets be created and populated at this point.
+This function will create the HDF5 dataset for the fit and link it to same ancillary datasets as the guess.
+The fit dataset will NOT be populated here but will instead be populated using the __setData function</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_create_fit_datasets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._create_fit_datasets"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Model specific call that will write the h5 group, fit dataset, corresponding spectroscopic datasets and also
+link the fit dataset to the spectroscopic datasets. It is recommended that the ancillary datasets be populated
+within this function.</p>
+<p>The fit dataset will NOT be populated here but will be populated by the __setData function
+The guess dataset should NOT be populated here unless the user calls the optimize function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_create_guess_datasets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._create_guess_datasets"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Model specific call that will write the h5 group, guess dataset, corresponding spectroscopic datasets and also
+link the guess dataset to the spectroscopic datasets. It is recommended that the ancillary datasets be populated
+within this function.</p>
+<p>The guess dataset will NOT be populated here but will be populated by the __setData function
+The fit dataset should NOT be populated here unless the user calls the optimize function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_get_data_chunk</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._get_data_chunk"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Reads the next chunk of data for the guess or the fit into memory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to print log statements</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_get_guess_chunk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._get_guess_chunk"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns a chunk of guess dataset corresponding to the main dataset.
+Should be called BEFORE _get_data_chunk since it relies upon current values of
+<cite>self._start_pos</cite>, <cite>self._end_pos</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_is_legal</code><span class="sig-paren">(</span><em>h5_main</em>, <em>variables</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._is_legal"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Checks whether or not the provided object can be analyzed by this Model class.
+Classes that extend this class will do additional checks to ensure that the supplied dataset is legal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset instance</em>) – The dataset over which the analysis will be performed. This dataset should be linked to the spectroscopic
+indices and values, and position indices and values datasets.</li>
+<li><strong>variables</strong> (<em>list</em><em>(</em><em>string</em><em>)</em>) – The dimensions needed to be present in the attributes of h5_main to analyze the data with Model.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>legal</strong> – Whether or not this dataset satisfies the necessary conditions for analysis</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_reformat_results</code><span class="sig-paren">(</span><em>results</em>, <em>strategy='wavelet_peaks'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._reformat_results"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Model specific restructuring / reformatting of the parallel compute results</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>results</strong> (<em>array-like</em>) – Results to be formatted for writing</li>
+<li><strong>strategy</strong> (<em>str</em>) – The strategy used in the fit.  Determines how the results will be reformatted.
+Default ‘wavelet_peaks’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>results</strong> – Formatted array that is ready to be writen to the HDF5 file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_set_memory_and_cores</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._set_memory_and_cores"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Checks hardware limitations such as memory, # cpus and sets the recommended datachunk sizes and the
+number of cores to be used by analysis methods.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>)</em>) – Whether or not to print log statements</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_set_results</code><span class="sig-paren">(</span><em>is_guess=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model._set_results"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Writes the provided guess or fit results into appropriate datasets.
+Given that the guess and fit datasets are relatively small, we should be able to hold them in memory just fine</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>is_guess</strong> (<em>bool</em><em>, </em><em>optional</em>) – Default - False
+Flag that differentiates the guess from the fit</li>
+<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Default - False
+Whether or not to print log statements</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">do_fit</code><span class="sig-paren">(</span><em>processors=None</em>, <em>solver_type='least_squares'</em>, <em>solver_options={'jac': '2-point'}</em>, <em>obj_func={'class': 'Fit_Methods'</em>, <em>'obj_func': 'SHO'</em>, <em>'xvals': array([]</em>, <em>dtype=float64)}</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model.do_fit"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Generates the fit for the given dataset and writes back to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>processors</strong> (<em>int</em>) – Number of cpu cores the user wishes to run on.  The minimum of this and self._maxCpus is used.</li>
+<li><strong>solver_type</strong> (<em>str</em>) – The name of the solver in scipy.optimize to use for the fit</li>
+<li><strong>solver_options</strong> (<em>dict</em>) – Dictionary of parameters to pass to the solver specified by <cite>solver_type</cite></li>
+<li><strong>obj_func</strong> (<em>dict</em>) – Dictionary defining the class and method containing the function to be fit as well as any
+additional function parameters.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">do_guess</code><span class="sig-paren">(</span><em>processors=None</em>, <em>strategy='wavelet_peaks'</em>, <em>options={'peak_widths': array([ 10</em>, <em>200])</em>, <em>'peak_step': 20}</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pycroscopy/analysis/model.html#Model.do_guess"><span class="viewcode-link">[source]</span></a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>strategy</strong> (<em>string</em><em> (</em><em>optional</em><em>)</em>) – Default is ‘Wavelet_Peaks’.
+Can be one of [‘wavelet_peaks’, ‘relative_maximum’, ‘gaussian_processes’].
+For updated list, run GuessMethods.methods</li>
+<li><strong>processors</strong> (<em>int</em><em> (</em><em>optional</em><em>)</em>) – Number of cores to use for computing. Default = all available - 2 cores</li>
+<li><strong>options</strong> (<em>dict</em>) – Default, options for wavelet_peaks {“peaks_widths”: np.array([10,200]), “peak_step”:20}.
+Dictionary of options passed to strategy. For more info see GuessMethods documentation.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pycroscopy.analysis.optimize.html" class="btn btn-neutral float-right" title="pycroscopy.analysis.optimize" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pycroscopy.analysis.guess_methods.html" class="btn btn-neutral" title="pycroscopy.analysis.guess_methods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

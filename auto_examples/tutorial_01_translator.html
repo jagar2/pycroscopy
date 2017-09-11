@@ -1,0 +1,559 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tutorial 1: Data Translation &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/>
+        <link rel="up" title="Pycroscopy Gallery" href="index.html"/>
+        <link rel="next" title="Spectral Unmixing" href="plot_spectral_unmixing.html"/>
+        <link rel="prev" title="Tutorial 4: Parallel Computing" href="tutorial_04_parallel_computing.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Pycroscopy Gallery</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="microdata_example.html">Writing to hdf5 using the Microdata objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_dataset_example.html">Load Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_04_parallel_computing.html">Tutorial 4: Parallel Computing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial 1: Data Translation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction-to-data-translation">Introduction to Data Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-your-first-data-translator">Writing Your First Data Translator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-the-notebook">Setting up the notebook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-the-raw-data-file">0. Select the Raw Data file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exploring-the-raw-data-file">1. Exploring the Raw Data File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-the-data">2. Loading the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-the-parameters">3. Read the parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-prepare-to-read-the-data">3.a Prepare to read the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#b-read-the-data">3.b Read the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-preparing-some-necessary-parameters">4.a Preparing some necessary parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#b-calling-the-numpytranslator-to-create-the-pycroscopy-data-file">4b. Calling the NumpyTranslator to create the pycroscopy data file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notes-on-pycroscopy-translation">Notes on pycroscopy translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verifying-the-newly-written-h5-file">Verifying the newly written H5 file:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plot_spectral_unmixing.html">Spectral Unmixing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_05_data_processing.html">Tutorial 5: Formalizing Data Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_02_writing_to_h5.html">Tutorial 2: Writing to pycroscopy H5 files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_03_multidimensional_data.html">Tutorial 3: Handling Multidimensional datasets</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Pycroscopy Gallery</a> &raquo;</li>
+        
+      <li>Tutorial 1: Data Translation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auto_examples/tutorial_01_translator.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorial-1-data-translation">
+<span id="sphx-glr-auto-examples-tutorial-01-translator-py"></span><h1>Tutorial 1: Data Translation<a class="headerlink" href="#tutorial-1-data-translation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Suhas Somnath</strong>
+8/8/2017</p>
+<p>This set of tutorials will serve as examples for developing end-to-end workflows for and using pycroscopy.</p>
+<p><strong>In this example, we extract data and parameters from a Scanning Tunnelling Spectroscopy (STS) raw data file, as
+obtained from an Omicron STM, and write these to a pycroscopy compatible data file.</strong></p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites:<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>Before proceeding with this example series, we recommend reading the previous documents to learn more about:</p>
+<ol class="arabic simple">
+<li><dl class="first docutils">
+<dt>Data and file formats</dt>
+<dd><ul class="first last">
+<li>Why you should care about data formats</li>
+<li>Current state of data formats in microscopy</li>
+<li>Structuring data in pycroscopy</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>HDF5 file format</li>
+</ol>
+</div>
+<div class="section" id="introduction-to-data-translation">
+<h2>Introduction to Data Translation<a class="headerlink" href="#introduction-to-data-translation" title="Permalink to this headline">¶</a></h2>
+<p>Before any data analysis, we need to access data stored in the raw file(s) generated by the microscope. Often, the
+data and parameters in these files are <strong>not</strong> straightforward to access. In certain cases, additional / dedicated
+software packages are necessary to access the data while in many other cases, it is possible to extract the necessary
+information from built-in <strong>numpy</strong> or similar python packages included with <strong>anaconda</strong>.</p>
+<p>Pycroscopy aims to make data access, storage, curation, etc. simply by storing the data along with all
+relevant parameters in a single <strong>.hdf5</strong> or <strong>.h5</strong> file.</p>
+<p>The process of copying data from the original format to <strong>pycroscopy compatible hdf5 files</strong> is called
+<strong>Translation</strong> and the classes available in pycroscopy that perform these operation are called <strong>Translators</strong></p>
+</div>
+<div class="section" id="writing-your-first-data-translator">
+<h2>Writing Your First Data Translator<a class="headerlink" href="#writing-your-first-data-translator" title="Permalink to this headline">¶</a></h2>
+<p><strong>The goal in this section is to trandslate the .asc file obtained from an Omicron microscope into a pycroscopy
+compatible .h5 file.</strong></p>
+<p>While there is an <strong>AscTranslator</strong> avialable in pycroscopy that can translate these files in just a <strong>single</strong> line,
+we will intentionally assume that no such translator is avialable. Using a handful of useful functions in pycroscopy,
+we will translate the files from the source <strong>.asc</strong> format to the pycroscopy compatible <strong>.h5</strong> in just a few lines.
+The code developed below is essentially the <strong>AscTranslator</strong>. The same methodology can be used to translate other data
+formats</p>
+</div>
+<div class="section" id="setting-up-the-notebook">
+<h2>Setting up the notebook<a class="headerlink" href="#setting-up-the-notebook" title="Permalink to this headline">¶</a></h2>
+<p>There are a few setup procedures that need to be followed before any code is written. In this step, we simply load a
+few python packages that will be necessary in the later steps.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Ensure python 3 compatibility:</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="c1"># In case some of these packages are not installed, install them</span>
+<span class="c1">#!pip install -U os wget numpy h5py matplotlib pycroscopy</span>
+
+<span class="c1"># The package for accessing files in directories, etc.:</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">wget</span>
+
+<span class="c1"># The mathematical computation package:</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c1"># The package used for creating and manipulating HDF5 files:</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+
+<span class="c1"># Packages for plotting:</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Finally import pycroscopy for certain scientific analysis:</span>
+<span class="kn">import</span> <span class="nn">pycroscopy</span> <span class="kn">as</span> <span class="nn">px</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="select-the-raw-data-file">
+<h2>0. Select the Raw Data file<a class="headerlink" href="#select-the-raw-data-file" title="Permalink to this headline">¶</a></h2>
+<p>Download the data file from Github:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/pycroscopy/pycroscopy/master/data/STS.asc&#39;</span>
+<span class="n">data_file_path</span> <span class="o">=</span> <span class="s1">&#39;temp_1.asc&#39;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data_file_path</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exploring-the-raw-data-file">
+<h2>1. Exploring the Raw Data File<a class="headerlink" href="#exploring-the-raw-data-file" title="Permalink to this headline">¶</a></h2>
+<p>Inherently, one may not know how to read these <strong>.asc</strong> files. One option is to try and read the file as a text file
+one line at a time.</p>
+<p>It turns out that these .asc files are effectively the standard <strong>ASCII</strong> text files.</p>
+<p>Here is how we tested to see if the <strong>asc</strong> files could be interpreted as text files. Below, we read just thefirst 10
+lines in the file</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_handle</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">lin_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">file_handle</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="c1"># File Format = ASCII</span>
+
+<span class="c1"># Created by SPIP 4.6.5.0 2016-09-22 13:32</span>
+
+<span class="c1"># Original file: C:\Users\Administrator\AppData\Roaming\Omicron NanoTechnology\MATRIX\default\Results\16-Sep-2016\I(V) TraceUp Tue Sep 20 09.17.08 2016 [14-1]  STM_Spectroscopy STM</span>
+
+<span class="c1"># x-pixels = 100</span>
+
+<span class="c1"># y-pixels = 100</span>
+
+<span class="c1"># x-length = 29.7595</span>
+
+<span class="c1"># y-length = 29.7595</span>
+
+<span class="c1"># x-offset = -967.807</span>
+
+<span class="c1"># y-offset = -781.441</span>
+
+<span class="c1"># z-points = 500</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="loading-the-data">
+<h2>2. Loading the data<a class="headerlink" href="#loading-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Now that we know that these files are simple text files, we can manually go through the file to find out which lines
+are important, at what lines the data starts etc.
+Manual investigation of such .asc files revealed that these files are always formatted in the same way. Also, they
+contain parameters in the first 403 lines and then contain data which is arranged as one pixel per row.
+STS experiments result in 3 dimensional datasets (X, Y, current). In other words, a 1D array of current data (as a
+function of excitation bias) is sampled at every location on a two dimensional grid of points on the sample.
+By knowing where the parameters are located and how the data is structured, it is possible to extract the necessary
+information from these files.
+Since we know that the data sizes (&lt;200 MB) are much smaller than the physical memory of most computers, we can start
+by safely loading the contents of the entire file to memory</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Extracting the raw data into memory</span>
+<span class="n">file_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">string_lines</span> <span class="o">=</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="n">file_handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-the-parameters">
+<h2>3. Read the parameters<a class="headerlink" href="#read-the-parameters" title="Permalink to this headline">¶</a></h2>
+<p>The parameters in these files are present in the first few lines of the file</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Reading parameters stored in the first few rows of the file</span>
+<span class="n">parm_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">string_lines</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">17</span><span class="p">]:</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;# &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+        <span class="c1"># convert those values that should be integers:</span>
+        <span class="k">if</span> <span class="n">test</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">test</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="n">parm_dict</span><span class="p">[</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">test</span>
+
+<span class="c1"># Print out the parameters extracted</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parm_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;:</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">parm_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">-</span><span class="n">pixels</span> <span class="p">:</span>       <span class="mi">100</span>
+<span class="n">y</span><span class="o">-</span><span class="n">pixels</span> <span class="p">:</span>       <span class="mi">100</span>
+<span class="n">x</span><span class="o">-</span><span class="n">length</span> <span class="p">:</span>       <span class="mf">29.7595</span>
+<span class="n">y</span><span class="o">-</span><span class="n">length</span> <span class="p">:</span>       <span class="mf">29.7595</span>
+<span class="n">x</span><span class="o">-</span><span class="n">offset</span> <span class="p">:</span>       <span class="o">-</span><span class="mf">967.807</span>
+<span class="n">y</span><span class="o">-</span><span class="n">offset</span> <span class="p">:</span>       <span class="o">-</span><span class="mf">781.441</span>
+<span class="n">z</span><span class="o">-</span><span class="n">points</span> <span class="p">:</span>       <span class="mi">500</span>
+<span class="n">z</span><span class="o">-</span><span class="n">section</span> <span class="p">:</span>      <span class="mi">491</span>
+<span class="n">z</span><span class="o">-</span><span class="n">unit</span> <span class="p">:</span>         <span class="n">nV</span>
+<span class="n">z</span><span class="o">-</span><span class="nb">range</span> <span class="p">:</span>        <span class="mi">2000000000</span>
+<span class="n">z</span><span class="o">-</span><span class="n">offset</span> <span class="p">:</span>       <span class="mf">1116.49</span>
+<span class="n">value</span><span class="o">-</span><span class="n">unit</span> <span class="p">:</span>     <span class="n">nA</span>
+<span class="n">scanspeed</span> <span class="p">:</span>      <span class="mi">59519000000</span>
+<span class="n">voidpixels</span> <span class="p">:</span>     <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-prepare-to-read-the-data">
+<h2>3.a Prepare to read the data<a class="headerlink" href="#a-prepare-to-read-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Before we read the data, we need to make an empty array to store all this data. In order to do this, we need to read
+the dictionary of parameters we made in step 2 and extract necessary quantities</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">num_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parm_dict</span><span class="p">[</span><span class="s1">&#39;y-pixels&#39;</span><span class="p">])</span>
+<span class="n">num_cols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parm_dict</span><span class="p">[</span><span class="s1">&#39;x-pixels&#39;</span><span class="p">])</span>
+<span class="n">num_pos</span> <span class="o">=</span> <span class="n">num_rows</span> <span class="o">*</span> <span class="n">num_cols</span>
+<span class="n">spectra_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parm_dict</span><span class="p">[</span><span class="s1">&#39;z-points&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="b-read-the-data">
+<h2>3.b Read the data<a class="headerlink" href="#b-read-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Data is present after the first 403 lines of parameters.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># num_headers = len(string_lines) - num_pos</span>
+<span class="n">num_headers</span> <span class="o">=</span> <span class="mi">403</span>
+
+<span class="c1"># Extract the STS data from subsequent lines</span>
+<span class="n">raw_data_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_pos</span><span class="p">,</span> <span class="n">spectra_length</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">line_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pos</span><span class="p">):</span>
+    <span class="n">this_line</span> <span class="o">=</span> <span class="n">string_lines</span><span class="p">[</span><span class="n">num_headers</span> <span class="o">+</span> <span class="n">line_ind</span><span class="p">]</span>
+    <span class="n">string_spectrum</span> <span class="o">=</span> <span class="n">this_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># omitting the new line</span>
+    <span class="n">raw_data_2d</span><span class="p">[</span><span class="n">line_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">string_spectrum</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-preparing-some-necessary-parameters">
+<h2>4.a Preparing some necessary parameters<a class="headerlink" href="#a-preparing-some-necessary-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">max_v</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># This is the one parameter we are not sure about</span>
+
+<span class="n">folder_path</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">)</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span>
+
+<span class="c1"># Generate the x / voltage / spectroscopic axis:</span>
+<span class="n">volt_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">max_v</span><span class="p">,</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">max_v</span><span class="p">,</span> <span class="n">spectra_length</span><span class="p">)</span>
+
+<span class="n">h5_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">+</span> <span class="s1">&#39;.h5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="b-calling-the-numpytranslator-to-create-the-pycroscopy-data-file">
+<h2>4b. Calling the NumpyTranslator to create the pycroscopy data file<a class="headerlink" href="#b-calling-the-numpytranslator-to-create-the-pycroscopy-data-file" title="Permalink to this headline">¶</a></h2>
+<p>The NumpyTranslator simplifies the ceation of pycroscopy compatible datasets. It handles the file creation,
+dataset creation and writing, creation of ancillary datasets, datagroup creation, writing parameters, linking
+ancillary datasets to the main dataset etc. With a single call to the NumpyTranslator, we complete the translation
+process.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">tran</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">NumpyTranslator</span><span class="p">()</span>
+<span class="n">h5_path</span> <span class="o">=</span> <span class="n">tran</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">h5_path</span><span class="p">,</span> <span class="n">raw_data_2d</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">,</span>
+                         <span class="n">qty_name</span><span class="o">=</span><span class="s1">&#39;Current&#39;</span><span class="p">,</span> <span class="n">data_unit</span><span class="o">=</span><span class="s1">&#39;nA&#39;</span><span class="p">,</span> <span class="n">spec_name</span><span class="o">=</span><span class="s1">&#39;Bias&#39;</span><span class="p">,</span>
+                         <span class="n">spec_unit</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">spec_val</span><span class="o">=</span><span class="n">volt_vec</span><span class="p">,</span> <span class="n">scan_height</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                         <span class="n">scan_width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">spatial_unit</span><span class="o">=</span><span class="s1">&#39;nm&#39;</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;STS&#39;</span><span class="p">,</span>
+                         <span class="n">translator_name</span><span class="o">=</span><span class="s1">&#39;ASC&#39;</span><span class="p">,</span> <span class="n">parms_dict</span><span class="o">=</span><span class="n">parm_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="notes-on-pycroscopy-translation">
+<h2>Notes on pycroscopy translation<a class="headerlink" href="#notes-on-pycroscopy-translation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Steps 1-3 would be performed anyway in order to begin data analysis</li>
+<li>The actual pycroscopy translation step are reduced to just 3-4 lines in step 4.</li>
+<li>While this approach is feasible and encouraged for simple and small data, it may be necessary to use lower level</li>
+</ul>
+<p>calls to write efficient translators</p>
+</div>
+<div class="section" id="verifying-the-newly-written-h5-file">
+<h2>Verifying the newly written H5 file:<a class="headerlink" href="#verifying-the-newly-written-h5-file" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>We will only perform some simple and quick verification to show that the data has indeed been translated corectly.</li>
+<li>Please see the next notebook in the example series to learn more about reading and accessing data.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">h5_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">h5_file</span><span class="p">:</span>
+    <span class="c1"># See if a tree has been created within the hdf5 file:</span>
+    <span class="n">px</span><span class="o">.</span><span class="n">hdf_utils</span><span class="o">.</span><span class="n">print_tree</span><span class="p">(</span><span class="n">h5_file</span><span class="p">)</span>
+
+    <span class="n">h5_main</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="s1">&#39;Measurement_000/Channel_000/Raw_Data&#39;</span><span class="p">]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">spat_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">h5_main</span><span class="p">[:,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+    <span class="n">px</span><span class="o">.</span><span class="n">plot_utils</span><span class="o">.</span><span class="n">plot_map</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spat_map</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Spatial map&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                 <span class="n">h5_main</span><span class="p">[</span><span class="mi">250</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;IV curve at a single pixel&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Tip bias [V]&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Current [nA]&#39;</span><span class="p">)</span>
+
+<span class="c1"># Remove both the original and translated files:</span>
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">h5_path</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_tutorial_01_translator_001.png" class="align-center" src="../_images/sphx_glr_tutorial_01_translator_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span>
+<span class="n">Measurement_000</span>
+<span class="n">Measurement_000</span><span class="o">/</span><span class="n">Channel_000</span>
+<span class="n">Measurement_000</span><span class="o">/</span><span class="n">Channel_000</span><span class="o">/</span><span class="n">Position_Indices</span>
+<span class="n">Measurement_000</span><span class="o">/</span><span class="n">Channel_000</span><span class="o">/</span><span class="n">Position_Values</span>
+<span class="n">Measurement_000</span><span class="o">/</span><span class="n">Channel_000</span><span class="o">/</span><span class="n">Raw_Data</span>
+<span class="n">Measurement_000</span><span class="o">/</span><span class="n">Channel_000</span><span class="o">/</span><span class="n">Spectroscopic_Indices</span>
+<span class="n">Measurement_000</span><span class="o">/</span><span class="n">Channel_000</span><span class="o">/</span><span class="n">Spectroscopic_Values</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  3.679 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/tutorial_01_translator.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">tutorial_01_translator.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/tutorial_01_translator.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">tutorial_01_translator.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="plot_spectral_unmixing.html" class="btn btn-neutral float-right" title="Spectral Unmixing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial_04_parallel_computing.html" class="btn btn-neutral" title="Tutorial 4: Parallel Computing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

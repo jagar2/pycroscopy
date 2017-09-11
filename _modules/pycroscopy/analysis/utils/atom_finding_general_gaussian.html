@@ -1,0 +1,835 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.analysis.utils.atom_finding_general_gaussian &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.analysis.utils.atom_finding_general_gaussian</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.analysis.utils.atom_finding_general_gaussian</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">@author: Ondrej Dyck</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">least_squares</span>
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">itt</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">tm</span>
+<span class="kn">from</span> <span class="nn">_warnings</span> <span class="k">import</span> <span class="n">warn</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">...io.io_utils</span> <span class="k">import</span> <span class="n">recommendCores</span><span class="p">,</span> <span class="n">realToCompound</span>
+<span class="kn">from</span> <span class="nn">...io.microdata</span> <span class="k">import</span> <span class="n">MicroDataset</span><span class="p">,</span> <span class="n">MicroDataGroup</span>
+<span class="kn">from</span> <span class="nn">...io.io_hdf5</span> <span class="k">import</span> <span class="n">ioHDF5</span>
+<span class="kn">from</span> <span class="nn">...viz</span> <span class="k">import</span> <span class="n">plot_utils</span>
+<span class="kn">from</span> <span class="nn">..model</span> <span class="k">import</span> <span class="n">Model</span>
+
+
+<div class="viewcode-block" id="do_fit"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.do_fit">[docs]</a><span class="k">def</span> <span class="nf">do_fit</span><span class="p">(</span><span class="n">single_parm</span><span class="p">):</span>
+    <span class="n">parms</span> <span class="o">=</span> <span class="n">single_parm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">coef_guess_mat</span> <span class="o">=</span> <span class="n">parms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">fit_region</span> <span class="o">=</span> <span class="n">parms</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">s1</span> <span class="o">=</span> <span class="n">parms</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">s2</span> <span class="o">=</span> <span class="n">parms</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">lb_mat</span> <span class="o">=</span> <span class="n">parms</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">ub_mat</span> <span class="o">=</span> <span class="n">parms</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="n">single_parm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">max_function_evals</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_function_evals&#39;</span><span class="p">]</span>
+    <span class="n">plsq</span> <span class="o">=</span> <span class="n">least_squares</span><span class="p">(</span><span class="n">gauss_2d_residuals</span><span class="p">,</span>
+                         <span class="n">coef_guess_mat</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                         <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">fit_region</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">s1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">s2</span><span class="o">.</span><span class="n">T</span><span class="p">),</span>
+                         <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span>
+                         <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">lb_mat</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">ub_mat</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span>
+                         <span class="n">jac</span><span class="o">=</span><span class="s1">&#39;2-point&#39;</span><span class="p">,</span> <span class="n">max_nfev</span><span class="o">=</span><span class="n">max_function_evals</span><span class="p">)</span>
+
+    <span class="n">coef_fit_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">plsq</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+    <span class="c1"># if verbose:</span>
+    <span class="c1">#    return coef_guess_mat, lb_mat, ub_mat, coef_fit_mat, fit_region, s_mat, plsq</span>
+    <span class="c1"># else:</span>
+    <span class="k">return</span> <span class="n">coef_fit_mat</span></div>
+
+
+<div class="viewcode-block" id="gauss_2d_residuals"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.gauss_2d_residuals">[docs]</a><span class="k">def</span> <span class="nf">gauss_2d_residuals</span><span class="p">(</span><span class="n">parms_vec</span><span class="p">,</span> <span class="n">orig_data_mat</span><span class="p">,</span> <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the residual</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parms_vec : 1D numpy.ndarray</span>
+<span class="sd">        Raveled version of the parameters matrix</span>
+<span class="sd">    orig_data_mat : 2D numpy array</span>
+<span class="sd">        Section of the image being fitted</span>
+<span class="sd">    x_data : 3D numpy.ndarray</span>
+
+<span class="sd">    y_data : numpy.ndarray</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    err_vec : 1D numpy.ndarray</span>
+<span class="sd">        Difference between the original data and the matrix obtained by evaluating parms_vec with x_data_mat</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Only need to reshape the parms from 1D to 2D</span>
+    <span class="n">parms_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">parms_vec</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="c1"># print(parms_mat)</span>
+
+    <span class="n">err</span> <span class="o">=</span> <span class="n">orig_data_mat</span> <span class="o">-</span> <span class="n">gauss2d</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="o">*</span><span class="n">parms_mat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">err</span></div>
+
+
+<div class="viewcode-block" id="gauss2d"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.gauss2d">[docs]</a><span class="k">def</span> <span class="nf">gauss2d</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="o">*</span><span class="n">parms</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates a general 2d elliptic gaussian</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    X, Y : the x and y matrix values from the call &quot;X, Y = np.meshgrid(x,y)&quot; where x and y are</span>
+<span class="sd">        defined by x = np.arange(-width/2,width/2) and y = np.arange(-height/2,height/2). </span>
+
+<span class="sd">    parms: List of 7 parameters defining the gaussian.</span>
+<span class="sd">        The parameters are [A, x0, y0, sigma_x, sigma_y, theta, background]</span>
+<span class="sd">            A : amplitude</span>
+<span class="sd">            x0: x position</span>
+<span class="sd">            y0: y position</span>
+<span class="sd">            sigma_x: standard deviation in x</span>
+<span class="sd">            sigma_y: standard deviation in y</span>
+<span class="sd">            theta: rotation angle</span>
+<span class="sd">            background: a background constant</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    Returns a width x height matrix of values representing the call to the gaussian function at each position. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">symmetric</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;symmetric&#39;</span><span class="p">]</span>
+    <span class="n">background</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="n">background_value</span> <span class="o">=</span> <span class="n">parms</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># we can only have one background value for the fit region</span>
+    <span class="k">for</span> <span class="n">guess</span> <span class="ow">in</span> <span class="n">parms</span><span class="p">:</span>
+        <span class="c1"># each gaussian has a background associated with it but we only use the center atom background</span>
+        <span class="n">A</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">background_unused</span> <span class="o">=</span> <span class="n">guess</span>
+
+        <span class="c1"># determine which type of gaussian we want</span>
+        <span class="k">if</span> <span class="n">symmetric</span><span class="p">:</span>
+            <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">sigma_x</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">background</span><span class="p">:</span>
+                <span class="n">background</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">background</span><span class="p">:</span>
+                <span class="n">background</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># define some variables</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">sigma_x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">sigma_y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># calculate the final value</span>
+        <span class="n">Z</span> <span class="o">+=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">background_value</span>
+    <span class="k">return</span> <span class="n">Z</span></div>
+
+
+<div class="viewcode-block" id="Gauss_Fit"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit">[docs]</a><span class="k">class</span> <span class="nc">Gauss_Fit</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes the gaussian fitting routines:</span>
+<span class="sd">        fit_motif()</span>
+<span class="sd">        fit_atom_positions_parallel()</span>
+<span class="sd">        write_to_disk()</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    atom_grp : h5py.Group reference</span>
+<span class="sd">        Parent group containing the atom guess positions, cropped clean image and motif positions</span>
+
+<span class="sd">    fitting_parms : dictionary</span>
+<span class="sd">        Parameters used for atom position fitting</span>
+<span class="sd">        &#39;fit_region_size&#39;: region to consider when fitting. Should be large enough to see the nearest neighbors.</span>
+<span class="sd">        &#39;num_nearest_neighbors&#39;: the number of nearest neighbors to fit</span>
+<span class="sd">        &#39;sigma_guess&#39;: starting guess for gaussian standard deviation. Should be about the size of an atom width in</span>
+<span class="sd">        pixels.</span>
+<span class="sd">        &#39;position_range&#39;: range that the fitted position can move from initial guess position in pixels</span>
+<span class="sd">        &#39;max_function_evals&#39;: maximum allowed function calls; passed to the least squares fitter</span>
+<span class="sd">        &#39;fitting_tolerance&#39;: target difference between the fit and the data</span>
+<span class="sd">        &#39;symmetric&#39;: flag to signal if a symmetric gaussian is desired (i.e. sigma_x == sigma_y)</span>
+<span class="sd">        &#39;background&#39;: flag to signal if a background constant is desired</span>
+<span class="sd">        &#39;movement_allowance&#39;: percent of movement allowed (on all parameters except x and y positions</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom_grp</span><span class="p">,</span> <span class="n">fitting_parms</span><span class="p">):</span>
+        <span class="c1"># we should do some initial checks here to ensure the data is at the correct stage for atom fitting</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Initializing Gauss Fit&#39;</span><span class="p">)</span>
+        <span class="c1"># check that the data is appropriate (does nothing yet)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_data</span><span class="p">(</span><span class="n">atom_grp</span><span class="p">)</span>
+
+        <span class="c1"># set dtypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom_coeff_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                          <span class="p">(</span><span class="s1">&#39;amplitude&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                          <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                          <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                          <span class="p">(</span><span class="s1">&#39;sigma_x&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                          <span class="p">(</span><span class="s1">&#39;sigma_y&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                          <span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                          <span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">motif_coeff_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;amplitude&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                           <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                           <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                           <span class="p">(</span><span class="s1">&#39;sigma_x&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                           <span class="p">(</span><span class="s1">&#39;sigma_y&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                           <span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                                           <span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)])</span>
+
+        <span class="c1"># initialize some variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span> <span class="o">=</span> <span class="n">atom_grp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cropped_clean_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span><span class="p">[</span><span class="s1">&#39;Cropped_Clean_Image&#39;</span><span class="p">][()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span><span class="p">[</span><span class="s1">&#39;Guess_Positions&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span> <span class="o">=</span> <span class="n">fitting_parms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">win_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;motif_win_size&#39;</span><span class="p">]</span>
+        <span class="n">half_wind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">win_size</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span><span class="p">[</span><span class="s1">&#39;Motif_Centers&#39;</span><span class="p">][:]</span> <span class="o">-</span> <span class="n">half_wind</span>  <span class="c1"># &lt;&lt; correction for double cropped image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psf_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;psf_width&#39;</span><span class="p">]</span>
+
+        <span class="c1"># grab the initial guesses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_atom_guesses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_atom_guesses</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># number of atoms</span>
+
+        <span class="c1"># build distance matrix</span>
+        <span class="n">pos_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_atom_guesses</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_atom_guesses</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">pos_mat1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">pos_vec</span><span class="p">)),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_atoms</span><span class="p">])</span>
+        <span class="n">pos_mat2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pos_mat1</span><span class="p">)</span>
+        <span class="n">d_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pos_mat2</span> <span class="o">-</span> <span class="n">pos_mat1</span><span class="p">)</span>  <span class="c1"># matrix of distances between all atoms</span>
+        <span class="c1"># sort the distance matrix and keep only the atoms within the nearest neighbor limit</span>
+        <span class="n">neighbor_dist_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">d_mat</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">[</span><span class="s1">&#39;num_nearest_neighbors&#39;</span><span class="p">]</span>
+
+        <span class="c1"># neighbor dist order has the (indices of the) neighbors for each atom sorted by distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closest_neighbors_mat</span> <span class="o">=</span> <span class="n">neighbor_dist_order</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># find which atoms are at the centers of the motifs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_atom_vec</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_atom_dists</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pos_vec</span> <span class="o">-</span> <span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_atom_vec</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_atom_sorted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center_atom_dists</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_atom_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_atom_sorted</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Gauss_Fit.fit_atom_positions_parallel"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.fit_atom_positions_parallel">[docs]</a>    <span class="k">def</span> <span class="nf">fit_atom_positions_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fits the positions of N atoms in parallel</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        plot_results : optional boolean (default is True)</span>
+<span class="sd">            Specifies whether to output a visualization of the fitting results</span>
+
+<span class="sd">        num_cores : unsigned int (Optional. Default = available logical cores - 2)</span>
+<span class="sd">            Number of cores to compute with</span>
+
+<span class="sd">        Creates guess_dataset and fit_dataset with the results.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        fit_dataset: NxM numpy array of tuples where N is the number of atoms fit and M is the number of nearest</span>
+<span class="sd">            neighbors considered. Each tuple contains the converged values for each gaussian.</span>
+<span class="sd">            The value names are stored in the dtypes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">t_start</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">num_cores</span> <span class="o">=</span> <span class="n">recommendCores</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_atoms</span><span class="p">,</span> <span class="n">requested_cores</span><span class="o">=</span><span class="n">num_cores</span><span class="p">,</span> <span class="n">lengthy_computation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Setting up guesses&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guess_parms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_atoms</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">guess_parms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_guess</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fitting...&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_cores</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">pool</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">num_cores</span><span class="p">)</span>
+            <span class="n">parm_list</span> <span class="o">=</span> <span class="n">itt</span><span class="o">.</span><span class="n">izip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guess_parms</span><span class="p">,</span> <span class="n">itt</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">))</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_atoms</span> <span class="o">/</span> <span class="n">num_cores</span><span class="p">)</span>
+            <span class="n">jobs</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">imap</span><span class="p">(</span><span class="n">do_fit</span><span class="p">,</span> <span class="n">parm_list</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitting_results</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
+            <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parm_list</span> <span class="o">=</span> <span class="n">itt</span><span class="o">.</span><span class="n">izip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guess_parms</span><span class="p">,</span> <span class="n">itt</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitting_results</span> <span class="o">=</span> <span class="p">[</span><span class="n">do_fit</span><span class="p">(</span><span class="n">parm</span><span class="p">)</span> <span class="k">for</span> <span class="n">parm</span> <span class="ow">in</span> <span class="n">parm_list</span><span class="p">]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finalizing datasets...&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guess_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_atoms</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                      <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_coeff_dtype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">guess_dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">guess_dataset</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">atom_ind</span><span class="p">,</span> <span class="n">single_atom_results</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fitting_results</span><span class="p">):</span>
+            <span class="n">types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">atom_ind</span><span class="p">],</span>
+                               <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">neighbor</span><span class="p">]</span> <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">closest_neighbors_mat</span><span class="p">[</span><span class="n">atom_ind</span><span class="p">]]))</span>
+            <span class="n">atom_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">types</span><span class="p">),</span> <span class="n">single_atom_results</span><span class="p">))</span>
+            <span class="n">atom_data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">atom_data</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fit_dataset</span><span class="p">[</span><span class="n">atom_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_data</span>
+
+            <span class="n">single_atom_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_parms</span><span class="p">[</span><span class="n">atom_ind</span><span class="p">]</span>
+            <span class="n">atom_guess_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">types</span><span class="p">),</span> <span class="n">single_atom_guess</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">atom_guess_data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">atom_guess_data</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">guess_dataset</span><span class="p">[</span><span class="n">atom_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_guess_data</span>
+
+        <span class="n">tot_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">tm</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_start</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Took </span><span class="si">{}</span><span class="s1"> sec to find </span><span class="si">{}</span><span class="s1"> atoms with </span><span class="si">{}</span><span class="s1"> cores&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tot_time</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fitting_results</span><span class="p">),</span> <span class="n">num_cores</span><span class="p">))</span>
+
+        <span class="c1"># if plotting is desired</span>
+        <span class="k">if</span> <span class="n">plot_results</span><span class="p">:</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cropped_clean_image</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guess_dataset</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_dataset</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Guess&#39;</span><span class="p">)</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_dataset</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_dataset</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fit&#39;</span><span class="p">)</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_dataset</span></div>
+
+<div class="viewcode-block" id="Gauss_Fit.do_guess"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.do_guess">[docs]</a>    <span class="k">def</span> <span class="nf">do_guess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom_ind</span><span class="p">,</span> <span class="n">initial_motifs</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fits the position of a single atom.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        atom_ind : int</span>
+<span class="sd">            The index of the atom to generate guess parameters for</span>
+
+<span class="sd">        initial_motifs : optional boolean (default is False)</span>
+<span class="sd">            Specifies whether we are generating guesses for the initial motifs. Subsequent guesses</span>
+<span class="sd">            have the advantage of the fits from the motifs and will be much better starting values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        atom_ind : int</span>
+<span class="sd">            The index of the atom to generate guess parameters for</span>
+
+<span class="sd">        coef_guess_mat : 2D numpy array</span>
+<span class="sd">            Initial guess parameters for all the gaussians.</span>
+
+<span class="sd">        fit_region : 2D numpy array</span>
+<span class="sd">            The fit region cropped from the image</span>
+
+<span class="sd">        s1 and s2 : 2D numpy arrays</span>
+<span class="sd">            The required input for the X and Y parameters of gauss2d</span>
+
+<span class="sd">        lb_mat and ub_mat : 2D numpy arrays</span>
+<span class="sd">            The lower and upper bounds for the fitting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fit_region_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">[</span><span class="s1">&#39;fit_region_size&#39;</span><span class="p">]</span>
+        <span class="n">movement_allowance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">[</span><span class="s1">&#39;movement_allowance&#39;</span><span class="p">]</span>
+        <span class="n">position_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">[</span><span class="s1">&#39;position_range&#39;</span><span class="p">]</span>
+
+        <span class="c1"># start writing down initial guesses</span>
+        <span class="n">x_center_atom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">atom_ind</span><span class="p">]</span>
+        <span class="n">y_center_atom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">atom_ind</span><span class="p">]</span>
+        <span class="n">x_neighbor_atoms</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_neighbors_mat</span><span class="p">[</span><span class="n">atom_ind</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                            <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span><span class="p">)]</span>
+        <span class="n">y_neighbor_atoms</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_neighbors_mat</span><span class="p">[</span><span class="n">atom_ind</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                            <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span><span class="p">)]</span>
+
+        <span class="c1"># select the window we&#39;re going to be fitting</span>
+        <span class="n">x_range</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x_center_atom</span> <span class="o">-</span> <span class="n">fit_region_size</span><span class="p">)),</span> <span class="mi">0</span><span class="p">),</span>
+                        <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x_center_atom</span> <span class="o">+</span> <span class="n">fit_region_size</span><span class="p">)),</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">cropped_clean_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">y_range</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_center_atom</span> <span class="o">-</span> <span class="n">fit_region_size</span><span class="p">)),</span> <span class="mi">0</span><span class="p">),</span>
+                        <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_center_atom</span> <span class="o">+</span> <span class="n">fit_region_size</span><span class="p">)),</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">cropped_clean_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">fit_region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cropped_clean_image</span><span class="p">[</span><span class="n">x_range</span><span class="p">,</span> <span class="n">y_range</span><span class="p">]</span>
+
+        <span class="c1"># define x and y fitting range</span>
+        <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">x_range</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">x_range</span><span class="o">.</span><span class="n">stop</span><span class="p">),</span>
+                             <span class="nb">range</span><span class="p">(</span><span class="n">y_range</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">y_range</span><span class="o">.</span><span class="n">stop</span><span class="p">))</span>
+
+        <span class="c1"># guesses are different if we&#39;re fitting the initial windows</span>
+        <span class="k">if</span> <span class="n">initial_motifs</span><span class="p">:</span>
+            <span class="c1"># If true, we need to generate more crude guesses</span>
+            <span class="c1"># for the initial motif window fitting.</span>
+            <span class="c1"># Once these have been fit properly they will act</span>
+            <span class="c1"># as the starting point for future guesses.</span>
+
+            <span class="c1"># put the initial guesses into the proper form</span>
+            <span class="n">x_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x_center_atom</span><span class="p">,</span> <span class="n">x_neighbor_atoms</span><span class="p">))</span>
+            <span class="n">y_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">y_center_atom</span><span class="p">,</span> <span class="n">y_neighbor_atoms</span><span class="p">))</span>
+            <span class="n">sigma_x_center_atom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">[</span><span class="s1">&#39;sigma_guess&#39;</span><span class="p">]</span>
+            <span class="n">sigma_y_center_atom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">[</span><span class="s1">&#39;sigma_guess&#39;</span><span class="p">]</span>
+            <span class="n">sigma_x_neighbor_atoms</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">[</span><span class="s1">&#39;sigma_guess&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                                      <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span><span class="p">)]</span>
+            <span class="n">sigma_y_neighbor_atoms</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">[</span><span class="s1">&#39;sigma_guess&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                                      <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span><span class="p">)]</span>
+            <span class="n">theta_center_atom</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">theta_neighbor_atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span><span class="p">)</span>
+            <span class="n">background_center_atom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">fit_region</span><span class="p">)</span>
+
+            <span class="c1"># The existence of a background messes up a straight forward gaussian amplitude guess,</span>
+            <span class="c1"># so we add/subtract the background value from the straight forward guess depending</span>
+            <span class="c1"># on if the background is positive or negative.</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">fit_region</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">a_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cropped_clean_image</span><span class="p">[</span>
+                              <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">x_guess</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">y_guess</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span> <span class="o">-</span> <span class="n">background_center_atom</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cropped_clean_image</span><span class="p">[</span>
+                              <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">x_guess</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">y_guess</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span> <span class="o">+</span> <span class="n">background_center_atom</span>
+
+            <span class="n">sigma_x_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">sigma_x_center_atom</span><span class="p">,</span> <span class="n">sigma_x_neighbor_atoms</span><span class="p">))</span>
+            <span class="n">sigma_y_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">sigma_y_center_atom</span><span class="p">,</span> <span class="n">sigma_y_neighbor_atoms</span><span class="p">))</span>
+            <span class="n">theta_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">theta_center_atom</span><span class="p">,</span> <span class="n">theta_neighbor_atoms</span><span class="p">))</span>
+            <span class="n">background_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">background_center_atom</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>  <span class="c1"># we will only need one background</span>
+            <span class="n">coef_guess_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">a_guess</span><span class="p">,</span> <span class="n">x_guess</span><span class="p">,</span> <span class="n">y_guess</span><span class="p">,</span> <span class="n">sigma_x_guess</span><span class="p">,</span> <span class="n">sigma_y_guess</span><span class="p">,</span>
+                                                     <span class="n">theta_guess</span><span class="p">,</span> <span class="n">background_guess</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># otherwise better guesses are assumed to exist</span>
+            <span class="n">motif_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">atom_ind</span><span class="p">]</span>
+            <span class="n">coef_guess_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_converged_parms</span><span class="p">[</span><span class="n">motif_type</span><span class="p">])</span>
+            <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">atom_ind</span><span class="p">]</span> <span class="o">+</span> <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">atom_ind</span><span class="p">]</span> <span class="o">+</span> <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># Choose upper and lower bounds for the fitting</span>
+        <span class="c1">#</span>
+        <span class="c1"># Address negatives first</span>
+        <span class="n">lb_a</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ub_a</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]:</span>  <span class="c1"># amplitudes</span>
+
+            <span class="k">if</span> <span class="n">item</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lb_a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">+</span> <span class="n">item</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">)</span>
+                <span class="n">ub_a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">-</span> <span class="n">item</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lb_a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">-</span> <span class="n">item</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">)</span>
+                <span class="n">ub_a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">+</span> <span class="n">item</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">)</span>
+
+        <span class="n">lb_background</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ub_background</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">6</span><span class="p">]:</span>  <span class="c1"># background</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lb_background</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">+</span> <span class="n">item</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">)</span>
+                <span class="n">ub_background</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">-</span> <span class="n">item</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lb_background</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">-</span> <span class="n">item</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">)</span>
+                <span class="n">ub_background</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">+</span> <span class="n">item</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">)</span>
+
+        <span class="c1"># Set up upper and lower bounds:</span>
+        <span class="n">lb_mat</span> <span class="o">=</span> <span class="p">[</span><span class="n">lb_a</span><span class="p">,</span>  <span class="c1"># amplitude</span>
+                  <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">position_range</span><span class="p">,</span>  <span class="c1"># x position</span>
+                  <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">position_range</span><span class="p">,</span>  <span class="c1"># y position</span>
+                  <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span> <span class="o">-</span> <span class="n">value</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">])</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]],</span>  <span class="c1"># sigma x</span>
+                  <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span> <span class="o">-</span> <span class="n">value</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">])</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]],</span>  <span class="c1"># sigma y</span>
+                  <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">3.14159</span><span class="p">,</span>  <span class="c1"># theta</span>
+                  <span class="n">lb_background</span><span class="p">]</span>  <span class="c1"># background</span>
+
+        <span class="n">ub_mat</span> <span class="o">=</span> <span class="p">[</span><span class="n">ub_a</span><span class="p">,</span>  <span class="c1"># amplitude</span>
+                  <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">position_range</span><span class="p">,</span>  <span class="c1"># x position</span>
+                  <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">position_range</span><span class="p">,</span>  <span class="c1"># y position</span>
+                  <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">,</span>  <span class="c1"># sigma x</span>
+                  <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">movement_allowance</span><span class="p">,</span>  <span class="c1"># sigma y</span>
+                  <span class="n">coef_guess_mat</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">3.14159</span><span class="p">,</span>  <span class="c1"># theta</span>
+                  <span class="n">ub_background</span><span class="p">]</span>  <span class="c1"># background</span>
+
+        <span class="n">lb_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">lb_mat</span><span class="p">)</span>
+        <span class="n">ub_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">ub_mat</span><span class="p">)</span>
+
+        <span class="n">check_bounds</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">check_bounds</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coef_guess_mat</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">lb_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">value</span> <span class="ow">or</span> <span class="n">ub_mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Atom number: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atom_ind</span><span class="p">))</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guess: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lower bound: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lb_mat</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Upper bound: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ub_mat</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dtypes: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_coeff_dtype</span><span class="o">.</span><span class="n">names</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> guess is out of bounds&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_coeff_dtype</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">atom_ind</span><span class="p">,</span> <span class="n">coef_guess_mat</span><span class="p">,</span> <span class="n">fit_region</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">lb_mat</span><span class="p">,</span> <span class="n">ub_mat</span></div>
+
+<div class="viewcode-block" id="Gauss_Fit.check_data"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.check_data">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_data</span><span class="p">(</span><span class="n">atom_grp</span><span class="p">):</span>
+        <span class="c1"># some data checks here</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">atom_grp</span><span class="p">[</span><span class="s1">&#39;Cropped_Clean_Image&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;The data </span><span class="se">\&#39;</span><span class="s1">Cropped_Clean_Image</span><span class="se">\&#39;</span><span class="s1"> must exist before fitting&#39;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">guesses</span> <span class="o">=</span> <span class="n">atom_grp</span><span class="p">[</span><span class="s1">&#39;Guess_Positions&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;The data </span><span class="se">\&#39;</span><span class="s1">Guess_Positions</span><span class="se">\&#39;</span><span class="s1"> must exist before fitting&#39;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">motifs</span> <span class="o">=</span> <span class="n">atom_grp</span><span class="p">[</span><span class="s1">&#39;Motif_Centers&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;The data </span><span class="se">\&#39;</span><span class="s1">Motif_Centers</span><span class="se">\&#39;</span><span class="s1"> must exist before fitting&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">Cropped_Clean_Image</span><span class="se">\&#39;</span><span class="s1"> data must have two dimensions with lengths greater than one&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">guesses</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">Guess_Positions</span><span class="se">\&#39;</span><span class="s1"> data length must be greater than one&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">guesses</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">Guess_Positions</span><span class="se">\&#39;</span><span class="s1"> data must have at least three values for each entry: &#39;</span>
+                            <span class="s1">&#39;type, x position, and y position&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">motifs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">Motif_Centers</span><span class="se">\&#39;</span><span class="s1"> data must contain at least one motif&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">motifs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">Motif_Centers</span><span class="se">\&#39;</span><span class="s1"> data is expected to have a shape of (n, 2). &#39;</span>
+                            <span class="s1">&#39;The second dimension is not 2.&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Gauss_Fit.write_to_disk"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.write_to_disk">[docs]</a>    <span class="k">def</span> <span class="nf">write_to_disk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes the gaussian fitting results to disk</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">            Returns the atom parent group containing the original data and the newly written data:</span>
+<span class="sd">                Gaussian_Guesses</span>
+<span class="sd">                Gaussian_Fits</span>
+<span class="sd">                Motif_Guesses</span>
+<span class="sd">                Motif_Fits</span>
+<span class="sd">                Nearest_Neighbor_Indices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ds_atom_guesses</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Gaussian_Guesses&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">guess_dataset</span><span class="p">)</span>
+        <span class="n">ds_atom_fits</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Gaussian_Fits&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_dataset</span><span class="p">)</span>
+        <span class="n">ds_motif_guesses</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Motif_Guesses&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_guess_dataset</span><span class="p">)</span>
+        <span class="n">ds_motif_fits</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Motif_Fits&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_converged_dataset</span><span class="p">)</span>
+        <span class="n">ds_nearest_neighbors</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Nearest_Neighbor_Indices&#39;</span><span class="p">,</span>
+                                            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_neighbors_mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+        <span class="n">dgrp_atom_finding</span> <span class="o">=</span> <span class="n">MicroDataGroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">dgrp_atom_finding</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span>
+        <span class="n">dgrp_atom_finding</span><span class="o">.</span><span class="n">addChildren</span><span class="p">([</span><span class="n">ds_atom_guesses</span><span class="p">,</span> <span class="n">ds_atom_fits</span><span class="p">,</span> <span class="n">ds_motif_guesses</span><span class="p">,</span>
+                                       <span class="n">ds_motif_fits</span><span class="p">,</span> <span class="n">ds_nearest_neighbors</span><span class="p">])</span>
+
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">ioHDF5</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">h5_atom_refs</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">dgrp_atom_finding</span><span class="p">)</span>
+        <span class="n">hdf</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_grp</span></div>
+
+<div class="viewcode-block" id="Gauss_Fit.fit_motif"><a class="viewcode-back" href="../../../../pycroscopy.analysis.utils.html#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.fit_motif">[docs]</a>    <span class="k">def</span> <span class="nf">fit_motif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_results</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        plot_results: boolean (default = True)</span>
+<span class="sd">            Flag to specify whether a result summary should be plotted</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        motif_converged_dataset: NxM numpy array of tuples where N is the number of motifs and M is the number</span>
+<span class="sd">            of nearest neighbors considered. Each tuple contains the converged parameters for a gaussian fit to</span>
+<span class="sd">            an atom in a motif window.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">motif_guesses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motif_parms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motif_converged_parms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_motifs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">fit_region</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># generate final dataset forms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motif_guess_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_coeff_dtype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motif_converged_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_nearest_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_coeff_dtype</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">motif</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="p">)):</span>
+            <span class="c1"># get guesses</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">motif_parms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_guess</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center_atom_indices</span><span class="p">[</span><span class="n">motif</span><span class="p">],</span> <span class="n">initial_motifs</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+            <span class="c1"># pull out parameters for generating the gaussians</span>
+            <span class="n">coef_guess_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">motif_parms</span><span class="p">[</span><span class="n">motif</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">s1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">motif_parms</span><span class="p">[</span><span class="n">motif</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">s2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">motif_parms</span><span class="p">[</span><span class="n">motif</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">fit_region</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_parms</span><span class="p">[</span><span class="n">motif</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+
+            <span class="c1"># put guesses into final dataset form</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">motif_guess_dataset</span><span class="p">[</span><span class="n">motif</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">coef_guess_mat</span><span class="p">]</span>
+
+            <span class="c1"># store the guess results for plotting</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">motif_guesses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gauss2d</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="o">*</span><span class="n">coef_guess_mat</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">))</span>
+
+            <span class="c1"># fit the motif with num_nearest_neighbors + 1 gaussians</span>
+            <span class="n">parm_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_parms</span><span class="p">[</span><span class="n">motif</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">]</span>
+            <span class="n">fitting_results</span> <span class="o">=</span> <span class="n">do_fit</span><span class="p">(</span><span class="n">parm_list</span><span class="p">)</span>
+
+            <span class="c1"># store the converged results</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">motif_converged_parms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fitting_results</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">motif_converged_dataset</span><span class="p">[</span><span class="n">motif</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">fitting_results</span><span class="p">]</span>
+
+            <span class="c1"># store the images of the converged gaussians</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fit_motifs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gauss2d</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="o">*</span><span class="n">fitting_results</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">fitting_parms</span><span class="p">))</span>
+
+            <span class="c1"># calculate the relative atom positions (instead of absolute)</span>
+            <span class="n">fitting_results</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fitting_results</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="p">[</span><span class="n">motif</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">fitting_results</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">fitting_results</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="p">[</span><span class="n">motif</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># plot results if desired</span>
+        <span class="k">if</span> <span class="n">plot_results</span><span class="p">:</span>
+
+            <span class="c1"># initialize the figure</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_centers</span><span class="p">)))</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax_row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">axes</span><span class="p">)):</span>
+                <span class="c1"># plot the original windows</span>
+                <span class="n">ax_row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fit_region</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                                 <span class="n">cmap</span><span class="o">=</span><span class="n">plot_utils</span><span class="o">.</span><span class="n">cmap_jet_white_center</span><span class="p">())</span>
+                <span class="n">ax_row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Original Window&#39;</span><span class="p">)</span>
+
+                <span class="c1"># plot the initial guess windows</span>
+                <span class="n">ax_row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motif_guesses</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                                 <span class="n">cmap</span><span class="o">=</span><span class="n">plot_utils</span><span class="o">.</span><span class="n">cmap_jet_white_center</span><span class="p">())</span>
+                <span class="n">ax_row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Initial Gaussian Guesses&#39;</span><span class="p">)</span>
+
+                <span class="c1"># plot the converged gaussians</span>
+                <span class="n">ax_row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_motifs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                                 <span class="n">cmap</span><span class="o">=</span><span class="n">plot_utils</span><span class="o">.</span><span class="n">cmap_jet_white_center</span><span class="p">())</span>
+                <span class="n">ax_row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Converged Gaussians&#39;</span><span class="p">)</span>
+
+            <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">motif_converged_dataset</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

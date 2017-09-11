@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.io_hdf5 &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.io.io_hdf5</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.io.io_hdf5.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.io.io_hdf5">
+<span id="pycroscopy-io-io-hdf5"></span><h1>pycroscopy.io.io_hdf5<a class="headerlink" href="#module-pycroscopy.io.io_hdf5" title="Permalink to this headline">¶</a></h1>
+<p>Created on Wed Oct 21 12:29:33 2015
+Main Class in charge of writing/reading to/from hdf5 file.
+&#64;author: Numan Laanait, Suhas Somnath, Chris Smith</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5">
+<em class="property">class </em><code class="descname">ioHDF5</code><span class="sig-paren">(</span><em>file_handle</em>, <em>cachemult=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="docutils">
+<dt>Handles:</dt>
+<dd><ul class="first last simple">
+<li>I/O operation from HDF5 file.</li>
+<li>Utilities to get data and associated auxiliary.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file_handle</strong> (<em>Object - String</em><em> or </em><em>Unicode</em><em> or </em><em>open hdf5 file</em>) – Absolute path to the h5 file or an open hdf5 file</li>
+<li><strong>cachemult</strong> (<em>unsigned int</em><em> (</em><em>Optional. default = 1</em><em>)</em>) – Cache multiplier</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5.clean_string_att">
+<em class="property">static </em><code class="descname">clean_string_att</code><span class="sig-paren">(</span><em>att_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5.clean_string_att"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5.clean_string_att" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces any unicode objects within lists with their string counterparts to ensure compatibility with python 3.
+If the attribute is indeed a list of unicodes, the changes will be made in-place</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>att_val</strong> (<em>object</em>) – Attribute object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>att_val</strong> – Attribute object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear h5.file of all contents</p>
+<p>file.clear() only removes the contents, it does not free up previously allocated space.
+To do so, it’s necessary to use the h5repack command after clearing.
+Because the file must be closed and reopened, it is best to call this
+function immediately after the creation of the ioHDF5 object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close h5.file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete h5.file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5.flush">
+<code class="descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5.flush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush data from memory and commit to file.
+Use this after manually inserting data into the hdf dataset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5.repack">
+<code class="descname">repack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5.repack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5.repack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the h5repack command to recover cleared space in an hdf5 file.
+h5repack can also be used to change chunking and compression, but these options have
+not yet been implemented here.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5.writeData">
+<code class="descname">writeData</code><span class="sig-paren">(</span><em>data</em>, <em>print_log=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5.writeData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5.writeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes data into the hdf5 file and assigns data attributes such as region references.
+The tree structure is inferred from the AFMData Object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>Instance of MicroData</em>) – Tree structure describing the organization of the data</li>
+<li><strong>print_log</strong> (<em>Boolean</em><em> (</em><em>Optional</em><em>)</em>) – Whether or not to print all log statements - use for debugging purposes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>refList</strong> – References to the objects written</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">List of HDF5dataset or HDF5Datagroup references</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.io.io_hdf5.ioHDF5.write_region_references">
+<em class="property">static </em><code class="descname">write_region_references</code><span class="sig-paren">(</span><em>dataset</em>, <em>slices</em>, <em>print_log=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/io_hdf5.html#ioHDF5.write_region_references"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.io_hdf5.ioHDF5.write_region_references" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates attributes of a h5.Dataset that refer to regions in the arrays</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dataset</strong> (<em>h5.Dataset instance</em>) – Dataset to which region references will be added as attributes</li>
+<li><strong>slices</strong> (<em>dictionary</em>) – The slicing information must be formatted using tuples of slice objects.
+For example {‘region_1’:(slice(None, None), slice (0,1))}</li>
+<li><strong>print_log</strong> (<em>Boolean</em><em> (</em><em>Optional. Default = False</em><em>)</em>) – Whether or not to print status messages</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

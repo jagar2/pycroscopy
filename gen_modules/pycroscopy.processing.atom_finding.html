@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing.atom_finding &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.processing.atom_finding</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.processing.atom_finding.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.processing.atom_finding">
+<span id="pycroscopy-processing-atom-finding"></span><h1>pycroscopy.processing.atom_finding<a class="headerlink" href="#module-pycroscopy.processing.atom_finding" title="Permalink to this headline">¶</a></h1>
+<p>&#64;author: Oleg Ovchinnikov</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.processing.atom_finding.apply_binarization_filter">
+<code class="descname">apply_binarization_filter</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>filter_num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#apply_binarization_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.apply_binarization_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.apply_binarization_filter_select">
+<code class="descname">apply_binarization_filter_select</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>filter_num</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#apply_binarization_filter_select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.apply_binarization_filter_select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.apply_find">
+<code class="descname">apply_find</code><span class="sig-paren">(</span><em>file_path_h5</em>, <em>file_name_h5</em>, <em>file_path_png</em>, <em>file_name_png</em>, <em>filter_width</em>, <em>img_num</em>, <em>filter_num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#apply_find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.apply_find" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.apply_gaussian_corr_filter">
+<code class="descname">apply_gaussian_corr_filter</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>filter_num</em>, <em>gauss_width</em>, <em>gauss_box_width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#apply_gaussian_corr_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.apply_gaussian_corr_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.apply_invert_filter">
+<code class="descname">apply_invert_filter</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>filter_num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#apply_invert_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.apply_invert_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.apply_select_channel">
+<code class="descname">apply_select_channel</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>channel_num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#apply_select_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.apply_select_channel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.apply_wiener_filter">
+<code class="descname">apply_wiener_filter</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>filter_num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#apply_wiener_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.apply_wiener_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.cluster_2d_oleg">
+<code class="descname">cluster_2d_oleg</code><span class="sig-paren">(</span><em>mat_in</em>, <em>dist_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#cluster_2d_oleg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.cluster_2d_oleg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.cluster_2d_oleg_return_geo_center">
+<code class="descname">cluster_2d_oleg_return_geo_center</code><span class="sig-paren">(</span><em>mat_in</em>, <em>dist_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#cluster_2d_oleg_return_geo_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.cluster_2d_oleg_return_geo_center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.cluster_into_atomic_columns">
+<code class="descname">cluster_into_atomic_columns</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>filter_num</em>, <em>dist_val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#cluster_into_atomic_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.cluster_into_atomic_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.fun_2d_gaussian">
+<code class="descname">fun_2d_gaussian</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>parm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#fun_2d_gaussian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.fun_2d_gaussian" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.return_img">
+<code class="descname">return_img</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>filter_num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#return_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.return_img" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.return_pos">
+<code class="descname">return_pos</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#return_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.return_pos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.atom_finding.run_PCA_atoms">
+<code class="descname">run_PCA_atoms</code><span class="sig-paren">(</span><em>file_in_h5</em>, <em>img_num</em>, <em>box_width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/atom_finding.html#run_PCA_atoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.atom_finding.run_PCA_atoms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

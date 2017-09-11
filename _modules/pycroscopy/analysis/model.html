@@ -1,0 +1,613 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.analysis.model &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.analysis.model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.analysis.model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on 7/17/16 10:08 AM</span>
+<span class="sd">@author: Numan Laanait, Suhas Somnath, Chris Smith</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">psutil</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">.guess_methods</span> <span class="k">import</span> <span class="n">GuessMethods</span>
+<span class="kn">from</span> <span class="nn">.fit_methods</span> <span class="k">import</span> <span class="n">Fit_Methods</span>
+<span class="kn">from</span> <span class="nn">..io.hdf_utils</span> <span class="k">import</span> <span class="n">checkIfMain</span><span class="p">,</span> <span class="n">getAuxData</span>
+<span class="kn">from</span> <span class="nn">..io.io_hdf5</span> <span class="k">import</span> <span class="n">ioHDF5</span>
+<span class="kn">from</span> <span class="nn">..io.io_utils</span> <span class="k">import</span> <span class="n">getAvailableMem</span><span class="p">,</span> <span class="n">recommendCores</span>
+<span class="kn">from</span> <span class="nn">.optimize</span> <span class="k">import</span> <span class="n">Optimize</span>
+
+
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Encapsulates the typical routines performed during model-dependent analysis of data.</span>
+<span class="sd">    This abstract class should be extended to cover different types of imaging modalities.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5_main : h5py.Dataset instance</span>
+<span class="sd">        The dataset over which the analysis will be performed. This dataset should be linked to the spectroscopic</span>
+<span class="sd">        indices and values, and position indices and values datasets.</span>
+<span class="sd">    variables : list(string), Default [&#39;Frequency&#39;]</span>
+<span class="sd">        Lists of attributes that h5_main should possess so that it may be analyzed by Model.</span>
+<span class="sd">    parallel : bool, optional</span>
+<span class="sd">        Should the parallel implementation of the fitting be used.  Default True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5_main</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Frequency&#39;</span><span class="p">],</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For now, we assume that the guess dataset has not been generated for this dataset but we will relax this</span>
+<span class="sd">        requirement after testing the basic components.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Checking if dataset is &quot;Main&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_legal</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span> <span class="o">=</span> <span class="n">h5_main</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span> <span class="o">=</span> <span class="n">ioHDF5</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Provided dataset is not a &quot;Main&quot; dataset with necessary ancillary datasets&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Checking if parallel processing will be used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parallel</span> <span class="o">=</span> <span class="n">parallel</span>
+
+        <span class="c1"># Determining the max size of the data that can be put into memory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_memory_and_cores</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h5_fit</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guess</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Model._set_memory_and_cores"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._set_memory_and_cores">[docs]</a>    <span class="k">def</span> <span class="nf">_set_memory_and_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks hardware limitations such as memory, # cpus and sets the recommended datachunk sizes and the</span>
+<span class="sd">        number of cores to be used by analysis methods.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        verbose : Boolean (Optional)</span>
+<span class="sd">            Whether or not to print log statements</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parallel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_maxCpus</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_maxCpus</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxCpus</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parallel</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxMemoryMB</span> <span class="o">=</span> <span class="n">getAvailableMem</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1024</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># in Mb</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxDataChunk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxMemoryMB</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxCpus</span><span class="p">)</span>
+
+        <span class="c1"># Now calculate the number of positions that can be stored in memory in one go.</span>
+        <span class="n">mb_per_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1024.0</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_pos_per_read</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxDataChunk</span> <span class="o">/</span> <span class="n">mb_per_position</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Allowed to read </span><span class="si">{}</span><span class="s1"> pixels per chunk&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_pos_per_read</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Model._is_legal"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._is_legal">[docs]</a>    <span class="k">def</span> <span class="nf">_is_legal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5_main</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks whether or not the provided object can be analyzed by this Model class.</span>
+<span class="sd">        Classes that extend this class will do additional checks to ensure that the supplied dataset is legal.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----</span>
+<span class="sd">        h5_main : h5py.Dataset instance</span>
+<span class="sd">            The dataset over which the analysis will be performed. This dataset should be linked to the spectroscopic</span>
+<span class="sd">            indices and values, and position indices and values datasets.</span>
+
+<span class="sd">        variables : list(string)</span>
+<span class="sd">            The dimensions needed to be present in the attributes of h5_main to analyze the data with Model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        legal : Boolean</span>
+<span class="sd">            Whether or not this dataset satisfies the necessary conditions for analysis</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Check if h5_main is a &quot;Main&quot; dataset</span>
+        <span class="n">cond_A</span> <span class="o">=</span> <span class="n">checkIfMain</span><span class="p">(</span><span class="n">h5_main</span><span class="p">)</span>
+
+        <span class="c1"># Check if variables are in the attributes of spectroscopic indices</span>
+        <span class="n">h5_spec_vals</span> <span class="o">=</span> <span class="n">getAuxData</span><span class="p">(</span><span class="n">h5_main</span><span class="p">,</span> <span class="n">auxDataName</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Spectroscopic_Values&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># assert isinstance(h5_spec_vals, list)</span>
+        <span class="n">cond_B</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">h5_spec_vals</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+        <span class="k">if</span> <span class="n">cond_A</span> <span class="ow">and</span> <span class="n">cond_B</span><span class="p">:</span>
+            <span class="n">legal</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">legal</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">legal</span></div>
+
+<div class="viewcode-block" id="Model._get_data_chunk"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._get_data_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">_get_data_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reads the next chunk of data for the guess or the fit into memory</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----</span>
+<span class="sd">        verbose : bool, optional</span>
+<span class="sd">            Whether or not to print log statements</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_pos_per_read</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reading pixels </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+            <span class="c1"># Now update the start position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished reading all data!&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Model._get_guess_chunk"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._get_guess_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">_get_guess_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a chunk of guess dataset corresponding to the main dataset.</span>
+<span class="sd">        Should be called BEFORE _get_data_chunk since it relies upon current values of</span>
+<span class="sd">        `self._start_pos`, `self._end_pos`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_pos_per_read</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span><span class="p">,</span> <span class="p">:]</span></div>
+
+<div class="viewcode-block" id="Model._set_results"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._set_results">[docs]</a>    <span class="k">def</span> <span class="nf">_set_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_guess</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes the provided guess or fit results into appropriate datasets.</span>
+<span class="sd">        Given that the guess and fit datasets are relatively small, we should be able to hold them in memory just fine</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ---------</span>
+<span class="sd">        is_guess : bool, optional</span>
+<span class="sd">            Default - False</span>
+<span class="sd">            Flag that differentiates the guess from the fit</span>
+<span class="sd">        verbose : bool, optional</span>
+<span class="sd">            Default - False</span>
+<span class="sd">            Whether or not to print log statements</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">statement</span> <span class="o">=</span> <span class="s1">&#39;guess&#39;</span>
+
+        <span class="k">if</span> <span class="n">is_guess</span><span class="p">:</span>
+            <span class="n">targ_dset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span>
+            <span class="n">source_dset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">statement</span> <span class="o">=</span> <span class="s1">&#39;fit&#39;</span>
+            <span class="n">targ_dset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_fit</span>
+            <span class="n">source_dset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Writing data to positions: </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__start_pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_pos</span><span class="p">))</span>
+        <span class="n">targ_dset</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">source_dset</span>
+
+        <span class="c1"># flush the file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hdf</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished writing &#39;</span> <span class="o">+</span> <span class="n">statement</span> <span class="o">+</span> <span class="s1">&#39; results to file!&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model._create_guess_datasets"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._create_guess_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">_create_guess_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Model specific call that will write the h5 group, guess dataset, corresponding spectroscopic datasets and also</span>
+<span class="sd">        link the guess dataset to the spectroscopic datasets. It is recommended that the ancillary datasets be populated</span>
+<span class="sd">        within this function.</span>
+
+<span class="sd">        The guess dataset will NOT be populated here but will be populated by the __setData function</span>
+<span class="sd">        The fit dataset should NOT be populated here unless the user calls the optimize function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        --------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guess</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># replace with actual h5 dataset</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Please override the _create_guess_datasets specific to your model&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model._create_fit_datasets"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._create_fit_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">_create_fit_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Model specific call that will write the h5 group, fit dataset, corresponding spectroscopic datasets and also</span>
+<span class="sd">        link the fit dataset to the spectroscopic datasets. It is recommended that the ancillary datasets be populated</span>
+<span class="sd">        within this function.</span>
+
+<span class="sd">        The fit dataset will NOT be populated here but will be populated by the __setData function</span>
+<span class="sd">        The guess dataset should NOT be populated here unless the user calls the optimize function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        --------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># replace with actual h5 dataset</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Please override the _create_fit_datasets specific to your model&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.do_guess"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model.do_guess">[docs]</a>    <span class="k">def</span> <span class="nf">do_guess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;wavelet_peaks&#39;</span><span class="p">,</span>
+                 <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;peak_widths&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">200</span><span class="p">]),</span> <span class="s2">&quot;peak_step&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strategy: string (optional)</span>
+<span class="sd">            Default is &#39;Wavelet_Peaks&#39;.</span>
+<span class="sd">            Can be one of [&#39;wavelet_peaks&#39;, &#39;relative_maximum&#39;, &#39;gaussian_processes&#39;].</span>
+<span class="sd">            For updated list, run GuessMethods.methods</span>
+<span class="sd">        processors : int (optional)</span>
+<span class="sd">            Number of cores to use for computing. Default = all available - 2 cores</span>
+<span class="sd">        options: dict</span>
+<span class="sd">            Default, options for wavelet_peaks {&quot;peaks_widths&quot;: np.array([10,200]), &quot;peak_step&quot;:20}.</span>
+<span class="sd">            Dictionary of options passed to strategy. For more info see GuessMethods documentation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">processors</span> <span class="o">=</span> <span class="n">recommendCores</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_pos_per_read</span><span class="p">,</span> <span class="n">processors</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_chunk</span><span class="p">()</span>
+        <span class="n">gm</span> <span class="o">=</span> <span class="n">GuessMethods</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="n">gm</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using </span><span class="si">%s</span><span class="s2"> to find guesses...</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">strategy</span><span class="p">)</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimize</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parallel</span><span class="p">)</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">computeGuess</span><span class="p">(</span><span class="n">processors</span><span class="o">=</span><span class="n">processors</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reformat_results</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">strategy</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_chunk</span><span class="p">()</span>
+
+            <span class="c1"># reorder to get one numpy array out</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed computing guess. Writing to file.&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Write to file</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_results</span><span class="p">(</span><span class="n">is_guess</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Error: </span><span class="si">%s</span><span class="s1"> is not implemented in pycroscopy.analysis.GuessMethods to find guesses&#39;</span> <span class="o">%</span>
+                           <span class="n">strategy</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess</span></div>
+
+<div class="viewcode-block" id="Model._reformat_results"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._reformat_results">[docs]</a>    <span class="k">def</span> <span class="nf">_reformat_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;wavelet_peaks&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Model specific restructuring / reformatting of the parallel compute results</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        results : array-like</span>
+<span class="sd">            Results to be formatted for writing</span>
+<span class="sd">        strategy : str</span>
+<span class="sd">            The strategy used in the fit.  Determines how the results will be reformatted.</span>
+<span class="sd">            Default &#39;wavelet_peaks&#39;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results : numpy.ndarray</span>
+<span class="sd">            Formatted array that is ready to be writen to the HDF5 file </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model._create_fit_dataset"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model._create_fit_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">_create_fit_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Model specific call that will write the HDF5 fit dataset. pycroscopy requires that the h5 group, guess dataset,</span>
+<span class="sd">        corresponding spectroscopic and position datasets be created and populated at this point.</span>
+<span class="sd">        This function will create the HDF5 dataset for the fit and link it to same ancillary datasets as the guess.</span>
+<span class="sd">        The fit dataset will NOT be populated here but will instead be populated using the __setData function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Please override the _create_fit_dataset specific to your model&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h5_fit</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># replace with actual h5 dataset</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Model.do_fit"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.analysis.model.html#pycroscopy.analysis.model.Model.do_fit">[docs]</a>    <span class="k">def</span> <span class="nf">do_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solver_type</span><span class="o">=</span><span class="s1">&#39;least_squares&#39;</span><span class="p">,</span> <span class="n">solver_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;jac&#39;</span><span class="p">:</span> <span class="s1">&#39;2-point&#39;</span><span class="p">},</span>
+               <span class="n">obj_func</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;Fit_Methods&#39;</span><span class="p">,</span> <span class="s1">&#39;obj_func&#39;</span><span class="p">:</span> <span class="s1">&#39;SHO&#39;</span><span class="p">,</span> <span class="s1">&#39;xvals&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates the fit for the given dataset and writes back to file</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        processors : int</span>
+<span class="sd">            Number of cpu cores the user wishes to run on.  The minimum of this and self._maxCpus is used.</span>
+<span class="sd">        solver_type : str</span>
+<span class="sd">            The name of the solver in scipy.optimize to use for the fit</span>
+<span class="sd">        solver_options : dict</span>
+<span class="sd">            Dictionary of parameters to pass to the solver specified by `solver_type`</span>
+<span class="sd">        obj_func : dict</span>
+<span class="sd">            Dictionary defining the class and method containing the function to be fit as well as any </span>
+<span class="sd">            additional function parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_guess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You need to guess before fitting</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">processors</span> <span class="o">=</span> <span class="n">recommendCores</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_pos_per_read</span><span class="p">,</span> <span class="n">processors</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_guess_chunk</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_chunk</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">legit_solver</span> <span class="o">=</span> <span class="n">solver_type</span> <span class="ow">in</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">legit_obj_func</span> <span class="o">=</span> <span class="n">obj_func</span><span class="p">[</span><span class="s1">&#39;obj_func&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">Fit_Methods</span><span class="p">()</span><span class="o">.</span><span class="n">methods</span>
+        <span class="k">if</span> <span class="n">legit_solver</span> <span class="ow">and</span> <span class="n">legit_obj_func</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using solver </span><span class="si">%s</span><span class="s2"> and objective function </span><span class="si">%s</span><span class="s2"> to fit your data</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">solver_type</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">[</span><span class="s1">&#39;obj_func&#39;</span><span class="p">]))</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimize</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">guess</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">guess</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parallel</span><span class="p">)</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">computeFit</span><span class="p">(</span><span class="n">processors</span><span class="o">=</span><span class="n">processors</span><span class="p">,</span> <span class="n">solver_type</span><span class="o">=</span><span class="n">solver_type</span><span class="p">,</span> <span class="n">solver_options</span><span class="o">=</span><span class="n">solver_options</span><span class="p">,</span>
+                                      <span class="n">obj_func</span><span class="o">=</span><span class="n">obj_func</span><span class="p">)</span>
+                <span class="c1"># TODO: need a different .reformatResults to process fitting results</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reformat_results</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">[</span><span class="s1">&#39;obj_func&#39;</span><span class="p">]))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_guess_chunk</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_chunk</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_results</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="n">legit_obj_func</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Error: Solver &quot;</span><span class="si">%s</span><span class="s1">&quot; does not exist!. For additional info see scipy.optimize</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">solver_type</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">legit_solver</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Error: Objective Functions &quot;</span><span class="si">%s</span><span class="s1">&quot; is not implemented in pycroscopy.analysis.Fit_Methods&#39;</span> <span class="o">%</span>
+                           <span class="n">obj_func</span><span class="p">[</span><span class="s1">&#39;obj_func&#39;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">results</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

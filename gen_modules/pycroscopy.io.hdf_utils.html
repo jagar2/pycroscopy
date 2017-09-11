@@ -1,0 +1,1621 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.hdf_utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.io.hdf_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.io.hdf_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.io.hdf_utils">
+<span id="pycroscopy-io-hdf-utils"></span><h1>pycroscopy.io.hdf_utils<a class="headerlink" href="#module-pycroscopy.io.hdf_utils" title="Permalink to this headline">¶</a></h1>
+<p>Created on Tue Nov  3 21:14:25 2015</p>
+<p>&#64;author: Suhas Somnath, Chris Smith, Numan Laanait</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.io.hdf_utils.buildReducedSpec">
+<code class="descname">buildReducedSpec</code><span class="sig-paren">(</span><em>h5_spec_inds</em>, <em>h5_spec_vals</em>, <em>keep_dim</em>, <em>step_starts</em>, <em>basename='Spectroscopic'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#buildReducedSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.buildReducedSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates new Spectroscopic Indices and Values datasets from the input datasets
+and keeps the dimensions specified in not_freq</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_spec_inds</strong> (<em>HDF5 Dataset</em>) – Spectroscopic indices dataset</li>
+<li><strong>h5_spec_vals</strong> (<em>HDF5 Dataset</em>) – Spectroscopic values dataset</li>
+<li><strong>keep_dim</strong> (<em>Numpy Array</em><em>, </em><em>Boolean</em>) – Array designating which rows of the input spectroscopic datasets to keep</li>
+<li><strong>step_starts</strong> (<em>Numpy Array</em><em>, </em><em>Unsigned Integers</em>) – Array specifying the start of each step in the reduced datasets</li>
+<li><strong>basename</strong> (<em>String</em>) – String to which ‘_Indices’ and ‘_Values’ will be appended to get the names
+of the new datasets</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>ds_inds</strong> (<em>MicroDataset</em>) – Reduced Spectroscopic indices dataset</li>
+<li><strong>ds_vals</strong> (<em>MicroDataset</em>) – Reduces Spectroscopic values dataset</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.calc_chunks">
+<code class="descname">calc_chunks</code><span class="sig-paren">(</span><em>dimensions</em>, <em>data_size</em>, <em>unit_chunks=None</em>, <em>max_chunk_mem=10240</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#calc_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.calc_chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the chunk size for the HDF5 dataset based on the dimensions and the
+maximum chunk size in memory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dimensions</strong> (<em>array_like of int</em>) – Shape of the data to be chunked</li>
+<li><strong>data_size</strong> (<em>int</em>) – Size of an entry in the data in bytes</li>
+<li><strong>unit_chunks</strong> (<em>array_like of int</em><em>, </em><em>optional</em>) – Unit size of the chunking in each dimension.  Must be the same size as
+the shape of <cite>ds_main</cite>.  Default None, <cite>unit_chunks</cite> is set to 1 in all
+dimensions</li>
+<li><strong>max_chunk_mem</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum size of the chunk in memory in bytes.  Default 10240b or 10kb</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>chunking</strong> – Calculated maximum size of a chunk in each dimension that is as close to the
+requested <cite>max_chunk_mem</cite> as posible while having steps based on the input
+<cite>unit_chunks</cite>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple of int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.checkAndLinkAncillary">
+<code class="descname">checkAndLinkAncillary</code><span class="sig-paren">(</span><em>h5_dset</em>, <em>anc_names</em>, <em>h5_main=None</em>, <em>anc_refs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#checkAndLinkAncillary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.checkAndLinkAncillary" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will add references to auxilliary datasets as attributes
+of an input dataset.
+If the entries in anc_refs are valid references, they will be added
+as attributes with the name taken from the corresponding entry in
+anc_names.
+If an entry in anc_refs is not a valid reference, the function will
+attempt to get the attribute with the same name from the h5_main
+dataset</p>
+<p>&#64;author: Suhas Somnath
+edited - Chris Smith</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_dset</strong> (<em>HDF5 Dataset</em>) – dataset to which the attributes will be written</li>
+<li><strong>anc_names</strong> (<em>list of str</em>) – the attribute names to be used</li>
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em><em>, </em><em>optional</em>) – dataset from which attributes will be copied if <cite>anc_refs</cite> is None</li>
+<li><strong>anc_refs</strong> (<em>list of HDF5 Object References</em><em>, </em><em>optional</em>) – references that correspond to the strings in <cite>anc_names</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Either <cite>h5_main</cite> or <cite>anc_refs</cite> MUST be provided and <cite>anc_refs</cite> has the
+higher priority if both are present.</p>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.checkIfMain">
+<code class="descname">checkIfMain</code><span class="sig-paren">(</span><em>h5_main</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#checkIfMain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.checkIfMain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the input dataset to see if it has all the neccessary
+features to be considered a Main dataset.  This means it is
+2D and has the following attributes
+Position_Indices
+Position_Values
+Spectroscopic_Indices
+Spectroscopic_Values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em>) – Dataset of interest</li>
+<li><strong>verbose</strong> (<em>Boolean</em><em> (</em><em>Optional. Default = False</em><em>)</em>) – Whether or not to print statements</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>success</strong> – True if all tests pass</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.check_for_old">
+<code class="descname">check_for_old</code><span class="sig-paren">(</span><em>h5_base</em>, <em>tool_name</em>, <em>new_parms={}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#check_for_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.check_for_old" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check to see if the results of a tool already exist and if they
+were performed with the same parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_base</strong> – </li>
+<li><strong>tool_name</strong> – </li>
+<li><strong>new_parms</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>group</strong> (<em>h5py.Group or None</em>)</li>
+<li>Group with parameters matching those in <cite>new_parms</cite></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.copyAttributes">
+<code class="descname">copyAttributes</code><span class="sig-paren">(</span><em>source</em>, <em>dest</em>, <em>skip_refs=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#copyAttributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.copyAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy attributes from one h5object to another</p>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.copyRegionRefs">
+<code class="descname">copyRegionRefs</code><span class="sig-paren">(</span><em>h5_source</em>, <em>h5_target</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#copyRegionRefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.copyRegionRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the input dataset for plot groups, copy them if they exist
+Also make references in the Spectroscopic Values and Indices tables</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_source</strong> (<em>HDF5 Dataset</em>) – source dataset to copy references from</li>
+<li><strong>h5_target</strong> (<em>HDF5 Dataset</em>) – target dataset the references from h5_source are copied to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.copy_main_attributes">
+<code class="descname">copy_main_attributes</code><span class="sig-paren">(</span><em>h5_main</em>, <em>h5_new</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#copy_main_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.copy_main_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies the units and quantity name from one dataset to another</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Dataset containing the target attributes</li>
+<li><strong>h5_new</strong> (<em>h5py.Dataset</em>) – Dataset to which the target attributes are to be copied</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.createRefFromIndices">
+<code class="descname">createRefFromIndices</code><span class="sig-paren">(</span><em>h5_main</em>, <em>ref_inds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#createRefFromIndices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.createRefFromIndices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a region reference in the destination dataset using an iterable of pairs of indices
+representing the start and end points of a hyperslab block</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 dataset</em>) – dataset the region will be created in</li>
+<li><strong>ref_inds</strong> (<em>Iterable</em>) – index pairs, [start indices, final indices] for each block in the
+hyperslab</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_ref</strong> – reference in <cite>h5_main</cite> for the blocks of points defined by <cite>ref_inds</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Region reference</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.create_empty_dataset">
+<code class="descname">create_empty_dataset</code><span class="sig-paren">(</span><em>source_dset</em>, <em>dtype</em>, <em>dset_name</em>, <em>new_attrs={}</em>, <em>skip_refs=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#create_empty_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.create_empty_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an empty dataset in the h5 file based in the same group as the provided dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source_dset</strong> (<em>h5py.Dataset object</em>) – Source object that provides information on the group and shape of the dataset</li>
+<li><strong>dtype</strong> (<em>dtype</em>) – Data type of the fit / guess datasets</li>
+<li><strong>dset_name</strong> (<em>String / Unicode</em>) – Name of the dataset</li>
+<li><strong>new_attrs</strong> (<em>dictionary</em><em> (</em><em>Optional</em><em>)</em>) – Any new attributes that need to be written to the dataset</li>
+<li><strong>skip_refs</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Should ObjectReferences and RegionReferences be skipped when copying attributes from the
+<cite>source_dset</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_new_dset</strong> – Newly created dataset</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">h5py.Dataset object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.create_spec_inds_from_vals">
+<code class="descname">create_spec_inds_from_vals</code><span class="sig-paren">(</span><em>ds_spec_val_mat</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#create_spec_inds_from_vals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.create_spec_inds_from_vals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new Spectroscopic Indices table from the changes in the
+Spectroscopic Values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ds_spec_val_mat</strong> (<em>array-like</em><em>,</em>) – Holds the spectroscopic values to be indexed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>ds_spec_inds_mat</strong> – Indices corresponding to the values in ds_spec_val_mat</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy array of uints the same shape as ds_spec_val_mat</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.findDataset">
+<code class="descname">findDataset</code><span class="sig-paren">(</span><em>h5_group</em>, <em>ds_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#findDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.findDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses visit() to find all datasets with the desired name</p>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.findH5group">
+<code class="descname">findH5group</code><span class="sig-paren">(</span><em>h5_main</em>, <em>tool_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#findH5group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.findH5group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a dataset and a tool name, return the list of all groups</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5 dataset reference</em>) – Reference to the target dataset to which the tool was applied</li>
+<li><strong>tool_name</strong> (<em>String / unicode</em>) – Name of the tool applied to the target dataset</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>groups</strong> – groups whose name contains the tool name and the dataset name</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of references to h5 group objects</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.getAuxData">
+<code class="descname">getAuxData</code><span class="sig-paren">(</span><em>parent_data</em>, <em>auxDataName=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getAuxData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.getAuxData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns auxiliary dataset objects associated with some DataSet through its attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent_data</strong> (<em>h5py.Dataset</em>) – Dataset object reference.</li>
+<li><strong>auxDataName</strong> (<em>list of strings</em><em>, </em><em>optional</em><em>, </em><em>default = all</em><em> (</em><em>DataSet.attrs</em><em>)</em><em></em>) – Name of auxiliary Dataset object to return.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of h5py.Reference of auxiliary dataset objects.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.getDataSet">
+<code class="descname">getDataSet</code><span class="sig-paren">(</span><em>h5_parent</em>, <em>data_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getDataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.getDataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for dataset objects in the hdf5 file with given name
+and returns a list of reference(s).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_parent</strong> (<em>h5py.File reference.</em>) – Reference to file, the file must be open and in read-mode.</li>
+<li><strong>data_name</strong> (<em>string.</em>) – Name of Dataset object. If not unique, i.e. parent not specified,
+then references to all Dataset objects that contain this name are returned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of h5py.Reference of the dataset.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.getH5DsetRefs">
+<code class="descname">getH5DsetRefs</code><span class="sig-paren">(</span><em>ds_names</em>, <em>h5_refs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getH5DsetRefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.getH5DsetRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of H5 dataset references and a list of dataset names,
+this method returns H5 Dataset objects corresponding to the names</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ds_names</strong> (<em>List of strings</em>) – names of target datasets</li>
+<li><strong>h5_refs</strong> (<em>List of H5 dataset references</em>) – list containing the target reference</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>aux_dset</strong> – Corresponding references</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">List of HDF5 dataset references</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="examples-using-pycroscopy-io-hdf-utils-geth5dsetrefs">
+<h3>Examples using <code class="docutils literal"><span class="pre">pycroscopy.io.hdf_utils.getH5DsetRefs</span></code><a class="headerlink" href="#examples-using-pycroscopy-io-hdf-utils-geth5dsetrefs" title="Permalink to this headline">¶</a></h3>
+<div class="sphx-glr-thumbcontainer" tooltip=""><div class="figure" id="id1">
+<img alt="../_images/sphx_glr_microdata_example_thumb.png" src="../_images/sphx_glr_microdata_example_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/microdata_example.html#sphx-glr-auto-examples-microdata-example-py"><span class="std std-ref">Writing to hdf5 using the Microdata objects</span></a></span></p>
+</div>
+</div><div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.getH5GroupRefs">
+<code class="descname">getH5GroupRefs</code><span class="sig-paren">(</span><em>group_name</em>, <em>h5_refs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getH5GroupRefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.getH5GroupRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of H5 references and a group name,
+this method returns H5 Datagroup object corresponding to the names.
+This function is especially useful when the suffix of the written group
+is unknown (due to the autoindexing in ioHDF5)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>group_name</strong> (<em>unicode / string</em>) – Names of the datagroup</li>
+<li><strong>h5_refs</strong> (<em>List of H5 dataset references</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_grp</strong> – reference to group that matches the <cite>group_name</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Object Reference</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.getH5RegRefIndices">
+<code class="descname">getH5RegRefIndices</code><span class="sig-paren">(</span><em>ref</em>, <em>h5_main</em>, <em>return_method='slices'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getH5RegRefIndices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.getH5RegRefIndices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an hdf5 region reference and the dataset it refers to,
+return an array of indices within that dataset that
+correspond to the reference.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ref</strong> (<em>HDF5 Region Reference</em>) – </li>
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em>) – dataset that the reference can be returned from</li>
+<li><strong>return_method</strong> (<em>{'slices'</em><em>, </em><em>'corners'</em><em>, </em><em>'points'}</em>) – <p>slices : the reference is return as pairs of slices</p>
+<p>corners : the reference is returned as pairs of corners representing
+the starting and ending indices of each block</p>
+<p>points : the reference is returns as a list of tuples of points</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ref_inds</strong> – array of indices in the source dataset that ref accesses</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Numpy Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.get_all_main">
+<code class="descname">get_all_main</code><span class="sig-paren">(</span><em>parent</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_all_main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.get_all_main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple function to recursively print the contents of an hdf5 group</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<em>h5py.Group</em>) – HDF5 Group to search within</li>
+<li><strong>verbose</strong> (<em>bool</em>) – If true, extra print statements are enabled</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>main_list</strong> – The datasets found in the file that meet the ‘Main Data’ criteria.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of h5py.Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.get_attr">
+<code class="descname">get_attr</code><span class="sig-paren">(</span><em>h5_object</em>, <em>attr_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.get_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the attribute from the h5py object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_object</strong> (<em>h5py object</em>) – dataset or datagroup object</li>
+<li><strong>attr_name</strong> (<em>str</em>) – Name of the attribute of interest</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>att_val</strong> – value of attribute, in certain cases (byte strings or list of byte strings) reformatted to readily usable forms</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.get_attributes">
+<code class="descname">get_attributes</code><span class="sig-paren">(</span><em>parent_data</em>, <em>attr_names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.get_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns attribute associated with some DataSet.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent_data</strong> (<em>h5py.Dataset</em>) – Dataset object reference.</li>
+<li><strong>attr_names</strong> (<em>string</em><em> or </em><em>list of strings</em><em>, </em><em>optional</em><em>, </em><em>default = all</em><em> (</em><em>DataSet.attrs</em><em>)</em><em></em>) – Name of attribute object to return.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Dictionary containing (<a class="reference internal" href="../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.name" title="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.name">name</a>,value) pairs of attributes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.get_data_descriptor">
+<code class="descname">get_data_descriptor</code><span class="sig-paren">(</span><em>h5_dset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_data_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.get_data_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string of the form ‘quantity (unit)’</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>h5_dset</strong> (<em>h5py.Dataset object</em>) – A ‘main’ dataset in pycroscopy</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>descriptor</strong> – string of the form ‘quantity (unit)’</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">String</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.get_dimensionality">
+<code class="descname">get_dimensionality</code><span class="sig-paren">(</span><em>ds_index</em>, <em>index_sort=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_dimensionality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.get_dimensionality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the size of each index dimension in a specified sort order</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ds_index</strong> (<em>2D HDF5 Dataset</em><em> or </em><em>numpy array</em>) – Row matrix of indices</li>
+<li><strong>index_sort</strong> (<em>Iterable of unsigned integers</em><em> (</em><em>Optional</em><em>)</em>) – Order of rows sorted from fastest to slowest</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>sorted_dims</strong> – Dimensionality of each row in ds_index.  If index_sort is supplied, it will be in the sorted order</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of unsigned integers</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.get_formatted_labels">
+<code class="descname">get_formatted_labels</code><span class="sig-paren">(</span><em>h5_dset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_formatted_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.get_formatted_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes any dataset which has the labels and units attributes and returns a list of strings
+formatted as ‘label k (unit k)’</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>h5_dset</strong> (<em>h5py.Dataset object</em>) – dataset which has labels and units attributes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>labels</strong> – list of strings formatted as ‘label k (unit k)’</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.get_sort_order">
+<code class="descname">get_sort_order</code><span class="sig-paren">(</span><em>ds_spec</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_sort_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.get_sort_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find how quickly the spectroscopic values are changing in each row
+and the order of rows from fastest changing to slowest.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ds_spec</strong> (<em>2D HDF5 dataset</em><em> or </em><em>numpy array</em>) – Rows of indices to be sorted from fastest changing to slowest</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>change_sort</strong> – Order of rows sorted from fastest changing to slowest</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List of unsigned integers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.get_unit_values">
+<code class="descname">get_unit_values</code><span class="sig-paren">(</span><em>h5_spec_ind</em>, <em>h5_spec_val</em>, <em>dim_names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_unit_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.get_unit_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the unit arrays of values that describe the spectroscopic dimensions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_spec_ind</strong> (<em>h5py.Dataset</em>) – Spectroscopic Indices dataset</li>
+<li><strong>h5_spec_val</strong> (<em>h5py.Dataset</em>) – Spectroscopic Values dataset</li>
+<li><strong>dim_names</strong> (<em>str</em><em>, or </em><em>list of str</em><em>, </em><em>Optional</em>) – Names of the dimensions of interest</li>
+<li><strong>- this function can be extended / modified for ancillary position dimensions as well</strong> (<em>Note</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>unit_values</strong> – Dictionary containing the unit array for each dimension. The name of the dimensions are the keys.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.linkRefAsAlias">
+<code class="descname">linkRefAsAlias</code><span class="sig-paren">(</span><em>src</em>, <em>trg</em>, <em>trg_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#linkRefAsAlias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.linkRefAsAlias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates Dataset attributes that contain references to other Dataset Objects.
+This function is useful when the reference attribute must have a reserved name.
+Such as linking ‘SHO_Indices’ as ‘Spectroscopic_Indices’</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>src</strong> (<em>h5py.Dataset</em>) – Reference to the the object to which attributes will be added</li>
+<li><strong>trg</strong> (<em>h5py.Dataset</em>) – object whose reference that can be accessed from src.attrs</li>
+<li><strong>trg_name</strong> (<em>String</em>) – Alias / alternate name for trg</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.linkRefs">
+<code class="descname">linkRefs</code><span class="sig-paren">(</span><em>src</em>, <em>trg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#linkRefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.linkRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates Dataset attributes that contain references to other Dataset Objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<em>Reference to h5.objects</em>) – Reference to the the object to which attributes will be added</li>
+<li><strong>trg</strong> (<em>list of references to h5.objects</em>) – objects whose references that can be accessed from src.attrs</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.link_as_main">
+<code class="descname">link_as_main</code><span class="sig-paren">(</span><em>h5_main</em>, <em>h5_pos_inds</em>, <em>h5_pos_vals</em>, <em>h5_spec_inds</em>, <em>h5_spec_vals</em>, <em>anc_dsets=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#link_as_main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.link_as_main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Links the object references to the four position and spectrosocpic datasets as
+attributes of <cite>h5_main</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – 2D Dataset which will have the references added as attributes</li>
+<li><strong>h5_pos_inds</strong> (<em>h5py.Dataset</em>) – Dataset that will be linked with the name ‘Position_Indices’</li>
+<li><strong>h5_pos_vals</strong> (<em>h5py.Dataset</em>) – Dataset that will be linked with the name ‘Position_Values’</li>
+<li><strong>h5_spec_inds</strong> (<em>h5py.Dataset</em>) – Dataset that will be linked with the name ‘Spectroscopic_Indices’</li>
+<li><strong>h5_spec_vals</strong> (<em>h5py.Dataset</em>) – Dataset that will be linked with the name ‘Spectroscopic_Values’</li>
+<li><strong>anc_dsets</strong> (<em>(</em><em>Optional</em><em>) </em><em>list of h5py.Dataset objects</em>) – Datasets that will be linked with their own names</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.print_tree">
+<code class="descname">print_tree</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#print_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.print_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple function to recursively print the contents of an hdf5 group
+:param parent:
+:type parent: h5py.Group</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.reducingRefCopy">
+<code class="descname">reducingRefCopy</code><span class="sig-paren">(</span><em>h5_source</em>, <em>h5_target</em>, <em>h5_source_inds</em>, <em>h5_target_inds</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#reducingRefCopy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.reducingRefCopy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies a region reference from one dataset to another taking into account that a dimension
+has been lost from source to target</p>
+<dl class="docutils">
+<dt>h5_source <span class="classifier-delimiter">:</span> <span class="classifier">HDF5 Dataset</span></dt>
+<dd>source dataset for region reference copy</dd>
+<dt>h5_target <span class="classifier-delimiter">:</span> <span class="classifier">HDF5 Dataset</span></dt>
+<dd>target dataset for region reference copy</dd>
+<dt>h5_source_inds <span class="classifier-delimiter">:</span> <span class="classifier">HDF5 Dataset</span></dt>
+<dd>indices of each dimension of the h5_source dataset</dd>
+<dt>h5_target_inds <span class="classifier-delimiter">:</span> <span class="classifier">HDF5 Dataset</span></dt>
+<dd>indices of each dimension of the h5_target dataset</dd>
+<dt>key <span class="classifier-delimiter">:</span> <span class="classifier">String</span></dt>
+<dd>Name of attribute in h5_source that contains
+the Region Reference to copy</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ref_inds</strong> – Array containing pairs of points that define
+the corners of each hyperslab in the region
+reference</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Nx2x2 array of unsigned integers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.reshape_from_Ndims">
+<code class="descname">reshape_from_Ndims</code><span class="sig-paren">(</span><em>ds_Nd</em>, <em>h5_pos=None</em>, <em>h5_spec=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#reshape_from_Ndims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.reshape_from_Ndims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reshape the input 2D matrix to be N-dimensions based on the
+position and spectroscopic datasets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ds_Nd</strong> (<em>numpy.array</em>) – N dimensional numpy array arranged as [positions slowest to fastest, spectroscopic slowest to fastest]</li>
+<li><strong>h5_pos</strong> (<em>HDF5 Dataset</em>) – Position indices corresponding to rows in the final 2d array</li>
+<li><strong>h5_spec</strong> (<em>HDF5 Dataset</em>) – Spectroscopic indices corresponding to columns in the final 2d array</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul>
+<li><p class="first"><strong>ds_2d</strong> (<em>numpy.array</em>) – 2 dimensional numpy array arranged as [positions, spectroscopic]</p>
+</li>
+<li><p class="first"><strong>success</strong> (<em>boolean or string</em>) – True if full reshape was successful</p>
+<p>”Positions” if it was only possible to reshape by
+the position dimensions</p>
+<p>False if no reshape was possible</p>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If either <cite>h5_pos</cite> or <cite>h5_spec</cite> are not provided, the function will
+assume the first dimension is position and the remaining are spectroscopic already
+in order from fastest to slowest.</p>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.reshape_to_Ndims">
+<code class="descname">reshape_to_Ndims</code><span class="sig-paren">(</span><em>h5_main</em>, <em>h5_pos=None</em>, <em>h5_spec=None</em>, <em>get_labels=False</em>, <em>verbose=False</em>, <em>sort_dims=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#reshape_to_Ndims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.reshape_to_Ndims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reshape the input 2D matrix to be N-dimensions based on the
+position and spectroscopic datasets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em>) – 2D data to be reshaped</li>
+<li><strong>h5_pos</strong> (<em>HDF5 Dataset</em><em>, </em><em>optional</em>) – Position indices corresponding to rows in <cite>h5_main</cite></li>
+<li><strong>h5_spec</strong> (<em>HDF5 Dataset</em><em>, </em><em>optional</em>) – Spectroscopic indices corresponding to columns in <cite>h5_main</cite></li>
+<li><strong>get_labels</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to return the dimension labels.  Default False</li>
+<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to print debugging statements</li>
+<li><strong>sort_dims</strong> (<em>bool</em>) – If True, the data is sorted so that the dimensions are in order from fastest to slowest
+If <cite>get_labels</cite> is also True, the labels are sorted as well.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul>
+<li><p class="first"><strong>ds_Nd</strong> (<em>N-D numpy array</em>) – N dimensional numpy array arranged as [positions slowest to fastest, spectroscopic slowest to fastest]</p>
+</li>
+<li><p class="first"><strong>success</strong> (<em>boolean or string</em>) – True if full reshape was successful</p>
+<p>”Positions” if it was only possible to reshape by
+the position dimensions</p>
+<p>False if no reshape was possible</p>
+</li>
+<li><p class="first"><strong>ds_labels</strong> (<em>list of str</em>) – List of the labels of each dimension of <cite>ds_Nd</cite></p>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If either <cite>h5_pos</cite> or <cite>h5_spec</cite> are not provided, the function will first
+attempt to find them as attributes of <cite>h5_main</cite>.  If that fails, it will
+generate dummy values for them.</p>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.io.hdf_utils.simpleRefCopy">
+<code class="descname">simpleRefCopy</code><span class="sig-paren">(</span><em>h5_source</em>, <em>h5_target</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#simpleRefCopy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.hdf_utils.simpleRefCopy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies a region reference from one dataset to another
+without alteration</p>
+<dl class="docutils">
+<dt>h5_source <span class="classifier-delimiter">:</span> <span class="classifier">HDF5 Dataset</span></dt>
+<dd>source dataset for region reference copy</dd>
+<dt>h5_target <span class="classifier-delimiter">:</span> <span class="classifier">HDF5 Dataset</span></dt>
+<dd>target dataset for region reference copy</dd>
+<dt>key <span class="classifier-delimiter">:</span> <span class="classifier">String</span></dt>
+<dd>Name of attribute in h5_source that contains
+the Region Reference to copy</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ref_inds</strong> – Array containing pairs of points that define
+the corners of each hyperslab in the region
+reference</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Nx2x2 array of unsigned integers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt>
+<code class="descname">get_attr</code><span class="sig-paren">(</span><em>h5_object</em>, <em>attr_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_attr"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns the attribute from the h5py object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_object</strong> (<em>h5py object</em>) – dataset or datagroup object</li>
+<li><strong>attr_name</strong> (<em>str</em>) – Name of the attribute of interest</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>att_val</strong> – value of attribute, in certain cases (byte strings or list of byte strings) reformatted to readily usable forms</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getDataSet</code><span class="sig-paren">(</span><em>h5_parent</em>, <em>data_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getDataSet"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Search for dataset objects in the hdf5 file with given name
+and returns a list of reference(s).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_parent</strong> (<em>h5py.File reference.</em>) – Reference to file, the file must be open and in read-mode.</li>
+<li><strong>data_name</strong> (<em>string.</em>) – Name of Dataset object. If not unique, i.e. parent not specified,
+then references to all Dataset objects that contain this name are returned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of h5py.Reference of the dataset.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getH5DsetRefs</code><span class="sig-paren">(</span><em>ds_names</em>, <em>h5_refs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getH5DsetRefs"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Given a list of H5 dataset references and a list of dataset names,
+this method returns H5 Dataset objects corresponding to the names</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ds_names</strong> (<em>List of strings</em>) – names of target datasets</li>
+<li><strong>h5_refs</strong> (<em>List of H5 dataset references</em>) – list containing the target reference</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>aux_dset</strong> – Corresponding references</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">List of HDF5 dataset references</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getH5RegRefIndices</code><span class="sig-paren">(</span><em>ref</em>, <em>h5_main</em>, <em>return_method='slices'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getH5RegRefIndices"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Given an hdf5 region reference and the dataset it refers to,
+return an array of indices within that dataset that
+correspond to the reference.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ref</strong> (<em>HDF5 Region Reference</em>) – </li>
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em>) – dataset that the reference can be returned from</li>
+<li><strong>return_method</strong> (<em>{'slices'</em><em>, </em><em>'corners'</em><em>, </em><em>'points'}</em>) – <p>slices : the reference is return as pairs of slices</p>
+<p>corners : the reference is returned as pairs of corners representing
+the starting and ending indices of each block</p>
+<p>points : the reference is returns as a list of tuples of points</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ref_inds</strong> – array of indices in the source dataset that ref accesses</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Numpy Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">get_dimensionality</code><span class="sig-paren">(</span><em>ds_index</em>, <em>index_sort=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_dimensionality"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Get the size of each index dimension in a specified sort order</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ds_index</strong> (<em>2D HDF5 Dataset</em><em> or </em><em>numpy array</em>) – Row matrix of indices</li>
+<li><strong>index_sort</strong> (<em>Iterable of unsigned integers</em><em> (</em><em>Optional</em><em>)</em>) – Order of rows sorted from fastest to slowest</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>sorted_dims</strong> – Dimensionality of each row in ds_index.  If index_sort is supplied, it will be in the sorted order</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of unsigned integers</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">get_sort_order</code><span class="sig-paren">(</span><em>ds_spec</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_sort_order"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Find how quickly the spectroscopic values are changing in each row
+and the order of rows from fastest changing to slowest.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ds_spec</strong> (<em>2D HDF5 dataset</em><em> or </em><em>numpy array</em>) – Rows of indices to be sorted from fastest changing to slowest</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>change_sort</strong> – Order of rows sorted from fastest changing to slowest</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List of unsigned integers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getAuxData</code><span class="sig-paren">(</span><em>parent_data</em>, <em>auxDataName=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getAuxData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns auxiliary dataset objects associated with some DataSet through its attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent_data</strong> (<em>h5py.Dataset</em>) – Dataset object reference.</li>
+<li><strong>auxDataName</strong> (<em>list of strings</em><em>, </em><em>optional</em><em>, </em><em>default = all</em><em> (</em><em>DataSet.attrs</em><em>)</em><em></em>) – Name of auxiliary Dataset object to return.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of h5py.Reference of auxiliary dataset objects.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">get_attributes</code><span class="sig-paren">(</span><em>parent_data</em>, <em>attr_names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_attributes"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns attribute associated with some DataSet.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent_data</strong> (<em>h5py.Dataset</em>) – Dataset object reference.</li>
+<li><strong>attr_names</strong> (<em>string</em><em> or </em><em>list of strings</em><em>, </em><em>optional</em><em>, </em><em>default = all</em><em> (</em><em>DataSet.attrs</em><em>)</em><em></em>) – Name of attribute object to return.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Dictionary containing (<a class="reference internal" href="../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.name" title="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.name">name</a>,value) pairs of attributes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">getH5GroupRefs</code><span class="sig-paren">(</span><em>group_name</em>, <em>h5_refs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#getH5GroupRefs"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Given a list of H5 references and a group name,
+this method returns H5 Datagroup object corresponding to the names.
+This function is especially useful when the suffix of the written group
+is unknown (due to the autoindexing in ioHDF5)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>group_name</strong> (<em>unicode / string</em>) – Names of the datagroup</li>
+<li><strong>h5_refs</strong> (<em>List of H5 dataset references</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_grp</strong> – reference to group that matches the <cite>group_name</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Object Reference</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">checkIfMain</code><span class="sig-paren">(</span><em>h5_main</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#checkIfMain"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Checks the input dataset to see if it has all the neccessary
+features to be considered a Main dataset.  This means it is
+2D and has the following attributes
+Position_Indices
+Position_Values
+Spectroscopic_Indices
+Spectroscopic_Values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em>) – Dataset of interest</li>
+<li><strong>verbose</strong> (<em>Boolean</em><em> (</em><em>Optional. Default = False</em><em>)</em>) – Whether or not to print statements</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>success</strong> – True if all tests pass</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">checkAndLinkAncillary</code><span class="sig-paren">(</span><em>h5_dset</em>, <em>anc_names</em>, <em>h5_main=None</em>, <em>anc_refs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#checkAndLinkAncillary"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This function will add references to auxilliary datasets as attributes
+of an input dataset.
+If the entries in anc_refs are valid references, they will be added
+as attributes with the name taken from the corresponding entry in
+anc_names.
+If an entry in anc_refs is not a valid reference, the function will
+attempt to get the attribute with the same name from the h5_main
+dataset</p>
+<p>&#64;author: Suhas Somnath
+edited - Chris Smith</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_dset</strong> (<em>HDF5 Dataset</em>) – dataset to which the attributes will be written</li>
+<li><strong>anc_names</strong> (<em>list of str</em>) – the attribute names to be used</li>
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em><em>, </em><em>optional</em>) – dataset from which attributes will be copied if <cite>anc_refs</cite> is None</li>
+<li><strong>anc_refs</strong> (<em>list of HDF5 Object References</em><em>, </em><em>optional</em>) – references that correspond to the strings in <cite>anc_names</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Either <cite>h5_main</cite> or <cite>anc_refs</cite> MUST be provided and <cite>anc_refs</cite> has the
+higher priority if both are present.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">createRefFromIndices</code><span class="sig-paren">(</span><em>h5_main</em>, <em>ref_inds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#createRefFromIndices"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Create a region reference in the destination dataset using an iterable of pairs of indices
+representing the start and end points of a hyperslab block</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 dataset</em>) – dataset the region will be created in</li>
+<li><strong>ref_inds</strong> (<em>Iterable</em>) – index pairs, [start indices, final indices] for each block in the
+hyperslab</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_ref</strong> – reference in <cite>h5_main</cite> for the blocks of points defined by <cite>ref_inds</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 Region reference</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">copyAttributes</code><span class="sig-paren">(</span><em>source</em>, <em>dest</em>, <em>skip_refs=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#copyAttributes"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Copy attributes from one h5object to another</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">reshape_to_Ndims</code><span class="sig-paren">(</span><em>h5_main</em>, <em>h5_pos=None</em>, <em>h5_spec=None</em>, <em>get_labels=False</em>, <em>verbose=False</em>, <em>sort_dims=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#reshape_to_Ndims"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Reshape the input 2D matrix to be N-dimensions based on the
+position and spectroscopic datasets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em>) – 2D data to be reshaped</li>
+<li><strong>h5_pos</strong> (<em>HDF5 Dataset</em><em>, </em><em>optional</em>) – Position indices corresponding to rows in <cite>h5_main</cite></li>
+<li><strong>h5_spec</strong> (<em>HDF5 Dataset</em><em>, </em><em>optional</em>) – Spectroscopic indices corresponding to columns in <cite>h5_main</cite></li>
+<li><strong>get_labels</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to return the dimension labels.  Default False</li>
+<li><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to print debugging statements</li>
+<li><strong>sort_dims</strong> (<em>bool</em>) – If True, the data is sorted so that the dimensions are in order from fastest to slowest
+If <cite>get_labels</cite> is also True, the labels are sorted as well.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul>
+<li><p class="first"><strong>ds_Nd</strong> (<em>N-D numpy array</em>) – N dimensional numpy array arranged as [positions slowest to fastest, spectroscopic slowest to fastest]</p>
+</li>
+<li><p class="first"><strong>success</strong> (<em>boolean or string</em>) – True if full reshape was successful</p>
+<p>”Positions” if it was only possible to reshape by
+the position dimensions</p>
+<p>False if no reshape was possible</p>
+</li>
+<li><p class="first"><strong>ds_labels</strong> (<em>list of str</em>) – List of the labels of each dimension of <cite>ds_Nd</cite></p>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If either <cite>h5_pos</cite> or <cite>h5_spec</cite> are not provided, the function will first
+attempt to find them as attributes of <cite>h5_main</cite>.  If that fails, it will
+generate dummy values for them.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">linkRefs</code><span class="sig-paren">(</span><em>src</em>, <em>trg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#linkRefs"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Creates Dataset attributes that contain references to other Dataset Objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<em>Reference to h5.objects</em>) – Reference to the the object to which attributes will be added</li>
+<li><strong>trg</strong> (<em>list of references to h5.objects</em>) – objects whose references that can be accessed from src.attrs</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">linkRefAsAlias</code><span class="sig-paren">(</span><em>src</em>, <em>trg</em>, <em>trg_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#linkRefAsAlias"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Creates Dataset attributes that contain references to other Dataset Objects.
+This function is useful when the reference attribute must have a reserved name.
+Such as linking ‘SHO_Indices’ as ‘Spectroscopic_Indices’</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>src</strong> (<em>h5py.Dataset</em>) – Reference to the the object to which attributes will be added</li>
+<li><strong>trg</strong> (<em>h5py.Dataset</em>) – object whose reference that can be accessed from src.attrs</li>
+<li><strong>trg_name</strong> (<em>String</em>) – Alias / alternate name for trg</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">findH5group</code><span class="sig-paren">(</span><em>h5_main</em>, <em>tool_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#findH5group"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Given a dataset and a tool name, return the list of all groups</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5 dataset reference</em>) – Reference to the target dataset to which the tool was applied</li>
+<li><strong>tool_name</strong> (<em>String / unicode</em>) – Name of the tool applied to the target dataset</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>groups</strong> – groups whose name contains the tool name and the dataset name</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of references to h5 group objects</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">get_formatted_labels</code><span class="sig-paren">(</span><em>h5_dset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_formatted_labels"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Takes any dataset which has the labels and units attributes and returns a list of strings
+formatted as ‘label k (unit k)’</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>h5_dset</strong> (<em>h5py.Dataset object</em>) – dataset which has labels and units attributes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>labels</strong> – list of strings formatted as ‘label k (unit k)’</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">reshape_from_Ndims</code><span class="sig-paren">(</span><em>ds_Nd</em>, <em>h5_pos=None</em>, <em>h5_spec=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#reshape_from_Ndims"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Reshape the input 2D matrix to be N-dimensions based on the
+position and spectroscopic datasets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ds_Nd</strong> (<em>numpy.array</em>) – N dimensional numpy array arranged as [positions slowest to fastest, spectroscopic slowest to fastest]</li>
+<li><strong>h5_pos</strong> (<em>HDF5 Dataset</em>) – Position indices corresponding to rows in the final 2d array</li>
+<li><strong>h5_spec</strong> (<em>HDF5 Dataset</em>) – Spectroscopic indices corresponding to columns in the final 2d array</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul>
+<li><p class="first"><strong>ds_2d</strong> (<em>numpy.array</em>) – 2 dimensional numpy array arranged as [positions, spectroscopic]</p>
+</li>
+<li><p class="first"><strong>success</strong> (<em>boolean or string</em>) – True if full reshape was successful</p>
+<p>”Positions” if it was only possible to reshape by
+the position dimensions</p>
+<p>False if no reshape was possible</p>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If either <cite>h5_pos</cite> or <cite>h5_spec</cite> are not provided, the function will
+assume the first dimension is position and the remaining are spectroscopic already
+in order from fastest to slowest.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">findDataset</code><span class="sig-paren">(</span><em>h5_group</em>, <em>ds_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#findDataset"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Uses visit() to find all datasets with the desired name</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">print_tree</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#print_tree"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Simple function to recursively print the contents of an hdf5 group
+:param parent:
+:type parent: h5py.Group</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">get_all_main</code><span class="sig-paren">(</span><em>parent</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/io/hdf_utils.html#get_all_main"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Simple function to recursively print the contents of an hdf5 group</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<em>h5py.Group</em>) – HDF5 Group to search within</li>
+<li><strong>verbose</strong> (<em>bool</em>) – If true, extra print statements are enabled</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>main_list</strong> – The datasets found in the file that meet the ‘Main Data’ criteria.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of h5py.Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

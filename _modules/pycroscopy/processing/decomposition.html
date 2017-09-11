@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing.decomposition &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../index.html"/>
+        <link rel="up" title="pycroscopy.processing" href="../processing.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../processing.html">pycroscopy.processing</a> &raquo;</li>
+        
+      <li>pycroscopy.processing.decomposition</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.processing.decomposition</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Tue Jan 05 07:55:56 2016</span>
+
+<span class="sd">@author: Suhas Somnath, Chris Smith</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sklearn.decomposition</span> <span class="k">as</span> <span class="nn">dec</span>
+
+<span class="kn">from</span> <span class="nn">..io.hdf_utils</span> <span class="k">import</span> <span class="n">checkIfMain</span>
+<span class="kn">from</span> <span class="nn">..io.hdf_utils</span> <span class="k">import</span> <span class="n">getH5DsetRefs</span><span class="p">,</span> <span class="n">checkAndLinkAncillary</span>
+<span class="kn">from</span> <span class="nn">..io.io_hdf5</span> <span class="k">import</span> <span class="n">ioHDF5</span>
+<span class="kn">from</span> <span class="nn">..io.io_utils</span> <span class="k">import</span> <span class="n">check_dtype</span><span class="p">,</span> <span class="n">transformToTargetType</span>
+<span class="kn">from</span> <span class="nn">..io.microdata</span> <span class="k">import</span> <span class="n">MicroDataGroup</span><span class="p">,</span> <span class="n">MicroDataset</span>
+
+
+<div class="viewcode-block" id="Decomposition"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.decomposition.html#pycroscopy.processing.decomposition.Decomposition">[docs]</a><span class="k">class</span> <span class="nc">Decomposition</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pycroscopy wrapper around the sklearn.decomposition classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5_main</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs the Decomposition object</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ------------</span>
+<span class="sd">        h5_main : HDF5 dataset object</span>
+<span class="sd">            Main dataset with ancillary spectroscopic, position indices and values datasets</span>
+<span class="sd">        method_name : string / unicode</span>
+<span class="sd">            Name of the sklearn.cluster estimator</span>
+<span class="sd">        n_components : (Optional) unsigned int</span>
+<span class="sd">            Number of components for decomposition</span>
+<span class="sd">        *args and **kwargs : arguments to be passed to the estimator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">n_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;n_components&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_components</span>
+
+        <span class="n">allowed_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FactorAnalysis&#39;</span><span class="p">,</span> <span class="s1">&#39;FastICA&#39;</span><span class="p">,</span> <span class="s1">&#39;IncrementalPCA&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;MiniBatchSparsePCA&#39;</span><span class="p">,</span> <span class="s1">&#39;NMF&#39;</span><span class="p">,</span> <span class="s1">&#39;PCA&#39;</span><span class="p">,</span> <span class="s1">&#39;RandomizedPCA&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;SparsePCA&#39;</span><span class="p">,</span> <span class="s1">&#39;TruncatedSVD&#39;</span><span class="p">]</span>
+
+        <span class="c1"># check if h5_main is a valid object - is it a hub?</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">checkIfMain</span><span class="p">(</span><span class="n">h5_main</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Supplied dataset is not a pycroscopy main dataset&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">method_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Cannot work with </span><span class="si">{}</span><span class="s1"> just yet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method_name</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span> <span class="o">=</span> <span class="n">h5_main</span>
+
+        <span class="c1"># Instantiate the decomposition object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">dec</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">method_name</span><span class="p">]</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>
+
+        <span class="c1"># figure out the operation that needs need to be performed to convert to real scalar</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_transform_func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_is_complex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_is_compound</span><span class="p">,</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">data_n_features</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_n_samples</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type_mult</span><span class="p">)</span> <span class="o">=</span> <span class="n">check_dtype</span><span class="p">(</span><span class="n">h5_main</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Decomposition.doDecomposition"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.decomposition.html#pycroscopy.processing.decomposition.Decomposition.doDecomposition">[docs]</a>    <span class="k">def</span> <span class="nf">doDecomposition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decomposes the hdf5 dataset, and writes the ? back to the hdf5 file</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+<span class="sd">        h5_group : HDF5 Group reference</span>
+<span class="sd">            Reference to the group that contains the decomposition results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeToHDF5</span><span class="p">(</span><span class="n">transformToTargetType</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">components_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Decomposition._fit"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.decomposition.html#pycroscopy.processing.decomposition.Decomposition._fit">[docs]</a>    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fits the provided dataset</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># perform fit on the real dataset</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">==</span> <span class="s1">&#39;NMF&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_transform_func</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_transform_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Decomposition._transform"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.decomposition.html#pycroscopy.processing.decomposition.Decomposition._transform">[docs]</a>    <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the original OR provided dataset with previously computed fit</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        --------</span>
+<span class="sd">        data : (optional) HDF5 dataset</span>
+<span class="sd">            Dataset to apply the transform to. </span>
+<span class="sd">            The number of elements in the first axis of this dataset should match that of the original</span>
+<span class="sd">            dataset that was fitted</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">==</span> <span class="s1">&#39;NMF&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_transform_func</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_transform_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Decomposition._writeToHDF5"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.decomposition.html#pycroscopy.processing.decomposition.Decomposition._writeToHDF5">[docs]</a>    <span class="k">def</span> <span class="nf">_writeToHDF5</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes the labels and mean response to the h5 file</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ------------</span>
+<span class="sd">        labels : 1D unsigned int array</span>
+<span class="sd">            Array of cluster labels as obtained from the fit</span>
+<span class="sd">        mean_response : 2D numpy array</span>
+<span class="sd">            Array of the mean response for each cluster arranged as [cluster number, response]</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------</span>
+<span class="sd">        h5_labels : HDF5 Group reference</span>
+<span class="sd">            Reference to the group that contains the clustering results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ds_components</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Components&#39;</span><span class="p">,</span> <span class="n">components</span><span class="p">)</span>  <span class="c1"># equivalent to V</span>
+        <span class="n">ds_projections</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Projection&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">projection</span><span class="p">))</span>  <span class="c1"># equivalent of U compound</span>
+
+        <span class="n">decomp_ind_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">components</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+
+        <span class="n">ds_decomp_inds</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Decomposition_Indices&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">(</span><span class="n">decomp_ind_mat</span><span class="p">))</span>
+        <span class="n">ds_decomp_vals</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="s1">&#39;Decomposition_Values&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">decomp_ind_mat</span><span class="p">))</span>
+
+        <span class="c1"># write the labels and the mean response to h5</span>
+        <span class="n">decomp_slices</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Decomp&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))}</span>
+        <span class="n">ds_decomp_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">decomp_slices</span>
+        <span class="n">ds_decomp_inds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+        <span class="n">ds_decomp_vals</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">decomp_slices</span>
+        <span class="n">ds_decomp_vals</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+
+        <span class="n">decomp_grp</span> <span class="o">=</span> <span class="n">MicroDataGroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-Decomposition_&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">decomp_grp</span><span class="o">.</span><span class="n">addChildren</span><span class="p">([</span><span class="n">ds_components</span><span class="p">,</span> <span class="n">ds_projections</span><span class="p">,</span> <span class="n">ds_decomp_inds</span><span class="p">,</span> <span class="n">ds_decomp_vals</span><span class="p">])</span>
+
+        <span class="n">decomp_grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;num_components&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">decomp_grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;num_samples&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">decomp_grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;decomposition_algorithm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the parameters of the estimator used and write them</span>
+<span class="sd">        as attributes of the group</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">parm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">decomp_grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">parm</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">get_params</span><span class="p">()[</span><span class="n">parm</span><span class="p">]</span>
+
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">ioHDF5</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">h5_decomp_refs</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">decomp_grp</span><span class="p">)</span>
+
+        <span class="n">h5_components</span> <span class="o">=</span> <span class="n">getH5DsetRefs</span><span class="p">([</span><span class="s1">&#39;Components&#39;</span><span class="p">],</span> <span class="n">h5_decomp_refs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">h5_projections</span> <span class="o">=</span> <span class="n">getH5DsetRefs</span><span class="p">([</span><span class="s1">&#39;Projection&#39;</span><span class="p">],</span> <span class="n">h5_decomp_refs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">h5_decomp_inds</span> <span class="o">=</span> <span class="n">getH5DsetRefs</span><span class="p">([</span><span class="s1">&#39;Decomposition_Indices&#39;</span><span class="p">],</span> <span class="n">h5_decomp_refs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">h5_decomp_vals</span> <span class="o">=</span> <span class="n">getH5DsetRefs</span><span class="p">([</span><span class="s1">&#39;Decomposition_Values&#39;</span><span class="p">],</span> <span class="n">h5_decomp_refs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">checkAndLinkAncillary</span><span class="p">(</span><span class="n">h5_projections</span><span class="p">,</span>
+                              <span class="p">[</span><span class="s1">&#39;Position_Indices&#39;</span><span class="p">,</span> <span class="s1">&#39;Position_Values&#39;</span><span class="p">],</span>
+                              <span class="n">h5_main</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="p">)</span>
+
+        <span class="n">checkAndLinkAncillary</span><span class="p">(</span><span class="n">h5_projections</span><span class="p">,</span>
+                              <span class="p">[</span><span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">,</span> <span class="s1">&#39;Spectroscopic_Values&#39;</span><span class="p">],</span>
+                              <span class="n">anc_refs</span><span class="o">=</span><span class="p">[</span><span class="n">h5_decomp_inds</span><span class="p">,</span> <span class="n">h5_decomp_vals</span><span class="p">])</span>
+
+        <span class="n">checkAndLinkAncillary</span><span class="p">(</span><span class="n">h5_components</span><span class="p">,</span>
+                              <span class="p">[</span><span class="s1">&#39;Spectroscopic_Indices&#39;</span><span class="p">,</span> <span class="s1">&#39;Spectroscopic_Values&#39;</span><span class="p">],</span>
+                              <span class="n">h5_main</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">h5_main</span><span class="p">)</span>
+
+        <span class="n">checkAndLinkAncillary</span><span class="p">(</span><span class="n">h5_components</span><span class="p">,</span>
+                              <span class="p">[</span><span class="s1">&#39;Position_Indices&#39;</span><span class="p">,</span> <span class="s1">&#39;Position_Values&#39;</span><span class="p">],</span>
+                              <span class="n">anc_refs</span><span class="o">=</span><span class="p">[</span><span class="n">h5_decomp_inds</span><span class="p">,</span> <span class="n">h5_decomp_vals</span><span class="p">])</span>
+
+        <span class="c1"># return the h5 group object</span>
+        <span class="k">return</span> <span class="n">h5_components</span><span class="o">.</span><span class="n">parent</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

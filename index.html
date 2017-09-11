@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pycroscopy &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="#"/>
+        <link rel="next" title="Pycroscopy Data and File Format" href="Data_Format.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Pycroscopy  </li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pycroscopy-statusimage">
+<h1>Pycroscopy  <img alt="statusimage" src="https://travis-ci.org/pycroscopy/pycroscopy.svg?branch=master" /><a class="headerlink" href="#pycroscopy-statusimage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="scientific-analysis-of-nanoscale-materials-imaging-data">
+<h2>Scientific analysis of nanoscale materials imaging data<a class="headerlink" href="#scientific-analysis-of-nanoscale-materials-imaging-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what">
+<span id="what-label"></span><h3>What?<a class="headerlink" href="#what" title="Permalink to this headline">¶</a></h3>
+<p>A suite of utilities for image processing and scientific analysis of imaging modalities such as
+multi-frequency scanning probe microscopy, scanning tunneling spectroscopy, x-ray diffraction microscopy,
+and transmission electron microscopy.
+Classes implemented here are ported to a high performance computing platform at Oak Ridge National
+Laboratory (<a class="reference external" href="https://www.ornl.gov/">ORNL</a>).</p>
+<p>More information on pycroscopy is available at our <a class="reference external" href="https://github.com/pycroscopy/pycroscopy">project page</a>.</p>
+<p>TL;DR? - see this <a class="reference external" href="https://github.com/pycroscopy/pycroscopy/blob/master/docs/pycroscopy_2017_07_11.pdf">short introduction</a>.</p>
+</div>
+<div class="section" id="who">
+<span id="who-label"></span><h3>Who?<a class="headerlink" href="#who" title="Permalink to this headline">¶</a></h3>
+<p>This project begun largely as an effort by scientists and engineers at the <strong>C</strong>enter for <strong>N</strong>anophase
+<strong>M</strong>aterials <strong>S</strong>ciences (<a class="reference external" href="https://www.ornl.gov/facility/cnms">CNMS</a>) to implement a python library
+that can support the I/O, processing, and analysis of the gargantuan stream of images that their microscopes
+generate (thanks to the large CNMS users community!).</p>
+<p>By sharing our methodology and code for analyzing materials imaging we hope that it will benefit the wider
+community of materials science/physics. We also hope, quite ardently, that other materials scientists would
+follow suit.
+! <img alt="smilie" src="https://raw.githubusercontent.com/pycroscopy/pycroscopy/gh-pages/images/smiley_wink.png" /></p>
+<p><strong>The (core) pycroscopy team:</strong></p>
+<p><a class="reference external" href="https://github.com/nlaanait">&#64;nlaanait</a> (Numan Laanait), <a class="reference external" href="https://github.com/ssomnath">&#64;ssomnath</a>
+(Suhas Somnath), <a class="reference external" href="https://github.com/CompPhysChris">&#64;CompPhysChris</a> (Chris R. Smith),
+<a class="reference external" href="https://github.com/stephenjesse">&#64;stephenjesse</a> (Stephen Jesse) and many more…</p>
+</div>
+<div class="section" id="why">
+<span id="why-label"></span><h3>Why?<a class="headerlink" href="#why" title="Permalink to this headline">¶</a></h3>
+<p>There is that little thing called open science…</p>
+<p>As we see it, there are a few  opportunities in microscopy / imaging and materials science:</p>
+<dl class="docutils">
+<dt><strong>1. Growing data sizes</strong></dt>
+<dd><ul class="first last simple">
+<li>Cannot use desktop computers for analysis</li>
+<li><em>Need: High performance computing, storage resources and compatible, scalable file structures</em></li>
+</ul>
+</dd>
+<dt><strong>2. Increasing data complexity</strong></dt>
+<dd><ul class="first last simple">
+<li>Sophisticated imaging and spectroscopy modes resulting in 5,6,7… dimensional data</li>
+<li><em>Need: Robust software and generalized data formatting</em></li>
+</ul>
+</dd>
+<dt><strong>3. Multiple file formats</strong></dt>
+<dd><ul class="first last simple">
+<li>Different formats from each instrument. Proprietary in most cases</li>
+<li>Incompatible for correlation</li>
+<li><em>Need: Open, instrument independent data format</em></li>
+</ul>
+</dd>
+<dt><strong>4. Disjoint communities</strong></dt>
+<dd><ul class="first last simple">
+<li>Similar analysis routines written by each community (SPM, STEM, TOF SIMs, XRD…) <em>independently</em>!</li>
+<li><em>Need: Centralized repository, instrument agonistic analysis routines that bring communities together</em></li>
+</ul>
+</dd>
+<dt><strong>5. Expensive analysis software</strong></dt>
+<dd><ul class="first last simple">
+<li>Software supplied with instruments often insufficient / incapable of custom analysis routines</li>
+<li>Commercial software (Eg: Matlab, Origin..) are often prohibitively expensive.</li>
+<li><em>Need: Free, powerful, open souce, user-friendly software</em></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="how">
+<span id="how-label"></span><h3>How?<a class="headerlink" href="#how" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>pycroscopy uses an <strong>instrument agnostic data structure</strong> that facilitates the storage of data, regardless</li>
+</ul>
+<blockquote>
+<div>of dimensionality (conventional 2D images to 9D multispectral SPM datasets) or instrument of origin (AFMs,
+STMs, STEMs, TOF SIMS, and many more). This general defenition of data allows us to write a single and
+generalized version of analysis and processing functions that can be applied to any kind of data.</div></blockquote>
+<ul class="simple">
+<li>The data is stored in <a href="#id1"><span class="problematic" id="id2">`</span></a>heirarchical</li>
+</ul>
+<p>data format (HDF5) &lt;<a class="reference external" href="http://extremecomputingtraining.anl.gov/files/2015/03/HDF5-Intro-aug7-130.pdf">http://extremecomputingtraining.anl.gov/files/2015/03/HDF5-Intro-aug7-130.pdf</a>&gt;`_
+files which:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Allow easy and open acceess to data from any programming language.</li>
+<li>Accomodate datasets ranging from kilobytes (kB) to petabytes (pB)</li>
+<li>Are readily compaible with supercomputers and support parallel I/O</li>
+<li>Allows storage of relevant parameters along with data for improved traceability and reproducability of</li>
+</ul>
+<p>analysis</p>
+</div></blockquote>
+<ul class="simple">
+<li>Scientific workflows are developed and disseminated through <a class="reference external" href="http://jupyter.org/">jupyter notebooks</a></li>
+</ul>
+<p>that are interactive and portable web applications containing, text, images, code / scripts, and text-based
+and graphical results
+* Once a user converts their microscope’s data format into a HDF5 format, by simply extending some of the
+classes in `io`, the user gains access to the rest of the utilities present in <cite>pycroscopy.*</cite>.</p>
+<blockquote>
+<div><ul class="simple">
+<li>(On a High Performance Computing Platform if she/he is a CNMS user!   Sign up</li>
+</ul>
+</div></blockquote>
+<p><a class="reference external" href="https://www.ornl.gov/facility/cnms/subpage/user-program-overview">here</a>!)</p>
+</div>
+<div class="section" id="acknowledgements">
+<h3>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h3>
+<p>Besides the packages used in pycroscopy, we would like to thank the developers of the following software
+packages:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.python.org">Python</a></li>
+<li><a class="reference external" href="https://www.continuum.io/anaconda-overview">Anaconda Python</a></li>
+<li><a class="reference external" href="http://jupyter.org/">jupyter</a></li>
+<li><a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a></li>
+<li><a class="reference external" href="https://www.gitkraken.com/">GitKraken</a></li>
+</ul>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+</tbody>
+</table>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Data_Format.html">Pycroscopy Data and File Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Data_Format.html#why-should-you-care">Why should you care?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Data_Format.html#pycroscopy-data-format">Pycroscopy data format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Data_Format.html#main-datasets"><code class="docutils literal"><span class="pre">Main</span></code> Datasets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Data_Format.html#compound-datasets">Compound Datasets:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Data_Format.html#ancillary-datasets"><code class="docutils literal"><span class="pre">Ancillary</span></code> Datasets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Data_Format.html#channels">Channels</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Data_Format.html#file-format-hdf5">File Format (HDF5)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Data_Format.html#implementation">Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Data_Format.html#main-data"><code class="docutils literal"><span class="pre">Main</span></code> data:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Data_Format.html#ancillary-data"><code class="docutils literal"><span class="pre">Ancillary</span></code> data:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Data_Format.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Data_Format.html#datagroups">Datagroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Data_Format.html#measurement-data">Measurement data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Data_Format.html#tool-analysis-processing">Tool (analysis / processing)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Data_Format.html#advanced-topics">Advanced topics:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pycroscopy.html">pycroscopy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pycroscopy.html#description">0. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycroscopy.html#package-structure">1. Package Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycroscopy.html#pycroscopy-modules">2. Pycroscopy Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gen_modules/pycroscopy.analysis.html">pycroscopy.analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gen_modules/pycroscopy.analysis.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.be_loop_model.html">pycroscopy.analysis.be_loop_model</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.be_loop_model.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.be_sho_model.html">pycroscopy.analysis.be_sho_model</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.be_sho_model.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.fit_methods.html">pycroscopy.analysis.fit_methods</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.fit_methods.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.guess_methods.html">pycroscopy.analysis.guess_methods</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.guess_methods.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.guess_methods.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.model.html">pycroscopy.analysis.model</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.model.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.optimize.html">pycroscopy.analysis.optimize</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.optimize.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.analysis.optimize.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gen_modules/pycroscopy.io.html">pycroscopy.io</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gen_modules/pycroscopy.io.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.be_hdf_utils.html">pycroscopy.io.be_hdf_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.be_hdf_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.hdf_utils.html">pycroscopy.io.hdf_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.hdf_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.io_hdf5.html">pycroscopy.io.io_hdf5</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.io_hdf5.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.io_utils.html">pycroscopy.io.io_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.io_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.microdata.html">pycroscopy.io.microdata</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.microdata.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.io.translators.html">pycroscopy.io.translators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gen_modules/pycroscopy.processing.html">pycroscopy.processing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gen_modules/pycroscopy.processing.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.atom_finding.html">pycroscopy.processing.atom_finding</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.atom_finding.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.cluster.html">pycroscopy.processing.cluster</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.cluster.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.cluster.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.decomposition.html">pycroscopy.processing.decomposition</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.decomposition.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.feature_extraction.html">pycroscopy.processing.feature_extraction</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.feature_extraction.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.feature_extraction.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.fft.html">pycroscopy.processing.fft</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.fft.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.giv_utils.html">pycroscopy.processing.giv_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.giv_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.gmode_utils.html">pycroscopy.processing.gmode_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.gmode_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.image_processing.html">pycroscopy.processing.image_processing</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.image_processing.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.image_processing.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.image_transformation.html">pycroscopy.processing.image_transformation</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.image_transformation.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.image_transformation.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.proc_utils.html">pycroscopy.processing.proc_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.proc_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.process.html">pycroscopy.processing.process</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.process.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.process.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.svd_utils.html">pycroscopy.processing.svd_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.processing.svd_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="gen_modules/pycroscopy.processing.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gen_modules/pycroscopy.viz.html">pycroscopy.viz</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gen_modules/pycroscopy.viz.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.viz.be_viz_utils.html">pycroscopy.viz.be_viz_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.viz.be_viz_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.viz.plot_utils.html">pycroscopy.viz.plot_utils</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="gen_modules/_autosummary/pycroscopy.viz.plot_utils.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Pycroscopy Gallery</a><ul>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Data_Format.html" class="btn btn-neutral float-right" title="Pycroscopy Data and File Format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

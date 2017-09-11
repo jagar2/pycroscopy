@@ -1,0 +1,546 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.translators.df_utils.dm4reader &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.translators.df_utils.dm4reader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.translators.df_utils.dm4reader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Aug 7, 2015</span>
+
+<span class="sd">@author: James Anderson</span>
+
+<span class="sd">link: https://github.com/jamesra/dm4reader</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">array</span> 
+
+<span class="n">DM4Header</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;DM4Header&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="s1">&#39;root_length&#39;</span><span class="p">,</span> <span class="s1">&#39;little_endian&#39;</span><span class="p">))</span> 
+<span class="n">DM4TagHeader</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;DM4TagHeader&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;byte_length&#39;</span><span class="p">,</span> <span class="s1">&#39;array_length&#39;</span><span class="p">,</span> <span class="s1">&#39;data_type_code&#39;</span><span class="p">,</span> <span class="s1">&#39;header_offset&#39;</span><span class="p">,</span> <span class="s1">&#39;data_offset&#39;</span><span class="p">))</span>
+<span class="n">DM4DirHeader</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;DM4DirHeader&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;byte_length&#39;</span><span class="p">,</span> <span class="s1">&#39;sorted&#39;</span><span class="p">,</span> <span class="s1">&#39;closed&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tags&#39;</span><span class="p">,</span> <span class="s1">&#39;data_offset&#39;</span><span class="p">))</span>
+
+<span class="n">DM4Tag</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;DM4Tag&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;data_type_code&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">))</span>
+
+
+<span class="n">DM4DataType</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;DM4DataTypes&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;num_bytes&#39;</span><span class="p">,</span> <span class="s1">&#39;signed&#39;</span><span class="p">,</span> <span class="s1">&#39;type_format&#39;</span><span class="p">))</span>
+
+<span class="n">DM4DataTypeDict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;h&#39;</span><span class="p">),</span> <span class="c1">#2byte signed integer</span>
+                   <span class="mi">3</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;i&#39;</span><span class="p">),</span> <span class="c1">#4byte signed integer</span>
+                   <span class="mi">4</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="c1">#2byte unsigned integer</span>
+                   <span class="mi">5</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">),</span> <span class="c1">#4byte unsigned integer</span>
+                   <span class="mi">6</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;f&#39;</span><span class="p">),</span> <span class="c1">#4byte float</span>
+                   <span class="mi">7</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">),</span> <span class="c1">#8byte float</span>
+                   <span class="mi">8</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">),</span>
+                   <span class="mi">9</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">),</span>
+                   <span class="mi">10</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">),</span>
+                   <span class="mi">11</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;q&#39;</span><span class="p">),</span>
+                   <span class="mi">12</span><span class="p">:</span> <span class="n">DM4DataType</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Q&#39;</span><span class="p">)</span>
+                   <span class="p">}</span>
+
+<span class="n">DM4_header_size</span> <span class="o">=</span> <span class="mi">4</span><span class="o">+</span><span class="mi">8</span><span class="o">+</span><span class="mi">4</span>
+<span class="n">DM4_root_tag_dir_header_size</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="mi">8</span>
+
+
+<div class="viewcode-block" id="tag_is_directory"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.tag_is_directory">[docs]</a><span class="k">def</span> <span class="nf">tag_is_directory</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tag</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">20</span></div>
+ 
+<div class="viewcode-block" id="read_header_dm4"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.read_header_dm4">[docs]</a><span class="k">def</span> <span class="nf">read_header_dm4</span><span class="p">(</span><span class="n">dmfile</span><span class="p">):</span>
+    <span class="n">dmfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;I&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#int.from_bytes(dmfile.read(4), byteorder=&#39;big&#39;)</span>
+    <span class="n">rootlength</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;Q&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">byteorder</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;I&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">little_endian</span> <span class="o">=</span> <span class="n">byteorder</span> <span class="o">==</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">DM4Header</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">rootlength</span><span class="p">,</span> <span class="n">little_endian</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_get_endian_str"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader._get_endian_str">[docs]</a><span class="k">def</span> <span class="nf">_get_endian_str</span><span class="p">(</span><span class="n">endian</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    DM4 header encodes little endian as byte value 1 in the header</span>
+<span class="sd">    :return: &#39;big&#39; or &#39;little&#39; for use with python&#39;s int.frombytes function</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">endian</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">endian</span> 
+    
+    <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">endian</span><span class="p">,</span><span class="nb">int</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">endian</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;little&#39;</span>
+    
+    <span class="k">return</span> <span class="s1">&#39;big&#39;</span>   </div>
+
+<div class="viewcode-block" id="_get_struct_endian_str"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader._get_struct_endian_str">[docs]</a><span class="k">def</span> <span class="nf">_get_struct_endian_str</span><span class="p">(</span><span class="n">endian</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    DM4 header encodes little endian as byte value 1 in the header.  However when that convention is followed the wrong values are read.  So this implementation is reversed.</span>
+<span class="sd">    :return: &#39;&gt;&#39; or &#39;&lt;&#39; for use with python&#39;s struct.unpack function</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">endian</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">endian</span> <span class="o">==</span> <span class="s1">&#39;little&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&gt;&#39;</span> <span class="c1">#Little Endian</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&lt;&#39;</span> <span class="c1">#Big Endian</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">endian</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&gt;&#39;</span> <span class="c1">#Little Endian</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&lt;&#39;</span> <span class="c1">#Big Endian</span></div>
+
+<div class="viewcode-block" id="read_root_tag_dir_header_dm4"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.read_root_tag_dir_header_dm4">[docs]</a><span class="k">def</span> <span class="nf">read_root_tag_dir_header_dm4</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Read the root directory information from a dm4 file.</span>
+<span class="sd">       File seek position is left at end of root_tag_dir_header&#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">endian</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">endian</span> <span class="o">=</span> <span class="n">_get_struct_endian_str</span><span class="p">(</span><span class="n">endian</span><span class="p">)</span>
+        
+    <span class="n">dmfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">DM4_header_size</span><span class="p">)</span>
+        
+    <span class="n">issorted</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">endian</span> <span class="o">+</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">isclosed</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">endian</span> <span class="o">+</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">num_tags</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;Q&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#DM4 specifies this property as always big endian</span>
+      
+    <span class="k">return</span> <span class="n">DM4DirHeader</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">issorted</span><span class="p">,</span> <span class="n">isclosed</span><span class="p">,</span> <span class="n">num_tags</span><span class="p">,</span> <span class="n">DM4_header_size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="read_tag_header_dm4"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.read_tag_header_dm4">[docs]</a><span class="k">def</span> <span class="nf">read_tag_header_dm4</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Read the tag from the file.  Leaves file at the end of the tag data, ready to read the next tag from the file&#39;&#39;&#39;</span>
+    <span class="n">tag_header_offset</span> <span class="o">=</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+    <span class="n">tag_type</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">endian</span> <span class="o">+</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_read_tag_dir_header_dm4</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="n">tag_name</span> <span class="o">=</span> <span class="n">_read_tag_name</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">)</span>
+    <span class="n">tag_byte_length</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;Q&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1">#DM4 specifies this property as always big endian</span>
+    
+    <span class="n">tag_data_offset</span> <span class="o">=</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+    
+    <span class="n">_read_tag_garbage_str</span><span class="p">(</span><span class="n">dmfile</span><span class="p">)</span>
+ 
+    <span class="p">(</span><span class="n">tag_array_length</span><span class="p">,</span>  <span class="n">tag_array_types</span><span class="p">)</span> <span class="o">=</span> <span class="n">_read_tag_data_info</span><span class="p">(</span><span class="n">dmfile</span><span class="p">)</span>
+     
+    <span class="n">dmfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">tag_data_offset</span> <span class="o">+</span> <span class="n">tag_byte_length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">DM4TagHeader</span><span class="p">(</span><span class="n">tag_type</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">tag_byte_length</span><span class="p">,</span> <span class="n">tag_array_length</span><span class="p">,</span> <span class="n">tag_array_types</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tag_header_offset</span><span class="p">,</span> <span class="n">tag_data_offset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_read_tag_name"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader._read_tag_name">[docs]</a><span class="k">def</span> <span class="nf">_read_tag_name</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">):</span>
+    <span class="n">tag_name_len</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;H&#39;</span><span class="p">,</span><span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#DM4 specifies this property as always big endian</span>
+    <span class="n">tag_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">tag_name_len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">tag_name_len</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tag_name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">UnicodeDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">tag_name</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">pass</span>
+    
+    <span class="k">return</span> <span class="n">tag_name</span></div>
+    
+<div class="viewcode-block" id="_read_tag_dir_header_dm4"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader._read_tag_dir_header_dm4">[docs]</a><span class="k">def</span> <span class="nf">_read_tag_dir_header_dm4</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">):</span>
+
+    <span class="n">tag_name</span> <span class="o">=</span> <span class="n">_read_tag_name</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">)</span>
+    <span class="n">tag_byte_length</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;Q&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#DM4 specifies this property as always big endian</span>
+    <span class="n">issorted</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">endian</span> <span class="o">+</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">isclosed</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">endian</span> <span class="o">+</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">num_tags</span> <span class="o">=</span>  <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;Q&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#DM4 specifies this property as always big endian</span>
+    
+    <span class="n">data_offset</span> <span class="o">=</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">DM4DirHeader</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">tag_byte_length</span><span class="p">,</span> <span class="n">issorted</span><span class="p">,</span> <span class="n">isclosed</span><span class="p">,</span> <span class="n">num_tags</span><span class="p">,</span> <span class="n">data_offset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="_read_tag_garbage_str"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader._read_tag_garbage_str">[docs]</a><span class="k">def</span> <span class="nf">_read_tag_garbage_str</span><span class="p">(</span><span class="n">dmfile</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    DM4 has four bytes of % symbols in the tag.  Ensure it is there.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">garbage_str</span> <span class="o">=</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">garbage_str</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="si">%%%%</span><span class="s1">&#39;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="_read_tag_data_info"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader._read_tag_data_info">[docs]</a><span class="k">def</span> <span class="nf">_read_tag_data_info</span><span class="p">(</span><span class="n">dmfile</span><span class="p">):</span>
+    <span class="n">tag_array_length</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="s1">&#39;&gt;Q&#39;</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#DM4 specifies this property as always big endian</span>
+    <span class="n">format_str</span> <span class="o">=</span> <span class="s1">&#39;&gt;&#39;</span> <span class="o">+</span> <span class="n">tag_array_length</span> <span class="o">*</span> <span class="s1">&#39;q&#39;</span> <span class="c1">#Big endian signed long</span>
+     
+    <span class="n">tag_array_types</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">format_str</span><span class="p">,</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">tag_array_length</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">tag_array_length</span><span class="p">,</span>  <span class="n">tag_array_types</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_read_tag_data"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader._read_tag_data">[docs]</a><span class="k">def</span> <span class="nf">_read_tag_data</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">endian</span><span class="p">):</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">21</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        
+        <span class="n">endian</span> <span class="o">=</span> <span class="n">_get_struct_endian_str</span><span class="p">(</span><span class="n">endian</span><span class="p">)</span>
+        <span class="n">dmfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">data_offset</span><span class="p">)</span>
+         
+        <span class="n">_read_tag_garbage_str</span><span class="p">(</span><span class="n">dmfile</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">tag_array_length</span><span class="p">,</span>  <span class="n">tag_array_types</span><span class="p">)</span> <span class="o">=</span> <span class="n">_read_tag_data_info</span><span class="p">(</span><span class="n">dmfile</span><span class="p">)</span>
+        
+        <span class="n">tag_data_type_code</span> <span class="o">=</span> <span class="n">tag_array_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">tag_data_type_code</span> <span class="o">==</span> <span class="mi">15</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">read_tag_data_group</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">endian</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tag_data_type_code</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">read_tag_data_array</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">endian</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tag_data_type_code</span> <span class="ow">in</span> <span class="n">DM4DataTypeDict</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Missing type &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tag_data_type_code</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="k">return</span> <span class="n">_read_tag_data_value</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">,</span> <span class="n">tag_data_type_code</span><span class="p">)</span>
+    
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="c1">#Ensure we are in the correct position to read the next tag regardless of how reading this tag goes</span>
+        <span class="n">dmfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">data_offset</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">byte_length</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="_read_tag_data_value"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader._read_tag_data_value">[docs]</a><span class="k">def</span> <span class="nf">_read_tag_data_value</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">,</span> <span class="n">type_code</span><span class="p">):</span>
+    <span class="n">data_type</span> <span class="o">=</span> <span class="n">DM4DataTypeDict</span><span class="p">[</span><span class="n">type_code</span><span class="p">]</span>
+    <span class="n">format_str</span> <span class="o">=</span> <span class="n">_get_struct_endian_str</span><span class="p">(</span><span class="n">endian</span><span class="p">)</span> <span class="o">+</span> <span class="n">data_type</span><span class="o">.</span><span class="n">type_format</span>
+    <span class="n">byte_data</span> <span class="o">=</span> <span class="n">dmfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">data_type</span><span class="o">.</span><span class="n">num_bytes</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">format_str</span><span class="p">,</span> <span class="n">byte_data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> </div>
+
+<div class="viewcode-block" id="read_tag_data_group"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.read_tag_data_group">[docs]</a><span class="k">def</span> <span class="nf">read_tag_data_group</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">endian</span><span class="p">):</span>
+    <span class="n">endian</span> <span class="o">=</span> <span class="n">_get_struct_endian_str</span><span class="p">(</span><span class="n">endian</span><span class="p">)</span>
+    <span class="n">dmfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">data_offset</span><span class="p">)</span>
+    
+    <span class="n">_read_tag_garbage_str</span><span class="p">(</span><span class="n">dmfile</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">tag_array_length</span><span class="p">,</span>  <span class="n">tag_array_types</span><span class="p">)</span> <span class="o">=</span> <span class="n">_read_tag_data_info</span><span class="p">(</span><span class="n">dmfile</span><span class="p">)</span>
+        
+    <span class="n">tag_data_type</span> <span class="o">=</span> <span class="n">tag_array_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">tag_data_type</span> <span class="o">==</span> <span class="mi">15</span><span class="p">)</span>
+    
+    <span class="n">length_groupname</span> <span class="o">=</span> <span class="n">tag_array_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">number_of_entries_in_group</span> <span class="o">=</span> <span class="n">tag_array_types</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">field_data</span> <span class="o">=</span> <span class="n">tag_array_types</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+    
+    <span class="n">field_types_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">iField</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">number_of_entries_in_group</span><span class="p">):</span>
+        <span class="n">fieldname_length</span> <span class="o">=</span> <span class="n">field_data</span><span class="p">[</span><span class="n">iField</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">fieldname_type</span> <span class="o">=</span> <span class="n">field_data</span><span class="p">[(</span><span class="n">iField</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">field_types_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fieldname_type</span><span class="p">)</span>
+        
+    <span class="n">fields_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="n">field_types_list</span><span class="p">:</span>
+        <span class="n">field_data</span> <span class="o">=</span> <span class="n">_read_tag_data_value</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">endian</span><span class="p">,</span> <span class="n">field_type</span><span class="p">)</span>
+        <span class="n">fields_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_data</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">fields_data</span></div>
+
+<div class="viewcode-block" id="read_tag_data_array"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.read_tag_data_array">[docs]</a><span class="k">def</span> <span class="nf">read_tag_data_array</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">endian</span><span class="p">):</span>
+    <span class="n">endian</span> <span class="o">=</span> <span class="n">_get_struct_endian_str</span><span class="p">(</span><span class="n">endian</span><span class="p">)</span>
+    <span class="n">dmfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">data_offset</span><span class="p">)</span>
+    
+    <span class="n">_read_tag_garbage_str</span><span class="p">(</span><span class="n">dmfile</span><span class="p">)</span>
+    
+    <span class="p">(</span><span class="n">tag_array_length</span><span class="p">,</span>  <span class="n">tag_array_types</span><span class="p">)</span> <span class="o">=</span> <span class="n">_read_tag_data_info</span><span class="p">(</span><span class="n">dmfile</span><span class="p">)</span>
+        
+    <span class="k">assert</span><span class="p">(</span><span class="n">tag_array_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">array_data_type_code</span> <span class="o">=</span> <span class="n">tag_array_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">array_length</span> <span class="o">=</span> <span class="n">tag_array_types</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">array_data_type_code</span> <span class="o">==</span> <span class="mi">15</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Array of groups length </span><span class="si">%d</span><span class="s2"> and type </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">array_length</span><span class="p">,</span> <span class="n">array_data_type_code</span><span class="p">)</span>
+     
+    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tag_array_types</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+    
+    <span class="n">data_type</span> <span class="o">=</span> <span class="n">DM4DataTypeDict</span><span class="p">[</span><span class="n">array_data_type_code</span><span class="p">]</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_type</span><span class="o">.</span><span class="n">type_format</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">dmfile</span><span class="p">,</span> <span class="n">array_length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+        
+      
+<div class="viewcode-block" id="DM4File"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.DM4File">[docs]</a><span class="k">class</span> <span class="nc">DM4File</span><span class="p">:</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">endian_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_endian_str</span> 
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hfile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hfile</span>
+        
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filedata</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :param file filedata: file handle to dm4 file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hfile</span> <span class="o">=</span> <span class="n">filedata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">read_header_dm4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hfile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_endian_str</span> <span class="o">=</span> <span class="n">_get_struct_endian_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">little_endian</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_tag_dir_header</span> <span class="o">=</span> <span class="n">read_root_tag_dir_header_dm4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hfile</span><span class="p">,</span> <span class="n">endian</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endian_str</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="DM4File.close"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.DM4File.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hfile</span> <span class="o">=</span> <span class="kc">None</span></div>
+             
+<div class="viewcode-block" id="DM4File.open"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.DM4File.open">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :param str filename: Name of DM4 file to open</span>
+<span class="sd">        :rtype: DM4File</span>
+<span class="sd">        :return: DM4File object</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        
+        <span class="n">hfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">DM4File</span><span class="p">(</span><span class="n">hfile</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DM4File.read_tag_data"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.DM4File.read_tag_data">[docs]</a>    <span class="k">def</span> <span class="nf">read_tag_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Read the data associated with the passed tag&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">_read_tag_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hfile</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endian_str</span><span class="p">)</span></div>
+     
+    
+    <span class="n">DM4TagDir</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;DM4Dir&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;dm4_tag&#39;</span><span class="p">,</span> <span class="s1">&#39;named_subdirs&#39;</span><span class="p">,</span> <span class="s1">&#39;unnamed_subdirs&#39;</span><span class="p">,</span><span class="s1">&#39;named_tags&#39;</span><span class="p">,</span> <span class="s1">&#39;unnamed_tags&#39;</span><span class="p">))</span>
+        
+<div class="viewcode-block" id="DM4File.read_directory"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.dm4reader.html#pycroscopy.io.translators.df_utils.dm4reader.DM4File.read_directory">[docs]</a>    <span class="k">def</span> <span class="nf">read_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory_tag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Read the directories and tags from a dm4 file.  The first step in working with a dm4 file.</span>
+<span class="sd">        :return: A named collection containing information about the directory</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        
+        <span class="k">if</span> <span class="n">directory_tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">directory_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_tag_dir_header</span>
+            
+        <span class="n">dir_obj</span> <span class="o">=</span> <span class="n">DM4File</span><span class="o">.</span><span class="n">DM4TagDir</span><span class="p">(</span><span class="n">directory_tag</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">directory_tag</span><span class="p">,</span> <span class="p">{},[],</span> <span class="p">{},</span> <span class="p">[])</span>
+        
+        <span class="k">for</span> <span class="n">iTag</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">directory_tag</span><span class="o">.</span><span class="n">num_tags</span><span class="p">):</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">read_tag_header_dm4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hfile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endian_str</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+            
+            <span class="k">if</span> <span class="n">tag_is_directory</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">dir_obj</span><span class="o">.</span><span class="n">unnamed_subdirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_directory</span><span class="p">(</span><span class="n">tag</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dir_obj</span><span class="o">.</span><span class="n">named_subdirs</span><span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_directory</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> 
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">dir_obj</span><span class="o">.</span><span class="n">unnamed_tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>            
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dir_obj</span><span class="o">.</span><span class="n">named_tags</span><span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+                
+        <span class="k">return</span> <span class="n">dir_obj</span></div></div>
+        
+    
+        
+     
+    
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

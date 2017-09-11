@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.translators.translator &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.translators.translator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.translators.translator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Tue Nov  3 15:07:16 2015</span>
+
+<span class="sd">@author: Suhas Somnath</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">remove</span>
+<span class="kn">from</span> <span class="nn">..io_utils</span> <span class="k">import</span> <span class="n">getAvailableMem</span>
+<span class="kn">from</span> <span class="nn">..microdata</span> <span class="k">import</span> <span class="n">MicroDataGroup</span><span class="p">,</span> <span class="n">MicroDataset</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">generate_dummy_main_parms</span>
+<span class="kn">from</span> <span class="nn">..hdf_utils</span> <span class="k">import</span> <span class="n">getH5DsetRefs</span><span class="p">,</span> <span class="n">linkRefs</span>
+<span class="kn">from</span> <span class="nn">..io_hdf5</span> <span class="k">import</span> <span class="n">ioHDF5</span>  <span class="c1"># Now the translator is responsible for writing the data.</span>
+
+
+<div class="viewcode-block" id="Translator"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.Translator">[docs]</a><span class="k">class</span> <span class="nc">Translator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class that defines the most basic functionality of a data format translator.</span>
+<span class="sd">    A translator converts experimental data from binary / proprietary</span>
+<span class="sd">    data formats to a single standardized HDF5 data file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_mem_mb</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        max_mem_mb : unsigned integer (Optional. Default = 1024)</span>
+<span class="sd">            Maximum system memory (in megabytes) that the translator can use</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Translator object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_ram</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_mem_mb</span><span class="o">*</span><span class="mi">1024</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.75</span><span class="o">*</span><span class="n">getAvailableMem</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Translator.translate"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.Translator.translate">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method.</span>
+<span class="sd">        To be implemented by extensions of this class. God I miss Java!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Translator._parse_file_path"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.Translator._parse_file_path">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method</span>
+<span class="sd">        Parses the `input_path` to determine the `basename` and find</span>
+<span class="sd">        the appropriate data files</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Translator._read_data"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.Translator._read_data">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method</span>
+<span class="sd">        Reads the data into the hdf5 datasets.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Translator.simple_write"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.Translator.simple_write">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">simple_write</span><span class="p">(</span><span class="n">h5_path</span><span class="p">,</span> <span class="n">data_name</span><span class="p">,</span> <span class="n">translator_name</span><span class="p">,</span> <span class="n">ds_main</span><span class="p">,</span> <span class="n">aux_dset_list</span><span class="p">,</span> <span class="n">parm_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes the provided datasets and parameters to an h5 file</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        h5_path : String / Unicode</span>
+<span class="sd">            Absolute path of the h5 file to be written</span>
+<span class="sd">        data_name : String / Unicode</span>
+<span class="sd">            Name of the data type</span>
+<span class="sd">        translator_name : String / unicode</span>
+<span class="sd">            Name of the translator</span>
+<span class="sd">        ds_main : MicroDataset object</span>
+<span class="sd">            Main dataset</span>
+<span class="sd">        aux_dset_list : list of MicroDataset objects</span>
+<span class="sd">            auxillary datasets to be written to the file</span>
+<span class="sd">        parm_dict : dictionary (Optional)</span>
+<span class="sd">            Dictionary of parameters</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        h5_path : String / unicode</span>
+<span class="sd">            Absolute path of the written h5 file</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parm_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parm_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">chan_grp</span> <span class="o">=</span> <span class="n">MicroDataGroup</span><span class="p">(</span><span class="s1">&#39;Channel_000&#39;</span><span class="p">)</span>
+        <span class="n">chan_grp</span><span class="o">.</span><span class="n">addChildren</span><span class="p">([</span><span class="n">ds_main</span><span class="p">])</span>
+        <span class="n">chan_grp</span><span class="o">.</span><span class="n">addChildren</span><span class="p">(</span><span class="n">aux_dset_list</span><span class="p">)</span>
+        <span class="n">meas_grp</span> <span class="o">=</span> <span class="n">MicroDataGroup</span><span class="p">(</span><span class="s1">&#39;Measurement_000&#39;</span><span class="p">)</span>
+        <span class="n">meas_grp</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">parm_dict</span>
+        <span class="n">meas_grp</span><span class="o">.</span><span class="n">addChildren</span><span class="p">([</span><span class="n">chan_grp</span><span class="p">])</span>
+        <span class="n">spm_data</span> <span class="o">=</span> <span class="n">MicroDataGroup</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">global_parms</span> <span class="o">=</span> <span class="n">generate_dummy_main_parms</span><span class="p">()</span>
+        <span class="n">global_parms</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_name</span>
+        <span class="n">global_parms</span><span class="p">[</span><span class="s1">&#39;translator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">translator_name</span>
+        <span class="n">spm_data</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">global_parms</span>
+        <span class="n">spm_data</span><span class="o">.</span><span class="n">addChildren</span><span class="p">([</span><span class="n">meas_grp</span><span class="p">])</span>
+
+        <span class="n">aux_dset_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">aux_dset_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">MicroDataset</span><span class="p">):</span>
+                <span class="n">aux_dset_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">h5_path</span><span class="p">):</span>
+            <span class="n">remove</span><span class="p">(</span><span class="n">h5_path</span><span class="p">)</span>
+
+        <span class="n">hdf</span> <span class="o">=</span> <span class="n">ioHDF5</span><span class="p">(</span><span class="n">h5_path</span><span class="p">)</span>
+        <span class="n">h5_refs</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">spm_data</span><span class="p">,</span> <span class="n">print_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">h5_raw</span> <span class="o">=</span> <span class="n">getH5DsetRefs</span><span class="p">([</span><span class="n">ds_main</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">h5_refs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">linkRefs</span><span class="p">(</span><span class="n">h5_raw</span><span class="p">,</span> <span class="n">getH5DsetRefs</span><span class="p">(</span><span class="n">aux_dset_names</span><span class="p">,</span> <span class="n">h5_refs</span><span class="p">))</span>
+        <span class="n">hdf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">h5_path</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

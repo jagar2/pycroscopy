@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.microdata &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.microdata</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.microdata</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Wed Dec 16 10:42:03 2015</span>
+
+<span class="sd">@author: Suhas Somnath, Numan Laanait</span>
+
+<span class="sd">The MicroData classes</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+
+<span class="kn">from</span> <span class="nn">.io_utils</span> <span class="k">import</span> <span class="n">getTimeStamp</span>
+
+
+<div class="viewcode-block" id="MicroData"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.microdata.html#pycroscopy.io.microdata.MicroData">[docs]</a><span class="k">class</span> <span class="nc">MicroData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generic class that is extended by the MicroDataGroup and MicroDataset objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : String</span>
+<span class="sd">            Name of the data group / dataset object</span>
+<span class="sd">        parent : String</span>
+<span class="sd">            HDF5 path to the parent of this object. Typically used when</span>
+<span class="sd">            appending to an existing HDF5 file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="MicroDataGroup"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.microdata.html#pycroscopy.io.microdata.MicroDataGroup">[docs]</a><span class="k">class</span> <span class="nc">MicroDataGroup</span><span class="p">(</span><span class="n">MicroData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Holds data that will be converted to a h5.Group by io.ioHDF5</span>
+<span class="sd">    Note that it can also hold information (e.g. attributes) of an h5.File.</span>
+<span class="sd">    This is consistent with class hierarchy of HDF5, i.e. h5.File extends h5.Group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : String</span>
+<span class="sd">            Name of the data group</span>
+<span class="sd">        parent : (Optional) String</span>
+<span class="sd">            HDF5 path to the parent of this object. Typically used when</span>
+<span class="sd">            appending to an existing HDF5 file</span>
+<span class="sd">            Default value assumes that this group sits at the root of the file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MicroDataGroup</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;machine_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">getfqdn</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">getTimeStamp</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span>
+
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="MicroDataGroup.addChildren"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.microdata.html#pycroscopy.io.microdata.MicroDataGroup.addChildren">[docs]</a>    <span class="k">def</span> <span class="nf">addChildren</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds Children to the class to make a tree structure.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        children : list of MicroData objects</span>
+<span class="sd">            Children can be a mixture of groups and datasets</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">MicroData</span><span class="p">):</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Children must be of type MicroData.&#39;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showTree</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MicroDataGroup.showTree"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.microdata.html#pycroscopy.io.microdata.MicroDataGroup.showTree">[docs]</a>    <span class="k">def</span> <span class="nf">showTree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the tree structure given by MicroDataGroup.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__tree</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">parent</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">MicroDataGroup</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+                    <span class="n">__tree</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">parent</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># print(self.parent+self.name)</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+            <span class="n">__tree</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MicroDataset"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.microdata.html#pycroscopy.io.microdata.MicroDataset">[docs]</a><span class="k">class</span> <span class="nc">MicroDataset</span><span class="p">(</span><span class="n">MicroData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Holds data (i.e. numpy.ndarray) as well as instructions on writing, attributes, etc...</span>
+<span class="sd">    This gets converted to a h5.Dataset by io.ioHDF5.\n    </span>
+
+<span class="sd">    Region references need to be specified using the &#39;labels&#39; attribute. See example below    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunking</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resizable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">maxshape</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : String</span>
+<span class="sd">            Name of the dataset</span>
+<span class="sd">        data : Object</span>
+<span class="sd">            See supported objects in h5py</span>
+<span class="sd">        dtype : datatype, </span>
+<span class="sd">            typically a datatype of a numpy array =None</span>
+<span class="sd">        compression : (Optional) String</span>
+<span class="sd">            See h5py compression. Leave as &#39;gzip&#39; as a default mode of compression</span>
+<span class="sd">        chunking : (Optional) tuple of ints</span>
+<span class="sd">            Chunking in each dimension of the dataset. If not provided, </span>
+<span class="sd">            default chunking is used by h5py when writing this dataset</span>
+<span class="sd">        parent : (Optional) String</span>
+<span class="sd">                HDF5 path to the parent of this object. This value is overwritten</span>
+<span class="sd">                when this dataset is made the child of a datagroup.</span>
+<span class="sd">        resizable : Boolean (Optional. default = False)</span>
+<span class="sd">            Whether or not this dataset is expected to be resizeable.</span>
+<span class="sd">            Note - if the dataset is resizable the specified maxsize will be ignored. </span>
+<span class="sd">        maxshape : (Optional) tuple of ints</span>
+<span class="sd">            Maximum size in each axis this dataset is expected to be</span>
+<span class="sd">            if this parameter is provided, io will ONLY allocate space. </span>
+<span class="sd">            Make sure to specify the dtype appropriately. The provided data will be ignored</span>
+<span class="sd">            </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------   </span>
+<span class="sd">        1. Small auxillary datasets :</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; ds_ex_efm = MicroDataset(&#39;Excitation_Waveform&#39;, np.arange(10))</span>
+<span class="sd">        </span>
+<span class="sd">        2. Datasets with slicing information :</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; ds_spec_inds = MicroDataset(&#39;Spectroscopic_Indices&#39;, spec_ind_mat)</span>
+<span class="sd">            ds_spec_inds.attrs[&#39;labels&#39;] = {&#39;Time Index&#39;:(slice(0,1), slice(None))}</span>
+<span class="sd">            </span>
+<span class="sd">        3. Initializing large primary datasets of known sizes :</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; ds_raw_data = MicroDataset(&#39;Raw_Data&#39;, data=[], maxshape=(1024,16384), dtype=np.float16,</span>
+<span class="sd">        &gt;&gt;&gt;                            chunking=(1,16384), compression=&#39;gzip&#39;)</span>
+<span class="sd">                    </span>
+<span class="sd">        4. Intializing large datasets whose size is unknown in one or more dimensions:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; ds_raw_data = MicroDataset(&#39;Raw_Data&#39;, np.zeros(shape=(1,16384), dtype=np.complex64),</span>
+<span class="sd">        &gt;&gt;&gt;                            chunking=(1,16384), resizable=True,compression=&#39;gzip&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">_make_iterable</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>  <span class="c1"># another (inelegant) way of asking if this object is iterable</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">item</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">item</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">MicroDataset</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compression</span> <span class="o">=</span> <span class="n">compression</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunking</span> <span class="o">=</span> <span class="n">_make_iterable</span><span class="p">(</span><span class="n">chunking</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resizable</span> <span class="o">=</span> <span class="n">resizable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxshape</span> <span class="o">=</span> <span class="n">_make_iterable</span><span class="p">(</span><span class="n">maxshape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">resizable</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxshape</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Overridden</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">maxshape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxshape</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">item</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

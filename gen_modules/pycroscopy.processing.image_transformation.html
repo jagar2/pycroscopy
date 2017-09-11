@@ -1,0 +1,1701 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing.image_transformation &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.processing.image_transformation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.processing.image_transformation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.processing.image_transformation">
+<span id="pycroscopy-processing-image-transformation"></span><h1>pycroscopy.processing.image_transformation<a class="headerlink" href="#module-pycroscopy.processing.image_transformation" title="Permalink to this headline">¶</a></h1>
+<p>Created on Tue Oct  6 15:34:12 2015</p>
+<p>&#64;author: Numan Laanait – <a class="reference external" href="mailto:nlaanait&#37;&#52;&#48;gmail&#46;com">nlaanait<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.processing.image_transformation.euclidMatch">
+<code class="descname">euclidMatch</code><span class="sig-paren">(</span><em>Matches</em>, <em>keypts1</em>, <em>keypts2</em>, <em>misalign</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#euclidMatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.euclidMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that thresholds the matches, found from a comparison of
+their descriptors, by the maximum expected misalignment.</p>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.image_transformation.pickle_keypoints">
+<code class="descname">pickle_keypoints</code><span class="sig-paren">(</span><em>keypoints</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#pickle_keypoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.pickle_keypoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to pickle cv2.sift keypoint objects</p>
+</dd></dl>
+
+<div style='clear:both'></div></div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pycroscopy.processing.image_transformation.FeatureExtractorParallel">
+<em class="property">class </em><code class="descname">FeatureExtractorParallel</code><span class="sig-paren">(</span><em>detector_name</em>, <em>lib</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorParallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.FeatureExtractorParallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This is an Object used to contain a data set and has methods to perform
+feature extraction on the data set that are detector based.
+Begin by loading a detector for features and a computer vision library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>detector_name</strong> (<em>(</em><em>string</em><em>)</em>) – name of detector.</li>
+<li><strong>lib</strong> (<em>(</em><em>string</em><em>)</em>) – <p>computer vision library to use (opencv or skimage)</p>
+<p>The following can be used for:
+lib = opencv: SIFT, ORB, SURF
+lib = skimage: ORB, BRIEF, CENSURE</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.FeatureExtractorParallel.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorParallel.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.FeatureExtractorParallel.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that returns the loaded h5 Dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.FeatureExtractorParallel.getFeatures">
+<code class="descname">getFeatures</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorParallel.getFeatures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.FeatureExtractorParallel.getFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that returns features (keypoints and descriptors)
+that are obtained by using the FeatureExtractor.Detector object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.</li>
+<li><strong>mask</strong> (<em>boolean</em><em>, </em><em>optional</em><em>, </em><em>default False.</em>) – Whether to use</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>keypts</em> – keypoints</li>
+<li><em>descs</em> – descriptors</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.FeatureExtractorParallel.loadData">
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorParallel.loadData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.FeatureExtractorParallel.loadData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that loads h5 Dataset to be corrected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<em>h5py.Dataset</em>) – Dataset to be corrected</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.processing.image_transformation.FeatureExtractorSerial">
+<em class="property">class </em><code class="descname">FeatureExtractorSerial</code><span class="sig-paren">(</span><em>detector_name</em>, <em>lib</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorSerial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.FeatureExtractorSerial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This is an Object used to contain a data set and has methods to perform
+feature extraction on the data set that are detector based.
+Begin by loading a detector for features and a computer vision library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>detector_name</strong> (<em>(</em><em>string</em><em>)</em>) – name of detector.</li>
+<li><strong>lib</strong> (<em>(</em><em>string</em><em>)</em>) – <p>computer vision library to use (opencv or skimage)</p>
+<p>The following can be used for:
+lib = opencv: SIFT, ORB, SURF
+lib = skimage: ORB, BRIEF, CENSURE</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.FeatureExtractorSerial.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorSerial.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.FeatureExtractorSerial.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that returns the loaded h5 Dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.FeatureExtractorSerial.getFeatures">
+<code class="descname">getFeatures</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorSerial.getFeatures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.FeatureExtractorSerial.getFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that returns features (keypoints and descriptors)
+that are obtained by using the FeatureExtractor.Detector object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mask</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to use, default False.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>keypts</em> – descriptors</li>
+<li><em>descs</em> – keypoints</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.FeatureExtractorSerial.loadData">
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorSerial.loadData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.FeatureExtractorSerial.loadData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that loads h5 Dataset to be corrected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<em>h5py.Dataset</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.processing.image_transformation.ImageTransformation">
+<em class="property">class </em><code class="descname">ImageTransformation</code><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#ImageTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.ImageTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.processing.image_transformation.RigidTransform">
+<em class="property">class </em><code class="descname">RigidTransform</code><span class="sig-paren">(</span><em>matrix=None</em>, <em>rotation=None</em>, <em>translation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.RigidTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>2D translation using homogeneous representation:</p>
+<dl class="docutils">
+<dt>The transformation matrix is:</dt>
+<dd><dl class="first last docutils">
+<dt>[[cos(theta)  -sin(theta)  tX]</dt>
+<dd>[sin(theta)  cos(theta)   tY]
+[0             0           1]]
+X: translation along x-axis.
+Y: translation along y-axis.
+theta: rotation angle in radians.</dd>
+</dl>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>translation</strong> (<em>tuple</em>) – (tX, tY)</li>
+<li><strong>rotation</strong> (<em>float</em>) – in radians.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pycroscopy.processing.image_transformation.RigidTransform.params">
+<code class="descname">params</code><a class="headerlink" href="#pycroscopy.processing.image_transformation.RigidTransform.params" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>(3, 3) array</em> – Homogeneous transformation matrix.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.processing.image_transformation.RigidTransform._apply_mat">
+<em class="property">static </em><code class="descname">_apply_mat</code><span class="sig-paren">(</span><em>coords</em>, <em>matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform._apply_mat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.RigidTransform._apply_mat" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coords</strong> – </li>
+<li><strong>matrix</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.RigidTransform.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.RigidTransform.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the transformation matrix with the explicit parameters.</p>
+<p>You can determine the over-, well- and under-determined parameters
+with the total least-squares method.</p>
+<p>Number of source and destination coordinates must match.</p>
+<p>The transformation is defined as:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b0</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">a1</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">b0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">b1</span>
+</pre></div>
+</div>
+<p>These equations can be transformed to the following form:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="o">=</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b0</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">a1</span> <span class="o">-</span> <span class="n">X</span>
+<span class="mi">0</span> <span class="o">=</span> <span class="n">b0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">b1</span> <span class="o">-</span> <span class="n">Y</span>
+</pre></div>
+</div>
+<p>which exist for each set of corresponding points, so we have a set of
+N * 2 equations. The coefficients appear linearly so we can write
+A x = 0, where:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">A</span>   <span class="o">=</span> <span class="p">[[</span><span class="n">x</span> <span class="mi">1</span> <span class="o">-</span><span class="n">y</span> <span class="mi">0</span> <span class="o">-</span><span class="n">X</span><span class="p">]</span>
+       <span class="p">[</span><span class="n">y</span> <span class="mi">0</span>  <span class="n">x</span> <span class="mi">1</span> <span class="o">-</span><span class="n">Y</span><span class="p">]</span>
+        <span class="o">...</span>
+        <span class="o">...</span>
+      <span class="p">]</span>
+<span class="n">x</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="n">a0</span> <span class="n">a1</span> <span class="n">b0</span> <span class="n">b1</span> <span class="n">c3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In case of total least-squares the solution of this homogeneous system
+of equations is the right singular vector of A which corresponds to the
+smallest singular value normed by the coefficient c3.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</li>
+<li><strong>dst</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Destination coordinates.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>success</strong> – True, if model estimation succeeds.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.RigidTransform.inverse">
+<code class="descname">inverse</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.RigidTransform.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply inverse transformation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coords</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>coords</strong> – Transformed coordinates.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(N, 2) array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.RigidTransform.residuals">
+<code class="descname">residuals</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform.residuals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.RigidTransform.residuals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine residuals of transformed destination coordinates.</p>
+<p>For each transformed source coordinate the euclidean distance to the
+respective destination coordinate is determined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</li>
+<li><strong>dst</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Destination coordinates.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>residuals</strong> – Residual for coordinate.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(N, ) array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.processing.image_transformation.TranslationTransform">
+<em class="property">class </em><code class="descname">TranslationTransform</code><span class="sig-paren">(</span><em>matrix=None</em>, <em>translation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.TranslationTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>2D translation using homogeneous representation:</p>
+<dl class="docutils">
+<dt>The transformation matrix is:</dt>
+<dd><dl class="first last docutils">
+<dt>[[1  1  tX]</dt>
+<dd>[1  1  tY]
+[0  0  1]]
+X: translation of x-axis.
+Y: translation of y-axis.</dd>
+</dl>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>translation</strong> (<em>tuple</em>) – (tX, tY)</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pycroscopy.processing.image_transformation.TranslationTransform.params">
+<code class="descname">params</code><a class="headerlink" href="#pycroscopy.processing.image_transformation.TranslationTransform.params" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>(3, 3) array</em> – Homogeneous transformation matrix.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pycroscopy.processing.image_transformation.TranslationTransform._apply_mat">
+<em class="property">static </em><code class="descname">_apply_mat</code><span class="sig-paren">(</span><em>coords</em>, <em>matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform._apply_mat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.TranslationTransform._apply_mat" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coords</strong> – </li>
+<li><strong>matrix</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.processing.image_transformation.TranslationTransform._inv_matrix">
+<code class="descname">_inv_matrix</code><a class="headerlink" href="#pycroscopy.processing.image_transformation.TranslationTransform._inv_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.TranslationTransform.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.TranslationTransform.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate transformation matrix from src, dst coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>src</strong> – </li>
+<li><strong>dst</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.TranslationTransform.inverse">
+<code class="descname">inverse</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform.inverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.TranslationTransform.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply inverse transformation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coords</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>coords</strong> – Transformed coordinates.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(N, 2) array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.TranslationTransform.residuals">
+<code class="descname">residuals</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform.residuals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.TranslationTransform.residuals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine residuals of transformed destination coordinates.</p>
+<p>For each transformed source coordinate the euclidean distance to the
+respective destination coordinate is determined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</li>
+<li><strong>dst</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Destination coordinates.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>residuals</strong> – Residual for coordinate.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(N, ) array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerParallel">
+<em class="property">class </em><code class="descname">geoTransformerParallel</code><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerParallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This object contains methods to perform geometric transformations on
+a sequence of images. Some of the capabilities are:
++ Homography by feature extraction.
++ Intensity-based image registration.
++ Projection Correction.</p>
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerParallel.applyTransformation">
+<code class="descname">applyTransformation</code><span class="sig-paren">(</span><em>transforms</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.applyTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerParallel.applyTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the method that takes the list of transformation found by findTransformation
+and applies them to the data set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>transforms</strong> (<em>(</em><em>list of skimage.GeoemetricTransform objects</em><em>)</em><em></em>) – The objects must be inititated with the desired parameters.</li>
+<li><strong>transformation</strong> (<em>string</em><em>, </em><em>optional.</em>) – The type of geometric transformation to use (i.e. translation, rigid, etc..)
+Currently, only translation is implemented.
+default, translation.</li>
+<li><strong>origin</strong> (<em>int</em><em>, </em><em>optional</em>) – The position in the data to take as origin, i.e. don’t transform.
+default, center image in the stack.</li>
+<li><strong>processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.
+Currently,only one processor is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Transformed images, transformations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerParallel.clearData">
+<code class="descname">clearData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.clearData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerParallel.clearData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method to clear the data from the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerParallel.correlationTransformation">
+<code class="descname">correlationTransformation</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.correlationTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerParallel.correlationTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses Cross-correlation to find a translation between 2 images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Transformations.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerParallel.findTransformation">
+<code class="descname">findTransformation</code><span class="sig-paren">(</span><em>transform</em>, <em>matches</em>, <em>processes</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.findTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerParallel.findTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that finds the optimal transformation between two images
+given matching features using a random sample consensus.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>transform</strong> (<em>skimage.transform object</em>) – </li>
+<li><strong>matches</strong> (<em>list</em>) – matches found through match_features method.</li>
+<li><strong>processes</strong> (<em>int</em>) – Number of processors to use.</li>
+<li><strong>are passed to skimage.transform.ransac</strong> (<em>**kwargs</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Transformations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerParallel.loadData">
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.loadData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerParallel.loadData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that loads h5 Dataset to be corrected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input</strong> (<em>h5py.dataset</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerParallel.loadFeatures">
+<code class="descname">loadFeatures</code><span class="sig-paren">(</span><em>features</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.loadFeatures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerParallel.loadFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that loads features to be used for homography etc …</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>features</strong> (<em>tuple</em>) – <p>[keypoints, descriptors]
+These can come from FeatureExtractor.getFeatures() or elsewhere.</p>
+<p>The format is :
+keypoints = [np.ndarray([y_position, x_position])]
+descriptors = [np.ndarray()]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerParallel.matchFeatures">
+<code class="descname">matchFeatures</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.matchFeatures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerParallel.matchFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that computes similarity between keypoints based on their
+descriptors. Currently only skimage.feature.match_descriptors is implemented.
+In the future will need to add opencv2.matchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.</li>
+<li><strong>maximum_distance</strong> (<em>int</em><em>, </em><em>optional</em>) – maximum_distance (int) of misalignment, default = infinity.
+Used to filter the matches before optimizing the transformation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Matches</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerSerial">
+<em class="property">class </em><code class="descname">geoTransformerSerial</code><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerSerial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This object contains methods to perform geometric transformations on
+a sequence of images. Some of the capabilities are:
++ Homography by feature extraction.
++ Intensity-based image registration.
++ Projection Correction.</p>
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerSerial.applyTransformation">
+<code class="descname">applyTransformation</code><span class="sig-paren">(</span><em>transforms</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.applyTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerSerial.applyTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the method that takes the list of transformation found by findTransformation
+and applies them to the data set.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd><dl class="first last docutils">
+<dt>transforms: (list of skimage.GeoemetricTransform objects).</dt>
+<dd>The objects must be inititated with the desired parameters.</dd>
+<dt>transformation: string, optional.</dt>
+<dd>The type of geometric transformation to use (i.e. translation, rigid, etc..)
+Currently, only translation is implemented.
+default, translation.</dd>
+<dt>origin: int, optional</dt>
+<dd>The position in the data to take as origin, i.e. don’t transform.
+default, center image in the stack.</dd>
+</dl>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Transformed images, transformations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerSerial.clearData">
+<code class="descname">clearData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.clearData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerSerial.clearData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method to clear the data from the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerSerial.correlationTransformation">
+<code class="descname">correlationTransformation</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.correlationTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerSerial.correlationTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses Cross-correlation to find a translation between 2 images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Transformations.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerSerial.findTransformation">
+<code class="descname">findTransformation</code><span class="sig-paren">(</span><em>transform</em>, <em>matches</em>, <em>processes</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.findTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerSerial.findTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that finds the optimal transformation between two images
+given matching features using a random sample consensus.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>transform</strong> (<em>skimage.transform object</em>) – </li>
+<li><strong>matches</strong> (<em>list</em>) – matches found through match_features method.</li>
+<li><strong>processors</strong> (<em>int</em>) – Number of processors to use.</li>
+<li><strong>are passed to skimage.transform.ransac</strong> (<em>**kwargs</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Transformations.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerSerial.loadData">
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.loadData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerSerial.loadData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that loads h5 Dataset to be corrected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<em>h5py.dataset</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerSerial.loadFeatures">
+<code class="descname">loadFeatures</code><span class="sig-paren">(</span><em>features</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.loadFeatures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerSerial.loadFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that loads features to be used for homography etc …</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>features</strong> (<em>tuple</em>) – <p>[keypoints, descriptors]
+These can come from FeatureExtractor.getFeatures() or elsewhere.</p>
+<p>The format is :
+keypoints = [np.ndarray([y_position, x_position])]
+descriptors = [np.ndarray()]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.processing.image_transformation.geoTransformerSerial.matchFeatures">
+<code class="descname">matchFeatures</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.matchFeatures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation.geoTransformerSerial.matchFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a Method that computes similarity between keypoints based on their
+descriptors. Currently only skimage.feature.match_descriptors is implemented.
+In the future will need to add opencv2.matchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>maximum_distance</strong> (<em>int</em><em>, </em><em>optional</em>) – maximum_distance (int) of misalignment, default = infinity.
+Used to filter the matches before optimizing the transformation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Matches.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">FeatureExtractorParallel</code><span class="sig-paren">(</span><em>detector_name</em>, <em>lib</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorParallel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This is an Object used to contain a data set and has methods to perform
+feature extraction on the data set that are detector based.
+Begin by loading a detector for features and a computer vision library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>detector_name</strong> (<em>(</em><em>string</em><em>)</em>) – name of detector.</li>
+<li><strong>lib</strong> (<em>(</em><em>string</em><em>)</em>) – <p>computer vision library to use (opencv or skimage)</p>
+<p>The following can be used for:
+lib = opencv: SIFT, ORB, SURF
+lib = skimage: ORB, BRIEF, CENSURE</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt>
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorParallel.getData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that returns the loaded h5 Dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">getFeatures</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorParallel.getFeatures"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that returns features (keypoints and descriptors)
+that are obtained by using the FeatureExtractor.Detector object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.</li>
+<li><strong>mask</strong> (<em>boolean</em><em>, </em><em>optional</em><em>, </em><em>default False.</em>) – Whether to use</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>keypts</em> – keypoints</li>
+<li><em>descs</em> – descriptors</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorParallel.loadData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that loads h5 Dataset to be corrected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<em>h5py.Dataset</em>) – Dataset to be corrected</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">FeatureExtractorSerial</code><span class="sig-paren">(</span><em>detector_name</em>, <em>lib</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorSerial"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This is an Object used to contain a data set and has methods to perform
+feature extraction on the data set that are detector based.
+Begin by loading a detector for features and a computer vision library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>detector_name</strong> (<em>(</em><em>string</em><em>)</em>) – name of detector.</li>
+<li><strong>lib</strong> (<em>(</em><em>string</em><em>)</em>) – <p>computer vision library to use (opencv or skimage)</p>
+<p>The following can be used for:
+lib = opencv: SIFT, ORB, SURF
+lib = skimage: ORB, BRIEF, CENSURE</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt>
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorSerial.getData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that returns the loaded h5 Dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">getFeatures</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorSerial.getFeatures"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that returns features (keypoints and descriptors)
+that are obtained by using the FeatureExtractor.Detector object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mask</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to use, default False.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>keypts</em> – descriptors</li>
+<li><em>descs</em> – keypoints</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#FeatureExtractorSerial.loadData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that loads h5 Dataset to be corrected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<em>h5py.Dataset</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">RigidTransform</code><span class="sig-paren">(</span><em>matrix=None</em>, <em>rotation=None</em>, <em>translation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>2D translation using homogeneous representation:</p>
+<dl class="docutils">
+<dt>The transformation matrix is:</dt>
+<dd><dl class="first last docutils">
+<dt>[[cos(theta)  -sin(theta)  tX]</dt>
+<dd>[sin(theta)  cos(theta)   tY]
+[0             0           1]]
+X: translation along x-axis.
+Y: translation along y-axis.
+theta: rotation angle in radians.</dd>
+</dl>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>translation</strong> (<em>tuple</em>) – (tX, tY)</li>
+<li><strong>rotation</strong> (<em>float</em>) – in radians.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt>
+<code class="descname">params</code></dt>
+<dd><p><em>(3, 3) array</em> – Homogeneous transformation matrix.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">_apply_mat</code><span class="sig-paren">(</span><em>coords</em>, <em>matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform._apply_mat"><span class="viewcode-link">[source]</span></a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coords</strong> – </li>
+<li><strong>matrix</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform.estimate"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Set the transformation matrix with the explicit parameters.</p>
+<p>You can determine the over-, well- and under-determined parameters
+with the total least-squares method.</p>
+<p>Number of source and destination coordinates must match.</p>
+<p>The transformation is defined as:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b0</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">a1</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">b0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">b1</span>
+</pre></div>
+</div>
+<p>These equations can be transformed to the following form:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="o">=</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b0</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">a1</span> <span class="o">-</span> <span class="n">X</span>
+<span class="mi">0</span> <span class="o">=</span> <span class="n">b0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a0</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">b1</span> <span class="o">-</span> <span class="n">Y</span>
+</pre></div>
+</div>
+<p>which exist for each set of corresponding points, so we have a set of
+N * 2 equations. The coefficients appear linearly so we can write
+A x = 0, where:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">A</span>   <span class="o">=</span> <span class="p">[[</span><span class="n">x</span> <span class="mi">1</span> <span class="o">-</span><span class="n">y</span> <span class="mi">0</span> <span class="o">-</span><span class="n">X</span><span class="p">]</span>
+       <span class="p">[</span><span class="n">y</span> <span class="mi">0</span>  <span class="n">x</span> <span class="mi">1</span> <span class="o">-</span><span class="n">Y</span><span class="p">]</span>
+        <span class="o">...</span>
+        <span class="o">...</span>
+      <span class="p">]</span>
+<span class="n">x</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="n">a0</span> <span class="n">a1</span> <span class="n">b0</span> <span class="n">b1</span> <span class="n">c3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In case of total least-squares the solution of this homogeneous system
+of equations is the right singular vector of A which corresponds to the
+smallest singular value normed by the coefficient c3.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</li>
+<li><strong>dst</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Destination coordinates.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>success</strong> – True, if model estimation succeeds.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">inverse</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform.inverse"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Apply inverse transformation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coords</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>coords</strong> – Transformed coordinates.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(N, 2) array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">residuals</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#RigidTransform.residuals"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Determine residuals of transformed destination coordinates.</p>
+<p>For each transformed source coordinate the euclidean distance to the
+respective destination coordinate is determined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</li>
+<li><strong>dst</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Destination coordinates.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>residuals</strong> – Residual for coordinate.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(N, ) array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">TranslationTransform</code><span class="sig-paren">(</span><em>matrix=None</em>, <em>translation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>2D translation using homogeneous representation:</p>
+<dl class="docutils">
+<dt>The transformation matrix is:</dt>
+<dd><dl class="first last docutils">
+<dt>[[1  1  tX]</dt>
+<dd>[1  1  tY]
+[0  0  1]]
+X: translation of x-axis.
+Y: translation of y-axis.</dd>
+</dl>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>translation</strong> (<em>tuple</em>) – (tX, tY)</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt>
+<code class="descname">params</code></dt>
+<dd><p><em>(3, 3) array</em> – Homogeneous transformation matrix.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt>
+<em class="property">static </em><code class="descname">_apply_mat</code><span class="sig-paren">(</span><em>coords</em>, <em>matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform._apply_mat"><span class="viewcode-link">[source]</span></a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coords</strong> – </li>
+<li><strong>matrix</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">_inv_matrix</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform.estimate"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Evaluate transformation matrix from src, dst coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>src</strong> – </li>
+<li><strong>dst</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">inverse</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform.inverse"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Apply inverse transformation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coords</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>coords</strong> – Transformed coordinates.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(N, 2) array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">residuals</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#TranslationTransform.residuals"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Determine residuals of transformed destination coordinates.</p>
+<p>For each transformed source coordinate the euclidean distance to the
+respective destination coordinate is determined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Source coordinates.</li>
+<li><strong>dst</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – Destination coordinates.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>residuals</strong> – Residual for coordinate.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(N, ) array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.processing.image_transformation._center_and_normalize_points">
+<code class="descname">_center_and_normalize_points</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#_center_and_normalize_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.image_transformation._center_and_normalize_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center and normalize image points.</p>
+<p>The points are transformed in a two-step procedure that is expressed
+as a transformation matrix. The matrix of the resulting points is usually
+better conditioned than the matrix of the original points.</p>
+<p>Center the image points, such that the new coordinate system has its
+origin at the centroid of the image points.</p>
+<p>Normalize the image points, such that the mean distance from the points
+to the origin of the coordinate system is sqrt(2).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>(</em><em>N</em><em>, </em><em>2</em><em>) </em><em>array</em>) – The coordinates of the image points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>matrix</strong> (<em>(3, 3) array</em>) – The transformation matrix to obtain the new points.</li>
+<li><strong>new_points</strong> (<em>(N, 2) array</em>) – The transformed image points.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">euclidMatch</code><span class="sig-paren">(</span><em>Matches</em>, <em>keypts1</em>, <em>keypts2</em>, <em>misalign</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#euclidMatch"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Function that thresholds the matches, found from a comparison of
+their descriptors, by the maximum expected misalignment.</p>
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">geoTransformerParallel</code><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This object contains methods to perform geometric transformations on
+a sequence of images. Some of the capabilities are:
++ Homography by feature extraction.
++ Intensity-based image registration.
++ Projection Correction.</p>
+<dl class="method">
+<dt>
+<code class="descname">applyTransformation</code><span class="sig-paren">(</span><em>transforms</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.applyTransformation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is the method that takes the list of transformation found by findTransformation
+and applies them to the data set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>transforms</strong> (<em>(</em><em>list of skimage.GeoemetricTransform objects</em><em>)</em><em></em>) – The objects must be inititated with the desired parameters.</li>
+<li><strong>transformation</strong> (<em>string</em><em>, </em><em>optional.</em>) – The type of geometric transformation to use (i.e. translation, rigid, etc..)
+Currently, only translation is implemented.
+default, translation.</li>
+<li><strong>origin</strong> (<em>int</em><em>, </em><em>optional</em>) – The position in the data to take as origin, i.e. don’t transform.
+default, center image in the stack.</li>
+<li><strong>processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.
+Currently,only one processor is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Transformed images, transformations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">clearData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.clearData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method to clear the data from the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">correlationTransformation</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.correlationTransformation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Uses Cross-correlation to find a translation between 2 images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Transformations.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">findTransformation</code><span class="sig-paren">(</span><em>transform</em>, <em>matches</em>, <em>processes</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.findTransformation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that finds the optimal transformation between two images
+given matching features using a random sample consensus.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>transform</strong> (<em>skimage.transform object</em>) – </li>
+<li><strong>matches</strong> (<em>list</em>) – matches found through match_features method.</li>
+<li><strong>processes</strong> (<em>int</em>) – Number of processors to use.</li>
+<li><strong>are passed to skimage.transform.ransac</strong> (<em>**kwargs</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Transformations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.loadData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that loads h5 Dataset to be corrected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input</strong> (<em>h5py.dataset</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">loadFeatures</code><span class="sig-paren">(</span><em>features</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.loadFeatures"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that loads features to be used for homography etc …</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>features</strong> (<em>tuple</em>) – <p>[keypoints, descriptors]
+These can come from FeatureExtractor.getFeatures() or elsewhere.</p>
+<p>The format is :
+keypoints = [np.ndarray([y_position, x_position])]
+descriptors = [np.ndarray()]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">matchFeatures</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerParallel.matchFeatures"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that computes similarity between keypoints based on their
+descriptors. Currently only skimage.feature.match_descriptors is implemented.
+In the future will need to add opencv2.matchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.</li>
+<li><strong>maximum_distance</strong> (<em>int</em><em>, </em><em>optional</em>) – maximum_distance (int) of misalignment, default = infinity.
+Used to filter the matches before optimizing the transformation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Matches</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descname">geoTransformerSerial</code><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>This object contains methods to perform geometric transformations on
+a sequence of images. Some of the capabilities are:
++ Homography by feature extraction.
++ Intensity-based image registration.
++ Projection Correction.</p>
+<dl class="method">
+<dt>
+<code class="descname">applyTransformation</code><span class="sig-paren">(</span><em>transforms</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.applyTransformation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is the method that takes the list of transformation found by findTransformation
+and applies them to the data set.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd><dl class="first last docutils">
+<dt>transforms: (list of skimage.GeoemetricTransform objects).</dt>
+<dd>The objects must be inititated with the desired parameters.</dd>
+<dt>transformation: string, optional.</dt>
+<dd>The type of geometric transformation to use (i.e. translation, rigid, etc..)
+Currently, only translation is implemented.
+default, translation.</dd>
+<dt>origin: int, optional</dt>
+<dd>The position in the data to take as origin, i.e. don’t transform.
+default, center image in the stack.</dd>
+</dl>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Transformed images, transformations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">clearData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.clearData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method to clear the data from the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">correlationTransformation</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.correlationTransformation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Uses Cross-correlation to find a translation between 2 images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Processors</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processors to use, default = 1.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Transformations.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">findTransformation</code><span class="sig-paren">(</span><em>transform</em>, <em>matches</em>, <em>processes</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.findTransformation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that finds the optimal transformation between two images
+given matching features using a random sample consensus.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>transform</strong> (<em>skimage.transform object</em>) – </li>
+<li><strong>matches</strong> (<em>list</em>) – matches found through match_features method.</li>
+<li><strong>processors</strong> (<em>int</em>) – Number of processors to use.</li>
+<li><strong>are passed to skimage.transform.ransac</strong> (<em>**kwargs</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Transformations.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.loadData"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that loads h5 Dataset to be corrected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<em>h5py.dataset</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">loadFeatures</code><span class="sig-paren">(</span><em>features</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.loadFeatures"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that loads features to be used for homography etc …</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>features</strong> (<em>tuple</em>) – <p>[keypoints, descriptors]
+These can come from FeatureExtractor.getFeatures() or elsewhere.</p>
+<p>The format is :
+keypoints = [np.ndarray([y_position, x_position])]
+descriptors = [np.ndarray()]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">matchFeatures</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#geoTransformerSerial.matchFeatures"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This is a Method that computes similarity between keypoints based on their
+descriptors. Currently only skimage.feature.match_descriptors is implemented.
+In the future will need to add opencv2.matchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>maximum_distance</strong> (<em>int</em><em>, </em><em>optional</em>) – maximum_distance (int) of misalignment, default = infinity.
+Used to filter the matches before optimizing the transformation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Matches.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">pickle_keypoints</code><span class="sig-paren">(</span><em>keypoints</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/image_transformation.html#pickle_keypoints"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Function to pickle cv2.sift keypoint objects</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

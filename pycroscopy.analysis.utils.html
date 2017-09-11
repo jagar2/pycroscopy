@@ -1,0 +1,1042 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.analysis.utils package &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.analysis.utils package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pycroscopy.analysis.utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.analysis.utils">
+<span id="pycroscopy-analysis-utils-package"></span><h1>pycroscopy.analysis.utils package<a class="headerlink" href="#module-pycroscopy.analysis.utils" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pycroscopy.analysis.utils.atom_finding">
+<span id="pycroscopy-analysis-utils-atom-finding-module"></span><h2>pycroscopy.analysis.utils.atom_finding module<a class="headerlink" href="#module-pycroscopy.analysis.utils.atom_finding" title="Permalink to this headline">¶</a></h2>
+<p>Created on Mon Jan 23 11:13:22 2017</p>
+<p>&#64;author: Suhas Somnath, Stephen Jesse</p>
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding.fit_atom_pos">
+<code class="descname">fit_atom_pos</code><span class="sig-paren">(</span><em>single_parm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding.html#fit_atom_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding.fit_atom_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the position of a single atom.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>single_parm</strong> (<em>tuple</em>) – <dl class="docutils">
+<dt>atom_ind <span class="classifier-delimiter">:</span> <span class="classifier">unsigned integer</span></dt>
+<dd>Index of the atom being fitted</dd>
+<dt>parm_dict <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
+<dd>Dictionary containing all the guess values, table of nearest neighbors for each atom, and the original image</dd>
+<dt>fitting_parms <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
+<dd>Dictionary of the many fitting parameters</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>coef_guess_mat</strong> (<em>2D numpy array</em>) – guess coefficients for the set of N atoms</li>
+<li><strong>coef_fit_mat</strong> (<em>2D numpy array</em>) – Fit coefficients for the set of N atoms</li>
+<li><em>This function also returns all intermediate results for debugging purposes if parm_dict[‘verbose’]=True</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding.fit_atom_positions_dset">
+<code class="descname">fit_atom_positions_dset</code><span class="sig-paren">(</span><em>h5_grp</em>, <em>fitting_parms=None</em>, <em>num_cores=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding.html#fit_atom_positions_dset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding.fit_atom_positions_dset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A temporary substitute for a full-fledged process class.
+Computes the guess and fit coefficients for the provided atom guess positions and writes these results to the
+given h5 group</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_grp</strong> (<em>h5py.Group reference</em>) – Group containing the atom guess positions, cropped clean image and some necessary parameters</li>
+<li><strong>fitting_parms</strong> (<em>dictionary</em>) – Parameters used for atom position fitting</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = available logical cores - 2</em><em>)</em>) – Number of cores to compute with</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_grp</strong> – Same group as the parameter but now with the ‘Guess’ and ‘Fit’ datasets</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">h5py.Group reference</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding.fit_atom_positions_parallel">
+<code class="descname">fit_atom_positions_parallel</code><span class="sig-paren">(</span><em>parm_dict</em>, <em>fitting_parms</em>, <em>num_cores=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding.html#fit_atom_positions_parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding.fit_atom_positions_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the positions of N atoms in parallel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parm_dict</strong> (<em>dictionary</em>) – Dictionary containing the guess positions, nearest neighbors and original image</li>
+<li><strong>fitting_parms</strong> (<em>dictionary</em>) – Parameters used for atom position fitting</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = available logical cores - 2</em><em>)</em>) – Number of cores to compute with</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>results</strong> – Guess and fit coefficients</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of tuples</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding.multi_gauss_surface_fit">
+<code class="descname">multi_gauss_surface_fit</code><span class="sig-paren">(</span><em>coef_mat</em>, <em>s_mat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding.html#multi_gauss_surface_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding.multi_gauss_surface_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the provided coefficients for N gaussian peaks to generate a 2D matrix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>coef_mat</strong> (<em>2D numpy array</em>) – <dl class="docutils">
+<dt>Coefficients arranged as [atom, parameter] where the parameters are:</dt>
+<dd>height, row, column, sigma (width of the gaussian)</dd>
+</dl>
+</li>
+<li><strong>s_mat</strong> (<em>3D numpy array</em>) – Stack of the mesh grid</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>multi_gauss</strong> – 2D matrix with the N gaussian peaks whose properties are specified in the coefficients matrix</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding.remove_duplicate_labels">
+<code class="descname">remove_duplicate_labels</code><span class="sig-paren">(</span><em>atom_labels</em>, <em>psf_width</em>, <em>double_cropped_image</em>, <em>distance_multiplier=1.5</em>, <em>num_neighbors=6</em>, <em>show_culprit_plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding.html#remove_duplicate_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding.remove_duplicate_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes incorrect labels for atoms having multiple labels</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>atom_labels</strong> (<em>list of 2D numpy arrays</em>) – List of coordinates (row, col) for the different atom families</li>
+<li><strong>psf_width</strong> (<em>float</em>) – PSF width</li>
+<li><strong>double_cropped_image</strong> (<em>2D numpy array</em>) – Image that goes along with the provided coordinates</li>
+<li><strong>distance_multiplier</strong> (<em>float</em><em> (</em><em>Optional. Default = 1.5</em><em>)</em>) – (Upto) how many times the PSF width is considered too close to an existing label</li>
+<li><strong>num_neighbors</strong> (<em>unsigned int</em>) – Number of neighbors for the K Nearest Neighbors classifier</li>
+<li><strong>show_culprit_plot</strong> (<em>Boolean</em><em> (</em><em>Optional. Default = False</em><em>)</em>) – Whether or not to show the two intermediate plots</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_atom_labels</strong> – List of coordinates (row, col) for the different atom families with duplicates removed</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of 2D numpy arrays</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding.visualize_atom_fit">
+<code class="descname">visualize_atom_fit</code><span class="sig-paren">(</span><em>atom_rough_pos</em>, <em>all_atom_guesses</em>, <em>parm_dict</em>, <em>fitting_parms</em>, <em>cropped_clean_image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding.html#visualize_atom_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding.visualize_atom_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the fit for a given atom and plots the results</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>atom_rough_pos</strong> (<em>tuple</em>) – row, column position of the atom from the guess</li>
+<li><strong>all_atom_guesses</strong> (<em>2D numpy array</em>) – Guesses of atom positions arranged as [atom index, row(0) and column(1)]</li>
+<li><strong>parm_dict</strong> (<em>dictionary</em>) – Dictionary containing the guess positions, nearest neighbors and original image</li>
+<li><strong>fitting_parms</strong> (<em>dictionary</em>) – Parameters used for atom position fitting</li>
+<li><strong>cropped_clean_image</strong> (<em>2D numpy array</em>) – original image to fit to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul>
+<li><p class="first"><strong>coef_guess_mat</strong> (<em>2D numpy array</em>) –</p>
+<dl class="docutils">
+<dt>Coefficients arranged as [atom, parameter] where the parameters are:</dt>
+<dd><p class="first last">height, row, column, sigma (width of the gaussian)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>lb_mat</strong> (<em>2D numpy array</em>) – Lower bounds for the fits</p>
+</li>
+<li><p class="first"><strong>ub_mat</strong> (<em>2D numpy array</em>) – Upper bounds for the fits</p>
+</li>
+<li><p class="first"><strong>coef_fit_mat</strong> (<em>2D numpy array</em>) –</p>
+<dl class="docutils">
+<dt>Coefficients arranged as [atom, parameter] where the parameters are:</dt>
+<dd><p class="first last">height, row, column, sigma (width of the gaussian)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>fit_region</strong> (<em>2D numpy array</em>) – Section of the image being fitted</p>
+</li>
+<li><p class="first"><strong>s_mat</strong> (<em>3D numpy array</em>) – Stack of the mesh grid</p>
+</li>
+<li><p class="first"><strong>plsq</strong> (<em>Least squares fit object</em>) – Use this to find if the fitting went well</p>
+</li>
+<li><p class="first"><strong>fig_01</strong> (<em>matplotlib.pyplot.figure handle</em>) – Handle to figure 1</p>
+</li>
+<li><p class="first"><strong>fig_02</strong> (<em>matplotlib.pyplot.figure handle</em>) – Handle to figure 2</p>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycroscopy.analysis.utils.atom_finding_general_gaussian">
+<span id="pycroscopy-analysis-utils-atom-finding-general-gaussian-module"></span><h2>pycroscopy.analysis.utils.atom_finding_general_gaussian module<a class="headerlink" href="#module-pycroscopy.analysis.utils.atom_finding_general_gaussian" title="Permalink to this headline">¶</a></h2>
+<p>&#64;author: Ondrej Dyck</p>
+<dl class="class">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit">
+<em class="property">class </em><code class="descname">Gauss_Fit</code><span class="sig-paren">(</span><em>atom_grp</em>, <em>fitting_parms</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#Gauss_Fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="docutils">
+<dt>Initializes the gaussian fitting routines:</dt>
+<dd>fit_motif()
+fit_atom_positions_parallel()
+write_to_disk()</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>atom_grp</strong> (<em>h5py.Group reference</em>) – Parent group containing the atom guess positions, cropped clean image and motif positions</li>
+<li><strong>fitting_parms</strong> (<em>dictionary</em>) – Parameters used for atom position fitting
+‘fit_region_size’: region to consider when fitting. Should be large enough to see the nearest neighbors.
+‘num_nearest_neighbors’: the number of nearest neighbors to fit
+‘sigma_guess’: starting guess for gaussian standard deviation. Should be about the size of an atom width in
+pixels.
+‘position_range’: range that the fitted position can move from initial guess position in pixels
+‘max_function_evals’: maximum allowed function calls; passed to the least squares fitter
+‘fitting_tolerance’: target difference between the fit and the data
+‘symmetric’: flag to signal if a symmetric gaussian is desired (i.e. sigma_x == sigma_y)
+‘background’: flag to signal if a background constant is desired
+‘movement_allowance’: percent of movement allowed (on all parameters except x and y positions</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.check_data">
+<em class="property">static </em><code class="descname">check_data</code><span class="sig-paren">(</span><em>atom_grp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#Gauss_Fit.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.check_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.do_guess">
+<code class="descname">do_guess</code><span class="sig-paren">(</span><em>atom_ind</em>, <em>initial_motifs=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#Gauss_Fit.do_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.do_guess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the position of a single atom.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>atom_ind</strong> (<em>int</em>) – The index of the atom to generate guess parameters for</li>
+<li><strong>initial_motifs</strong> (<em>optional boolean</em><em> (</em><em>default is False</em><em>)</em>) – Specifies whether we are generating guesses for the initial motifs. Subsequent guesses
+have the advantage of the fits from the motifs and will be much better starting values.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>atom_ind</strong> (<em>int</em>) – The index of the atom to generate guess parameters for</li>
+<li><strong>coef_guess_mat</strong> (<em>2D numpy array</em>) – Initial guess parameters for all the gaussians.</li>
+<li><strong>fit_region</strong> (<em>2D numpy array</em>) – The fit region cropped from the image</li>
+<li><strong>s1 and s2</strong> (<em>2D numpy arrays</em>) – The required input for the X and Y parameters of gauss2d</li>
+<li><strong>lb_mat and ub_mat</strong> (<em>2D numpy arrays</em>) – The lower and upper bounds for the fitting.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.fit_atom_positions_parallel">
+<code class="descname">fit_atom_positions_parallel</code><span class="sig-paren">(</span><em>plot_results=True</em>, <em>num_cores=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#Gauss_Fit.fit_atom_positions_parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.fit_atom_positions_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the positions of N atoms in parallel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>plot_results</strong> (<em>optional boolean</em><em> (</em><em>default is True</em><em>)</em>) – Specifies whether to output a visualization of the fitting results</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em><em> (</em><em>Optional. Default = available logical cores - 2</em><em>)</em>) – Number of cores to compute with</li>
+<li><strong>guess_dataset and fit_dataset with the results.</strong> (<em>Creates</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fit_dataset</strong> – neighbors considered. Each tuple contains the converged values for each gaussian.
+The value names are stored in the dtypes.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">NxM numpy array of tuples where N is the number of atoms fit and M is the number of nearest</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.fit_motif">
+<code class="descname">fit_motif</code><span class="sig-paren">(</span><em>plot_results=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#Gauss_Fit.fit_motif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.fit_motif" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plot_results</strong> (<em>boolean</em><em> (</em><em>default = True</em><em>)</em>) – Flag to specify whether a result summary should be plotted</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>motif_converged_dataset</strong> – of nearest neighbors considered. Each tuple contains the converged parameters for a gaussian fit to
+an atom in a motif window.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">NxM numpy array of tuples where N is the number of motifs and M is the number</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.write_to_disk">
+<code class="descname">write_to_disk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#Gauss_Fit.write_to_disk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.Gauss_Fit.write_to_disk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the gaussian fitting results to disk</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Gaussian_Guesses
+Gaussian_Fits
+Motif_Guesses
+Motif_Fits
+Nearest_Neighbor_Indices</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Returns the atom parent group containing the original data and the newly written data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.do_fit">
+<code class="descname">do_fit</code><span class="sig-paren">(</span><em>single_parm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#do_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.do_fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.gauss2d">
+<code class="descname">gauss2d</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>*parms</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#gauss2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.gauss2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a general 2d elliptic gaussian</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Y</strong> (<em>X</em><em>,</em>) – defined by x = np.arange(-width/2,width/2) and y = np.arange(-height/2,height/2).</li>
+<li><strong>parms</strong> (<em>List of 7 parameters defining the gaussian.</em>) – <dl class="docutils">
+<dt>The parameters are [A, x0, y0, sigma_x, sigma_y, theta, background]</dt>
+<dd>A : amplitude
+x0: x position
+y0: y position
+sigma_x: standard deviation in x
+sigma_y: standard deviation in y
+theta: rotation angle
+background: a background constant</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Returns a width x height matrix of values representing the call to the gaussian function at each position.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.atom_finding_general_gaussian.gauss_2d_residuals">
+<code class="descname">gauss_2d_residuals</code><span class="sig-paren">(</span><em>parms_vec</em>, <em>orig_data_mat</em>, <em>x_data</em>, <em>y_data</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/atom_finding_general_gaussian.html#gauss_2d_residuals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.atom_finding_general_gaussian.gauss_2d_residuals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the residual</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parms_vec</strong> (<em>1D numpy.ndarray</em>) – Raveled version of the parameters matrix</li>
+<li><strong>orig_data_mat</strong> (<em>2D numpy array</em>) – Section of the image being fitted</li>
+<li><strong>x_data</strong> (<em>3D numpy.ndarray</em>) – </li>
+<li><strong>y_data</strong> (<em>numpy.ndarray</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>err_vec</strong> – Difference between the original data and the matrix obtained by evaluating parms_vec with x_data_mat</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycroscopy.analysis.utils.be_loop">
+<span id="pycroscopy-analysis-utils-be-loop-module"></span><h2>pycroscopy.analysis.utils.be_loop module<a class="headerlink" href="#module-pycroscopy.analysis.utils.be_loop" title="Permalink to this headline">¶</a></h2>
+<p>Created on Wed Jun 29 11:13:22 2016</p>
+<p>&#64;author: Rama K. Vasudevan, Stephen Jesse, Suhas Somnath, Chris R. Smith</p>
+<p>Various helper functions for aiding loop fitting and projection</p>
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.calc_switching_coef_vec">
+<code class="descname">calc_switching_coef_vec</code><span class="sig-paren">(</span><em>loop_coef_vec</em>, <em>nuc_threshold</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#calc_switching_coef_vec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.calc_switching_coef_vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the physical loop parameters from the array of loop parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>loop_coef_vec</strong> (<em>numpy.ndarray</em>) – Array of loop coeffiecients</li>
+<li><strong>nuc_threshold</strong> (<em>float</em>) – Nucleation threshold</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>switching_coef_vec</strong> – Array of loop parameters</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.calculate_loop_centroid">
+<code class="descname">calculate_loop_centroid</code><span class="sig-paren">(</span><em>vdc</em>, <em>loop_vals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#calculate_loop_centroid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.calculate_loop_centroid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the centroid of a single given loop. Uses polyogonal centroid,
+see wiki article for details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vdc</strong> (<em>1D list</em><em> or </em><em>numpy array</em>) – DC voltage steps</li>
+<li><strong>loop_vals</strong> (<em>1D list</em><em> or </em><em>numpy array</em>) – unfolded loop</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>cent</strong> (<em>tuple</em>) – (x,y) coordinates of the centroid</li>
+<li><strong>area</strong> (<em>float</em>) – geometric area</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.fit_loop">
+<code class="descname">fit_loop</code><span class="sig-paren">(</span><em>vdc_shifted</em>, <em>pr_shifted</em>, <em>guess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#fit_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.fit_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a single unfolded loop returns the results of the least squares fitting</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vdc_shifted</strong> (<em>1D numpy array</em>) – DC voltage values shifted by one quarter, as this is requirement for the fit</li>
+<li><strong>pr_shifted</strong> (<em>1D numpy array</em>) – unfolded loop shifted by one quarter, as this is requirement for the fit</li>
+<li><strong>guess</strong> (<em>1D numpy array</em>) – 9 parameters for the fit guess</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>plsq</strong> (<em>least squares fit structure</em>) – Contains fit results, fit parameters, covariance, etc.</li>
+<li><strong>criterion_values</strong> (<em>tuple</em>) – (AIC (loop fit), BIC(loop fit), AIC(line fit), BIC(line fit))
+AIC and BIC values for loop and line fits</li>
+<li><strong>pr_fit_vec</strong> (<em>1D list or numpy array</em>) – fit result values, ie. evaluation of f(V).</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.generate_guess">
+<code class="descname">generate_guess</code><span class="sig-paren">(</span><em>vdc</em>, <em>pr_vec</em>, <em>show_plots=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#generate_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.generate_guess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a single unfolded loop and centroid return the intial guess for the fitting.
+We generate most of the guesses by looking at the loop centroid and looking
+at the nearest intersection points with the loop, which is a polygon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vdc</strong> (<em>1D numpy array</em>) – DC offsets</li>
+<li><strong>pr_vec</strong> (<em>1D numpy array</em>) – Piezoresponse or unfolded loop</li>
+<li><strong>show_plots</strong> (<em>Boolean</em><em> (</em><em>Optional. Default = False</em><em>)</em>) – Whether or not the plot the convex hull, centroid, intersection points</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>init_guess_coef_vec</strong> – Fit guess coefficient vector</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D Numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.get_rotation_matrix">
+<code class="descname">get_rotation_matrix</code><span class="sig-paren">(</span><em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#get_rotation_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.get_rotation_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rotation matrix in 2D, given the angle theta</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>theta</strong> (<em>float</em>) – Angle in radians</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>mat</strong> – rotation matrix</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">2D numpy array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.get_switching_coefs">
+<code class="descname">get_switching_coefs</code><span class="sig-paren">(</span><em>loop_centroid</em>, <em>loop_coef_vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#get_switching_coefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.get_switching_coefs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>loop_centroid</strong> (<em>tuple</em><em> or </em><em>1D list</em><em> or </em><em>numpy array</em>) – [x,y] position of loop centroid</li>
+<li><strong>loop_coef_vec</strong> (<em>1D list</em><em> or </em><em>numpy array</em>) – a 9 length vector of coefficients describing the loop via the 9 loop parmeter fit</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>switching_labels_dict</strong> – switching labels and values</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.loop_fit_function">
+<code class="descname">loop_fit_function</code><span class="sig-paren">(</span><em>vdc</em>, <em>coef_vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#loop_fit_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.loop_fit_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>9 parameter fit function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vdc</strong> (<em>1D numpy array</em><em> or </em><em>list</em>) – DC voltages</li>
+<li><strong>coef_vec</strong> (<em>1D numpy array</em><em> or </em><em>list</em>) – 9 parameter coefficient vector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>loop_eval</strong> – Loop values</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.loop_fit_jacobian">
+<code class="descname">loop_fit_jacobian</code><span class="sig-paren">(</span><em>vdc</em>, <em>coef_vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#loop_fit_jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.loop_fit_jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Jacobian of 9 parameter fit function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vdc</strong> (<em>1D numpy array</em><em> or </em><em>list</em>) – DC voltages</li>
+<li><strong>coef_vec</strong> (<em>1D numpy array</em><em> or </em><em>list</em>) – 9 parameter coefficient vector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>F</strong> – function values</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_loop.projectLoop">
+<code class="descname">projectLoop</code><span class="sig-paren">(</span><em>vdc</em>, <em>amp_vec</em>, <em>phase_vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_loop.html#projectLoop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_loop.projectLoop" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function projects a single loop cycle using the amplitude and phase vectors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vdc</strong> (<em>1D list</em><em> or </em><em>numpy array</em>) – DC voltages. vector of length N</li>
+<li><strong>amp_vec</strong> (<em>1D numpy array</em>) – amplitude of response</li>
+<li><strong>phase_vec</strong> (<em>1D numpy array</em>) – phase of response</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p><strong>results</strong> – Results from projecting the provided vectors with following components</p>
+<dl class="docutils">
+<dt>’Projected Loop’ <span class="classifier-delimiter">:</span> <span class="classifier">1D numpy array</span></dt>
+<dd><p class="first last">projected loop matrix</p>
+</dd>
+<dt>’Rotation Matrix’ <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
+<dd><p class="first last">rotation angle [rad] for the projecting, as well as the offset value</p>
+</dd>
+<dt>’Centroid’ <span class="classifier-delimiter">:</span> <span class="classifier">M-length list of tuples</span></dt>
+<dd><p class="first last">(x,y) positions of centroids for each projected loop</p>
+</dd>
+<dt>’Geometric Area’ <span class="classifier-delimiter">:</span> <span class="classifier">M element long numpy array</span></dt>
+<dd><p class="first last">geometric area of the loop</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycroscopy.analysis.utils.be_sho">
+<span id="pycroscopy-analysis-utils-be-sho-module"></span><h2>pycroscopy.analysis.utils.be_sho module<a class="headerlink" href="#module-pycroscopy.analysis.utils.be_sho" title="Permalink to this headline">¶</a></h2>
+<p>Created on Mon Sep 28 11:35:57 2015</p>
+<p>&#64;author: Anton Ievlev</p>
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_sho.SHOestimateGuess">
+<code class="descname">SHOestimateGuess</code><span class="sig-paren">(</span><em>w_vec</em>, <em>resp_vec</em>, <em>num_points=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_sho.html#SHOestimateGuess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_sho.SHOestimateGuess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates good initial guesses for fitting</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>w_vec</strong> (<em>1D numpy array</em><em> or </em><em>list</em>) – Vector of BE frequencies</li>
+<li><strong>resp_vec</strong> (<em>1D complex numpy array</em><em> or </em><em>list</em>) – BE response vector as a function of frequency</li>
+<li><strong>num_points</strong> (<em>(</em><em>Optional</em><em>) </em><em>unsigned int</em>) – Quality factor of the SHO peak</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>retval</strong> – SHO fit parameters arranged as amplitude, frequency, quality factor, phase</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_sho.SHOfastGuess">
+<code class="descname">SHOfastGuess</code><span class="sig-paren">(</span><em>w_vec</em>, <em>resp_vec</em>, <em>qual_factor=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_sho.html#SHOfastGuess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_sho.SHOfastGuess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default SHO guess from the maximum value of the response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>w_vec</strong> (<em>1D numpy array</em><em> or </em><em>list</em>) – Vector of BE frequencies</li>
+<li><strong>resp_vec</strong> (<em>1D complex numpy array</em><em> or </em><em>list</em>) – BE response vector as a function of frequency</li>
+<li><strong>qual_factor</strong> (<em>float</em>) – Quality factor of the SHO peak</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>retval</strong> – SHO fit parameters arranged as [amplitude, frequency, quality factor, phase]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_sho.SHOfunc">
+<code class="descname">SHOfunc</code><span class="sig-paren">(</span><em>parms</em>, <em>w_vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_sho.html#SHOfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_sho.SHOfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the SHO response over the given frequency band</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parms</strong> (<em>list</em><em> or </em><em>tuple</em>) – SHO parae=(A,w0,Q,phi)</li>
+<li><strong>w_vec</strong> (<em>1D numpy array</em>) – Vector of frequency values</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_sho.SHOlowerBound">
+<code class="descname">SHOlowerBound</code><span class="sig-paren">(</span><em>w_vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_sho.html#SHOlowerBound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_sho.SHOlowerBound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides the lower bound for the SHO fitting function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>w_vec</strong> (<em>1D numpy array</em><em> or </em><em>list</em>) – Vector of BE frequencies</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>retval</strong> – SHO fit parameters arranged as amplitude, frequency, quality factor, phase</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.analysis.utils.be_sho.SHOupperBound">
+<code class="descname">SHOupperBound</code><span class="sig-paren">(</span><em>w_vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/be_sho.html#SHOupperBound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.be_sho.SHOupperBound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides the upper bound for the SHO fitting function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>w_vec</strong> (<em>1D numpy array</em><em> or </em><em>list</em>) – Vector of BE frequencies</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>retval</strong> – SHO fit parameters arranged as amplitude, frequency, quality factor, phase</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycroscopy.analysis.utils.tree">
+<span id="pycroscopy-analysis-utils-tree-module"></span><h2>pycroscopy.analysis.utils.tree module<a class="headerlink" href="#module-pycroscopy.analysis.utils.tree" title="Permalink to this headline">¶</a></h2>
+<p>Created on Wed Aug 31 17:03:29 2016</p>
+<p>&#64;author: Suhas Somnath</p>
+<dl class="class">
+<dt id="pycroscopy.analysis.utils.tree.ClusterTree">
+<em class="property">class </em><code class="descname">ClusterTree</code><span class="sig-paren">(</span><em>linkage_pairing</em>, <em>labels</em>, <em>distances=None</em>, <em>centroids=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/tree.html#ClusterTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.tree.ClusterTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Creates a tree representation from the provided linkage pairing. Useful for clustering</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>linkage_pairing</strong> (<em>2D unsigned int numpy array</em><em> or </em><em>list</em>) – Linkage pairing that describes a tree structure. The matrix should result in a single tree apex.</li>
+<li><strong>labels</strong> (<em>1D unsigned int numpy array</em><em> or </em><em>list</em>) – Labels assigned to each of the positions in the main dataset. Eg. Labels from clustering</li>
+<li><strong>distances</strong> (<em>(</em><em>Optional</em><em>) </em><em>1D numpy float array</em><em> or </em><em>list</em>) – Distances between clusters</li>
+<li><strong>centroids</strong> (<em>(</em><em>Optional</em><em>) </em><em>2D numpy array</em>) – Mean responses for each of the clusters. These will be propagated up</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pycroscopy.analysis.utils.tree.ClusterTree.centroids">
+<code class="descname">centroids</code><em class="property"> = None</em><a class="headerlink" href="#pycroscopy.analysis.utils.tree.ClusterTree.centroids" title="Permalink to this definition">¶</a></dt>
+<dd><p>this list maintains pointers to the nodes pertaining to that cluster id for quick look-ups
+By default this lookup table just contains the number indices of these clusters.
+They will be replaced with node objects as and when the objects are created</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.analysis.utils.tree.ClusterTree.labels">
+<code class="descname">labels</code><em class="property"> = None</em><a class="headerlink" href="#pycroscopy.analysis.utils.tree.ClusterTree.labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>the labels for the leaf nodes need to be calculated manually from the provided labels
+Populate the lowest level nodes / leaves first:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.analysis.utils.tree.Node">
+<em class="property">class </em><code class="descname">Node</code><span class="sig-paren">(</span><em>name</em>, <em>value=None</em>, <em>parent=None</em>, <em>dist=0</em>, <em>labels=None</em>, <em>children=[]</em>, <em>compute_mean=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/analysis/utils/tree.html#Node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.analysis.utils.tree.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Basic unit of a tree - a node. Keeps track of its value, labels, parent, children, level in the tree etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>(</em><em>Optional</em><em>) </em><em>unsigned int</em>) – ID of this node</li>
+<li><strong>value</strong> (<em>(</em><em>Optional</em><em>) </em><em>1D numpy array</em>) – Response corresponding to this Node.</li>
+<li><strong>parent</strong> (<em>(</em><em>Optional</em><em>) </em><em>unsigned int</em><em> or </em><em>Node object</em>) – Parent for this Node.</li>
+<li><strong>dist</strong> (<em>(</em><em>Optional</em><em>) </em><em>float</em>) – Distance between the children nodes</li>
+<li><strong>labels</strong> (<em>(</em><em>Optional</em><em>) </em><em>list</em><em> or </em><em>1D numpy array of unsigned integers</em>) – Positions / instances in a main dataset within this cluster</li>
+<li><strong>children</strong> (<em>(</em><em>Optional</em><em>) </em><em>list of Node objects</em>) – Children for this node</li>
+<li><strong>compute_mean</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to compute the value attribute from the provided children</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

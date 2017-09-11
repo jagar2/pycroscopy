@@ -1,0 +1,640 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.translators.df_utils.dm4reader package &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.io.translators.df_utils.dm4reader package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pycroscopy.io.translators.df_utils.dm4reader.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.io.translators.df_utils.dm4reader">
+<span id="pycroscopy-io-translators-df-utils-dm4reader-package"></span><h1>pycroscopy.io.translators.df_utils.dm4reader package<a class="headerlink" href="#module-pycroscopy.io.translators.df_utils.dm4reader" title="Permalink to this headline">¶</a></h1>
+<p>Created on Aug 7, 2015</p>
+<p>&#64;author: James Anderson</p>
+<p>link: <a class="reference external" href="https://github.com/jamesra/dm4reader">https://github.com/jamesra/dm4reader</a></p>
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DataType">
+<code class="descname">DM4DataType</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DataType" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">DM4DataTypes</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader">
+<em class="property">class </em><code class="descname">DM4DirHeader</code><span class="sig-paren">(</span><em>type</em>, <em>name</em>, <em>byte_length</em>, <em>sorted</em>, <em>closed</em>, <em>num_tags</em>, <em>data_offset</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Create new instance of DM4DirHeader(type, name, byte_length, sorted, closed, num_tags, data_offset)</p>
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._asdict">
+<code class="descname">_asdict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._asdict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new OrderedDict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._fields">
+<code class="descname">_fields</code><em class="property"> = ('type', 'name', 'byte_length', 'sorted', 'closed', 'num_tags', 'data_offset')</em><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._make">
+<em class="property">classmethod </em><code class="descname">_make</code><span class="sig-paren">(</span><em>iterable</em>, <em>new=&lt;built-in method __new__ of type object&gt;</em>, <em>len=&lt;built-in function len&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._make" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a new DM4DirHeader object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._replace">
+<code class="descname">_replace</code><span class="sig-paren">(</span><em>_self</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new DM4DirHeader object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._source">
+<code class="descname">_source</code><em class="property"> = &quot;from builtins import property as _property, tuple as _tuple\nfrom operator import itemgetter as _itemgetter\nfrom collections import OrderedDict\n\nclass DM4DirHeader(tuple):\n    'DM4DirHeader(type, name, byte_length, sorted, closed, num_tags, data_offset)'\n\n    __slots__ = ()\n\n    _fields = ('type', 'name', 'byte_length', 'sorted', 'closed', 'num_tags', 'data_offset')\n\n    def __new__(_cls, type, name, byte_length, sorted, closed, num_tags, data_offset):\n        'Create new instance of DM4DirHeader(type, name, byte_length, sorted, closed, num_tags, data_offset)'\n        return _tuple.__new__(_cls, (type, name, byte_length, sorted, closed, num_tags, data_offset))\n\n    &#64;classmethod\n    def _make(cls, iterable, new=tuple.__new__, len=len):\n        'Make a new DM4DirHeader object from a sequence or iterable'\n        result = new(cls, iterable)\n        if len(result) != 7:\n            raise TypeError('Expected 7 arguments, got %d' % len(result))\n        return result\n\n    def _replace(_self, **kwds):\n        'Return a new DM4DirHeader object replacing specified fields with new values'\n        result = _self._make(map(kwds.pop, ('type', 'name', 'byte_length', 'sorted', 'closed', 'num_tags', 'data_offset'), _self))\n        if kwds:\n            raise ValueError('Got unexpected field names: %r' % list(kwds))\n        return result\n\n    def __repr__(self):\n        'Return a nicely formatted representation string'\n        return self.__class__.__name__ + '(type=%r, name=%r, byte_length=%r, sorted=%r, closed=%r, num_tags=%r, data_offset=%r)' % self\n\n    def _asdict(self):\n        'Return a new OrderedDict which maps field names to their values.'\n        return OrderedDict(zip(self._fields, self))\n\n    def __getnewargs__(self):\n        'Return self as a plain tuple.  Used by copy and pickle.'\n        return tuple(self)\n\n    type = _property(_itemgetter(0), doc='Alias for field number 0')\n\n    name = _property(_itemgetter(1), doc='Alias for field number 1')\n\n    byte_length = _property(_itemgetter(2), doc='Alias for field number 2')\n\n    sorted = _property(_itemgetter(3), doc='Alias for field number 3')\n\n    closed = _property(_itemgetter(4), doc='Alias for field number 4')\n\n    num_tags = _property(_itemgetter(5), doc='Alias for field number 5')\n\n    data_offset = _property(_itemgetter(6), doc='Alias for field number 6')\n\n&quot;</em><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader._source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.byte_length">
+<code class="descname">byte_length</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.byte_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.closed">
+<code class="descname">closed</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.closed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.data_offset">
+<code class="descname">data_offset</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.data_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 6</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.name">
+<code class="descname">name</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.num_tags">
+<code class="descname">num_tags</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.num_tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.sorted">
+<code class="descname">sorted</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.sorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.type">
+<code class="descname">type</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4DirHeader.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4File">
+<em class="property">class </em><code class="descname">DM4File</code><span class="sig-paren">(</span><em>filedata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#DM4File"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filedata</strong> (<em>file</em>) – file handle to dm4 file</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4File.DM4TagDir">
+<code class="descname">DM4TagDir</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File.DM4TagDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">DM4Dir</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4File.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#DM4File.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4File.endian_str">
+<code class="descname">endian_str</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File.endian_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4File.hfile">
+<code class="descname">hfile</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File.hfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4File.open">
+<em class="property">classmethod </em><code class="descname">open</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#DM4File.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File.open" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Name of DM4 file to open</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File" title="pycroscopy.io.translators.df_utils.dm4reader.DM4File">DM4File</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">DM4File object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4File.read_directory">
+<code class="descname">read_directory</code><span class="sig-paren">(</span><em>directory_tag=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#DM4File.read_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File.read_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the directories and tags from a dm4 file.  The first step in working with a dm4 file.
+:return: A named collection containing information about the directory</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4File.read_tag_data">
+<code class="descname">read_tag_data</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#DM4File.read_tag_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4File.read_tag_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the data associated with the passed tag</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header">
+<em class="property">class </em><code class="descname">DM4Header</code><span class="sig-paren">(</span><em>version</em>, <em>root_length</em>, <em>little_endian</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Create new instance of DM4Header(version, root_length, little_endian)</p>
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header._asdict">
+<code class="descname">_asdict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header._asdict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new OrderedDict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header._fields">
+<code class="descname">_fields</code><em class="property"> = ('version', 'root_length', 'little_endian')</em><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header._fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header._make">
+<em class="property">classmethod </em><code class="descname">_make</code><span class="sig-paren">(</span><em>iterable</em>, <em>new=&lt;built-in method __new__ of type object&gt;</em>, <em>len=&lt;built-in function len&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header._make" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a new DM4Header object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header._replace">
+<code class="descname">_replace</code><span class="sig-paren">(</span><em>_self</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header._replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new DM4Header object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header._source">
+<code class="descname">_source</code><em class="property"> = &quot;from builtins import property as _property, tuple as _tuple\nfrom operator import itemgetter as _itemgetter\nfrom collections import OrderedDict\n\nclass DM4Header(tuple):\n    'DM4Header(version, root_length, little_endian)'\n\n    __slots__ = ()\n\n    _fields = ('version', 'root_length', 'little_endian')\n\n    def __new__(_cls, version, root_length, little_endian):\n        'Create new instance of DM4Header(version, root_length, little_endian)'\n        return _tuple.__new__(_cls, (version, root_length, little_endian))\n\n    &#64;classmethod\n    def _make(cls, iterable, new=tuple.__new__, len=len):\n        'Make a new DM4Header object from a sequence or iterable'\n        result = new(cls, iterable)\n        if len(result) != 3:\n            raise TypeError('Expected 3 arguments, got %d' % len(result))\n        return result\n\n    def _replace(_self, **kwds):\n        'Return a new DM4Header object replacing specified fields with new values'\n        result = _self._make(map(kwds.pop, ('version', 'root_length', 'little_endian'), _self))\n        if kwds:\n            raise ValueError('Got unexpected field names: %r' % list(kwds))\n        return result\n\n    def __repr__(self):\n        'Return a nicely formatted representation string'\n        return self.__class__.__name__ + '(version=%r, root_length=%r, little_endian=%r)' % self\n\n    def _asdict(self):\n        'Return a new OrderedDict which maps field names to their values.'\n        return OrderedDict(zip(self._fields, self))\n\n    def __getnewargs__(self):\n        'Return self as a plain tuple.  Used by copy and pickle.'\n        return tuple(self)\n\n    version = _property(_itemgetter(0), doc='Alias for field number 0')\n\n    root_length = _property(_itemgetter(1), doc='Alias for field number 1')\n\n    little_endian = _property(_itemgetter(2), doc='Alias for field number 2')\n\n&quot;</em><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header._source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header.little_endian">
+<code class="descname">little_endian</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header.little_endian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header.root_length">
+<code class="descname">root_length</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header.root_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Header.version">
+<code class="descname">version</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Header.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag">
+<em class="property">class </em><code class="descname">DM4Tag</code><span class="sig-paren">(</span><em>name</em>, <em>data_type_code</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Create new instance of DM4Tag(name, data_type_code, data)</p>
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._asdict">
+<code class="descname">_asdict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._asdict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new OrderedDict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._fields">
+<code class="descname">_fields</code><em class="property"> = ('name', 'data_type_code', 'data')</em><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._make">
+<em class="property">classmethod </em><code class="descname">_make</code><span class="sig-paren">(</span><em>iterable</em>, <em>new=&lt;built-in method __new__ of type object&gt;</em>, <em>len=&lt;built-in function len&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._make" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a new DM4Tag object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._replace">
+<code class="descname">_replace</code><span class="sig-paren">(</span><em>_self</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new DM4Tag object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._source">
+<code class="descname">_source</code><em class="property"> = &quot;from builtins import property as _property, tuple as _tuple\nfrom operator import itemgetter as _itemgetter\nfrom collections import OrderedDict\n\nclass DM4Tag(tuple):\n    'DM4Tag(name, data_type_code, data)'\n\n    __slots__ = ()\n\n    _fields = ('name', 'data_type_code', 'data')\n\n    def __new__(_cls, name, data_type_code, data):\n        'Create new instance of DM4Tag(name, data_type_code, data)'\n        return _tuple.__new__(_cls, (name, data_type_code, data))\n\n    &#64;classmethod\n    def _make(cls, iterable, new=tuple.__new__, len=len):\n        'Make a new DM4Tag object from a sequence or iterable'\n        result = new(cls, iterable)\n        if len(result) != 3:\n            raise TypeError('Expected 3 arguments, got %d' % len(result))\n        return result\n\n    def _replace(_self, **kwds):\n        'Return a new DM4Tag object replacing specified fields with new values'\n        result = _self._make(map(kwds.pop, ('name', 'data_type_code', 'data'), _self))\n        if kwds:\n            raise ValueError('Got unexpected field names: %r' % list(kwds))\n        return result\n\n    def __repr__(self):\n        'Return a nicely formatted representation string'\n        return self.__class__.__name__ + '(name=%r, data_type_code=%r, data=%r)' % self\n\n    def _asdict(self):\n        'Return a new OrderedDict which maps field names to their values.'\n        return OrderedDict(zip(self._fields, self))\n\n    def __getnewargs__(self):\n        'Return self as a plain tuple.  Used by copy and pickle.'\n        return tuple(self)\n\n    name = _property(_itemgetter(0), doc='Alias for field number 0')\n\n    data_type_code = _property(_itemgetter(1), doc='Alias for field number 1')\n\n    data = _property(_itemgetter(2), doc='Alias for field number 2')\n\n&quot;</em><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag._source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag.data">
+<code class="descname">data</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag.data_type_code">
+<code class="descname">data_type_code</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag.data_type_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4Tag.name">
+<code class="descname">name</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4Tag.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader">
+<em class="property">class </em><code class="descname">DM4TagHeader</code><span class="sig-paren">(</span><em>type</em>, <em>name</em>, <em>byte_length</em>, <em>array_length</em>, <em>data_type_code</em>, <em>header_offset</em>, <em>data_offset</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Create new instance of DM4TagHeader(type, name, byte_length, array_length, data_type_code, header_offset, data_offset)</p>
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._asdict">
+<code class="descname">_asdict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._asdict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new OrderedDict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._fields">
+<code class="descname">_fields</code><em class="property"> = ('type', 'name', 'byte_length', 'array_length', 'data_type_code', 'header_offset', 'data_offset')</em><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._make">
+<em class="property">classmethod </em><code class="descname">_make</code><span class="sig-paren">(</span><em>iterable</em>, <em>new=&lt;built-in method __new__ of type object&gt;</em>, <em>len=&lt;built-in function len&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._make" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a new DM4TagHeader object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._replace">
+<code class="descname">_replace</code><span class="sig-paren">(</span><em>_self</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new DM4TagHeader object replacing specified fields with new values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._source">
+<code class="descname">_source</code><em class="property"> = &quot;from builtins import property as _property, tuple as _tuple\nfrom operator import itemgetter as _itemgetter\nfrom collections import OrderedDict\n\nclass DM4TagHeader(tuple):\n    'DM4TagHeader(type, name, byte_length, array_length, data_type_code, header_offset, data_offset)'\n\n    __slots__ = ()\n\n    _fields = ('type', 'name', 'byte_length', 'array_length', 'data_type_code', 'header_offset', 'data_offset')\n\n    def __new__(_cls, type, name, byte_length, array_length, data_type_code, header_offset, data_offset):\n        'Create new instance of DM4TagHeader(type, name, byte_length, array_length, data_type_code, header_offset, data_offset)'\n        return _tuple.__new__(_cls, (type, name, byte_length, array_length, data_type_code, header_offset, data_offset))\n\n    &#64;classmethod\n    def _make(cls, iterable, new=tuple.__new__, len=len):\n        'Make a new DM4TagHeader object from a sequence or iterable'\n        result = new(cls, iterable)\n        if len(result) != 7:\n            raise TypeError('Expected 7 arguments, got %d' % len(result))\n        return result\n\n    def _replace(_self, **kwds):\n        'Return a new DM4TagHeader object replacing specified fields with new values'\n        result = _self._make(map(kwds.pop, ('type', 'name', 'byte_length', 'array_length', 'data_type_code', 'header_offset', 'data_offset'), _self))\n        if kwds:\n            raise ValueError('Got unexpected field names: %r' % list(kwds))\n        return result\n\n    def __repr__(self):\n        'Return a nicely formatted representation string'\n        return self.__class__.__name__ + '(type=%r, name=%r, byte_length=%r, array_length=%r, data_type_code=%r, header_offset=%r, data_offset=%r)' % self\n\n    def _asdict(self):\n        'Return a new OrderedDict which maps field names to their values.'\n        return OrderedDict(zip(self._fields, self))\n\n    def __getnewargs__(self):\n        'Return self as a plain tuple.  Used by copy and pickle.'\n        return tuple(self)\n\n    type = _property(_itemgetter(0), doc='Alias for field number 0')\n\n    name = _property(_itemgetter(1), doc='Alias for field number 1')\n\n    byte_length = _property(_itemgetter(2), doc='Alias for field number 2')\n\n    array_length = _property(_itemgetter(3), doc='Alias for field number 3')\n\n    data_type_code = _property(_itemgetter(4), doc='Alias for field number 4')\n\n    header_offset = _property(_itemgetter(5), doc='Alias for field number 5')\n\n    data_offset = _property(_itemgetter(6), doc='Alias for field number 6')\n\n&quot;</em><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader._source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.array_length">
+<code class="descname">array_length</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.array_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.byte_length">
+<code class="descname">byte_length</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.byte_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.data_offset">
+<code class="descname">data_offset</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.data_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 6</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.data_type_code">
+<code class="descname">data_type_code</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.data_type_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.header_offset">
+<code class="descname">header_offset</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.header_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.name">
+<code class="descname">name</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.type">
+<code class="descname">type</code><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.DM4TagHeader.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader._get_endian_str">
+<code class="descname">_get_endian_str</code><span class="sig-paren">(</span><em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#_get_endian_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader._get_endian_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>DM4 header encodes little endian as byte value 1 in the header
+:return: ‘big’ or ‘little’ for use with python’s int.frombytes function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader._get_struct_endian_str">
+<code class="descname">_get_struct_endian_str</code><span class="sig-paren">(</span><em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#_get_struct_endian_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader._get_struct_endian_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>DM4 header encodes little endian as byte value 1 in the header.  However when that convention is followed the wrong values are read.  So this implementation is reversed.
+:return: ‘&gt;’ or ‘&lt;’ for use with python’s struct.unpack function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader._read_tag_data">
+<code class="descname">_read_tag_data</code><span class="sig-paren">(</span><em>dmfile</em>, <em>tag</em>, <em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#_read_tag_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader._read_tag_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader._read_tag_data_info">
+<code class="descname">_read_tag_data_info</code><span class="sig-paren">(</span><em>dmfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#_read_tag_data_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader._read_tag_data_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader._read_tag_data_value">
+<code class="descname">_read_tag_data_value</code><span class="sig-paren">(</span><em>dmfile</em>, <em>endian</em>, <em>type_code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#_read_tag_data_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader._read_tag_data_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader._read_tag_dir_header_dm4">
+<code class="descname">_read_tag_dir_header_dm4</code><span class="sig-paren">(</span><em>dmfile</em>, <em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#_read_tag_dir_header_dm4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader._read_tag_dir_header_dm4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader._read_tag_garbage_str">
+<code class="descname">_read_tag_garbage_str</code><span class="sig-paren">(</span><em>dmfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#_read_tag_garbage_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader._read_tag_garbage_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>DM4 has four bytes of % symbols in the tag.  Ensure it is there.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader._read_tag_name">
+<code class="descname">_read_tag_name</code><span class="sig-paren">(</span><em>dmfile</em>, <em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#_read_tag_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader._read_tag_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.read_header_dm4">
+<code class="descname">read_header_dm4</code><span class="sig-paren">(</span><em>dmfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#read_header_dm4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.read_header_dm4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.read_root_tag_dir_header_dm4">
+<code class="descname">read_root_tag_dir_header_dm4</code><span class="sig-paren">(</span><em>dmfile</em>, <em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#read_root_tag_dir_header_dm4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.read_root_tag_dir_header_dm4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the root directory information from a dm4 file.
+File seek position is left at end of root_tag_dir_header</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.read_tag_data_array">
+<code class="descname">read_tag_data_array</code><span class="sig-paren">(</span><em>dmfile</em>, <em>tag</em>, <em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#read_tag_data_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.read_tag_data_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.read_tag_data_group">
+<code class="descname">read_tag_data_group</code><span class="sig-paren">(</span><em>dmfile</em>, <em>tag</em>, <em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#read_tag_data_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.read_tag_data_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.read_tag_header_dm4">
+<code class="descname">read_tag_header_dm4</code><span class="sig-paren">(</span><em>dmfile</em>, <em>endian</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#read_tag_header_dm4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.read_tag_header_dm4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the tag from the file.  Leaves file at the end of the tag data, ready to read the next tag from the file</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycroscopy.io.translators.df_utils.dm4reader.tag_is_directory">
+<code class="descname">tag_is_directory</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycroscopy/io/translators/df_utils/dm4reader.html#tag_is_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.io.translators.df_utils.dm4reader.tag_is_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

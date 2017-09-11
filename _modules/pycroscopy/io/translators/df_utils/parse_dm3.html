@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.translators.df_utils.parse_dm3 &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.translators.df_utils.parse_dm3</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.translators.df_utils.parse_dm3</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">array</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">StringIO.StringIO</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
+    <span class="n">unicode</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">raise</span>
+
+<span class="c1"># mfm 2013-05-21 do we need the numpy array stuff? The python array module</span>
+<span class="c1"># allows us to store arrays easily and efficiently. How do we deal</span>
+<span class="c1"># with arrays of complex data? We could use numpy arrays with custom dtypes</span>
+<span class="c1"># in which case we&#39;d be totally tied to numpy, or else stick with structarray.</span>
+<span class="c1"># Either way the current setup of treating arrays like numpy arrays in a few</span>
+<span class="c1"># special cases isn&#39;t particularly nice, that could be done outside this module</span>
+<span class="c1"># and then we&#39;d only have to check for the basic types.</span>
+<span class="c1"># NB our struct array class is not that different from a very basic array.array</span>
+<span class="c1"># it has data and a list of data types. We could just store bytes in the data</span>
+<span class="c1"># instead of lists of tuples?</span>
+
+<span class="c1"># mfm 9Feb13 Simpler version than v1, but maybe less robust</span>
+<span class="c1"># (v1 cnows about names we&#39;re trying to extract at extraction time</span>
+<span class="c1"># this one doesn&#39;t). Is easier to follow though</span>
+<span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># if we find data which matches this regex we return a</span>
+<span class="c1"># string instead of an array</span>
+<span class="n">treat_as_string_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.*Name&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="get_from_file"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.get_from_file">[docs]</a><span class="k">def</span> <span class="nf">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">stype</span><span class="p">):</span>
+    <span class="c1"># print(&quot;reading&quot;, stype, &quot;size&quot;, struct.calcsize(stype))</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="n">stype</span><span class="p">))</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">==</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="n">stype</span><span class="p">))</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">stype</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">d1</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="k">else</span> <span class="n">d1</span> <span class="k">for</span> <span class="n">d1</span> <span class="ow">in</span> <span class="n">d</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="put_into_file"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.put_into_file">[docs]</a><span class="k">def</span> <span class="nf">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">stype</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
+        <span class="n">stype</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">))</span></div>
+
+<span class="n">read_array</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">l</span><span class="o">*</span><span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">typecode</span><span class="p">)))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">StringIO</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+<span class="n">write_array</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">tostring</span><span class="p">())</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">StringIO</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="structarray"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.structarray">[docs]</a><span class="k">class</span> <span class="nc">structarray</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to represent struct arrays. We store the data as a list of</span>
+<span class="sd">    tuples, with the dm_types telling us the dm id for the  types</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typecodes</span><span class="p">):</span>
+        <span class="c1">#self.dm_types = dm_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">typecodes</span> <span class="o">=</span> <span class="n">typecodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">raw_data</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">typecodes</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">typecodes</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;structarray(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">typecodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span><span class="p">)</span>
+
+<div class="viewcode-block" id="structarray.bytelen"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.structarray.bytelen">[docs]</a>    <span class="k">def</span> <span class="nf">bytelen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_elements</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">num_elements</span> <span class="o">*</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">typecodes</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="structarray.num_elements"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.structarray.num_elements">[docs]</a>    <span class="k">def</span> <span class="nf">num_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytelen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span><span class="p">)</span> <span class="o">%</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span><span class="p">)</span> <span class="o">//</span> <span class="n">b</span></div>
+
+<div class="viewcode-block" id="structarray.from_file"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.structarray.from_file">[docs]</a>    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">num_elements</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytelen</span><span class="p">(</span><span class="n">num_elements</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="structarray.to_file"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.structarray.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_data</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="parse_dm_header"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.parse_dm_header">[docs]</a><span class="k">def</span> <span class="nf">parse_dm_header</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the start of the DM file. We check for some</span>
+<span class="sd">    magic values and then treat the next entry as a tag_root</span>
+
+<span class="sd">    If outdata is supplied, we write instead of read using the dictionary outdata as a source</span>
+<span class="sd">    Hopefully parse_dm_header(newf, outdata=parse_dm_header(f)) copies f to newf</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># filesize is sizeondisk - 16. But we have 8 bytes of zero at the end of</span>
+    <span class="c1"># the file.</span>
+    <span class="k">if</span> <span class="n">outdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">version</span><span class="p">,</span> <span class="n">file_size</span><span class="p">,</span> <span class="n">endianness</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l l l&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">file_size</span><span class="p">,</span> <span class="n">endianness</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="n">parse_dm_tag_root</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="c1"># start is end of 3 long header. We want to write 2nd long</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">start</span> <span class="o">-</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="c1"># the real file size. We started counting after 12-byte version,fs,end</span>
+        <span class="c1"># and we need to subtract 16 total:</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+        <span class="n">enda</span><span class="p">,</span> <span class="n">endb</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l l&quot;</span><span class="p">,</span> <span class="n">enda</span><span class="p">,</span> <span class="n">endb</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">version</span><span class="p">,</span> <span class="n">file_size</span><span class="p">,</span> <span class="n">endianness</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l l l&quot;</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">version</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">endianness</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">parse_dm_tag_root</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="c1"># print(&quot;fs&quot;, file_size, end - start, (end-start)%8)</span>
+        <span class="c1"># mfm 2013-07-11 the file_size value is not always</span>
+        <span class="c1"># end-start, sometimes there seems to be an extra 4 bytes,</span>
+        <span class="c1"># other times not. Let&#39;s just ignore it for the moment</span>
+        <span class="c1"># assert(file_size == end - start)</span>
+        <span class="n">enda</span><span class="p">,</span> <span class="n">endb</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l l&quot;</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">enda</span> <span class="o">==</span> <span class="n">endb</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="parse_dm_tag_root"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.parse_dm_tag_root">[docs]</a><span class="k">def</span> <span class="nf">parse_dm_tag_root</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">outdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">is_dict</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outdata</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">_open</span><span class="p">,</span> <span class="n">num_tags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outdata</span><span class="p">)</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; b b l&quot;</span><span class="p">,</span> <span class="n">is_dict</span><span class="p">,</span> <span class="n">_open</span><span class="p">,</span> <span class="n">num_tags</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;list:&quot;</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">subdata</span> <span class="ow">in</span> <span class="n">outdata</span><span class="p">:</span>
+                <span class="n">parse_dm_tag_entry</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">subdata</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dict:&quot;</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">outdata</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Writing&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">outdata</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="k">assert</span><span class="p">(</span><span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">parse_dm_tag_entry</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">is_dict</span><span class="p">,</span> <span class="n">_open</span><span class="p">,</span> <span class="n">num_tags</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; b b l&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New tag root&quot;</span><span class="p">,</span> <span class="n">is_dict</span><span class="p">,</span> <span class="n">_open</span><span class="p">,</span> <span class="n">num_tags</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_dict</span><span class="p">:</span>
+            <span class="n">new_obj</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_tags</span><span class="p">):</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">parse_dm_tag_entry</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">assert</span><span class="p">(</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Read name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;at&quot;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
+                <span class="n">new_obj</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_obj</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_tags</span><span class="p">):</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">parse_dm_tag_entry</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">assert</span><span class="p">(</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;appending...&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;at&quot;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
+                <span class="n">new_obj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_obj</span></div>
+
+
+<div class="viewcode-block" id="parse_dm_tag_entry"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.parse_dm_tag_entry">[docs]</a><span class="k">def</span> <span class="nf">parse_dm_tag_entry</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">outdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="mi">20</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outdata</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="k">else</span> <span class="mi">21</span>
+        <span class="n">name_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outname</span><span class="p">)</span> <span class="k">if</span> <span class="n">outname</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; b H&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">name_len</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">outname</span><span class="p">:</span>
+            <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name_len</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">outname</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span>
+            <span class="n">parse_dm_tag_data</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parse_dm_tag_root</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dtype</span><span class="p">,</span> <span class="n">name_len</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; b H&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name_len</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name_len</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">parse_dm_tag_data</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">regex</span> <span class="ow">in</span> <span class="n">treat_as_string_names</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+                            <span class="n">arr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                            <span class="n">arr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">arr</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">parse_dm_tag_root</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown data type=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="parse_dm_tag_data"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.parse_dm_tag_data">[docs]</a><span class="k">def</span> <span class="nf">parse_dm_tag_data</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># todo what is id??</span>
+    <span class="c1"># it is normally one of 1,3,7,11,19</span>
+    <span class="c1"># we can parse lists of numbers with them all 1</span>
+    <span class="c1"># strings work with 3</span>
+    <span class="c1"># could id be some offset to the start of the data?</span>
+    <span class="c1"># for simple types we just read data, for strings, we read type, length</span>
+    <span class="c1"># for structs we read len,num, len0,type0,len1,... =num*2+2</span>
+    <span class="c1"># structs (15) can be 7,9,11,19</span>
+    <span class="c1"># arrays (20) can be 3 or 11</span>
+    <span class="k">if</span> <span class="n">outdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># can we get away with a limited set that we write?</span>
+        <span class="c1"># ie can all numbers be doubles or ints, and we have lists</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">data_type</span> <span class="o">=</span> <span class="n">get_structdmtypes_for_python_typeorobject</span><span class="p">(</span><span class="n">outdata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;treating </span><span class="si">{}</span><span class="s2"> as </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">outdata</span><span class="p">,</span> <span class="n">data_type</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unsupported type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">outdata</span><span class="p">)))</span>
+        <span class="n">_delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%%%%</span><span class="s2">&quot;</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; 4s l l&quot;</span><span class="p">,</span> <span class="n">_delim</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">dm_types</span><span class="p">[</span><span class="n">data_type</span><span class="p">](</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">pos</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span>  <span class="c1"># where our header_len starts</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_delim</span><span class="p">,</span> <span class="n">header_len</span><span class="p">,</span> <span class="n">data_type</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; 4s l l&quot;</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">_delim</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="si">%%%%</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">ret</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">dm_types</span><span class="p">[</span><span class="n">data_type</span><span class="p">](</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">header</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">header_len</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<span class="c1"># we store the id as a key and the name,</span>
+<span class="c1"># struct format, python types in a tuple for the value</span>
+<span class="c1"># mfm 2013-08-02 was using l, L for long and ulong but sizes vary</span>
+<span class="c1"># on platforms</span>
+<span class="c1"># can we use i, I instead?</span>
+<span class="n">dm_simple_names</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;short&quot;</span><span class="p">,</span> <span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">]),</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;ushort&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;ulong&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">]),</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">]),</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">bool</span><span class="p">]),</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;octet&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="p">[])</span>
+<span class="p">}</span>
+
+<span class="n">dm_complex_names</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="s2">&quot;struct&quot;</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="get_dmtype_for_name"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.get_dmtype_for_name">[docs]</a><span class="k">def</span> <span class="nf">get_dmtype_for_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">_name</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dm_simple_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">_name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">key</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">_name</span> <span class="ow">in</span> <span class="n">dm_complex_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">_name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">key</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="get_structdmtypes_for_python_typeorobject"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.get_structdmtypes_for_python_typeorobject">[docs]</a><span class="k">def</span> <span class="nf">get_structdmtypes_for_python_typeorobject</span><span class="p">(</span><span class="n">typeorobj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return structchar, dmtype for the python (or numpy)</span>
+<span class="sd">    type or object typeorobj.</span>
+<span class="sd">    For more complex types we only return the dm type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># not isinstance is probably a bit more lenient than &#39;is&#39;</span>
+    <span class="c1"># ie isinstance(x,str) is nicer than type(x) is str.</span>
+    <span class="c1"># hence we use isinstance when available</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">typeorobj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="n">comparer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">:</span> <span class="n">test</span> <span class="ow">is</span> <span class="n">typeorobj</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">comparer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">typeorobj</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dm_simple_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">comparer</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">sc</span><span class="p">,</span> <span class="n">key</span>
+    <span class="k">if</span> <span class="n">comparer</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>  <span class="c1"># treat all strings as arrays!</span>
+    <span class="k">elif</span> <span class="n">comparer</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">comparer</span><span class="p">(</span><span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">comparer</span><span class="p">(</span><span class="n">structarray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No appropriate DMType found for </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">typeorobj</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">typeorobj</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="get_structchar_for_dmtype"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.get_structchar_for_dmtype">[docs]</a><span class="k">def</span> <span class="nf">get_structchar_for_dmtype</span><span class="p">(</span><span class="n">dm_type</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">dm_simple_names</span><span class="p">[</span><span class="n">dm_type</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sc</span></div>
+
+
+<div class="viewcode-block" id="get_dmtype_for_structchar"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.get_dmtype_for_structchar">[docs]</a><span class="k">def</span> <span class="nf">get_dmtype_for_structchar</span><span class="p">(</span><span class="n">struct_char</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dm_simple_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">struct_char</span> <span class="o">==</span> <span class="n">sc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">key</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="standard_dm_read"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.standard_dm_read">[docs]</a><span class="k">def</span> <span class="nf">standard_dm_read</span><span class="p">(</span><span class="n">datatype_num</span><span class="p">,</span> <span class="n">desc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    datatype_num is the number of the data type, see dm_simple_names</span>
+<span class="sd">    above. desc is a (nicename, struct_char) tuple. We return a function</span>
+<span class="sd">    that parses the data for us.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nicename</span><span class="p">,</span> <span class="n">structchar</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">desc</span>
+
+    <span class="k">def</span> <span class="nf">dm_read_x</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reads (or write id outdata is given) a simple data type.</span>
+<span class="sd">        returns the data if reading and the number of bytes of header</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">outdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="o">+</span><span class="n">structchar</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="o">+</span><span class="n">structchar</span><span class="p">),</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">dm_read_x</span></div>
+
+<span class="n">dm_types</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dm_simple_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">dm_types</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard_dm_read</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+<span class="c1"># 8 is boolean, and relatively easy:</span>
+
+
+<div class="viewcode-block" id="dm_read_bool"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.dm_read_bool">[docs]</a><span class="k">def</span> <span class="nf">dm_read_bool</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">outdata</span><span class="p">:</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&lt;b&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">outdata</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&lt;b&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span></div>
+<span class="n">dm_types</span><span class="p">[</span><span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">dm_read_bool</span>
+<span class="c1"># string is 18:</span>
+
+
+<span class="c1"># mfm 2013-05-13 looks like this is never used, and all strings are</span>
+<span class="c1"># treated as array?</span>
+<div class="viewcode-block" id="dm_read_string"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.dm_read_string">[docs]</a><span class="k">def</span> <span class="nf">dm_read_string</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">header_size</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># just a length field</span>
+    <span class="k">if</span> <span class="n">outdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">outdata</span> <span class="o">=</span> <span class="n">outdata</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf_16_le&quot;</span><span class="p">)</span>
+        <span class="n">slen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outdata</span><span class="p">)</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt;L&quot;</span><span class="p">,</span> <span class="n">slen</span><span class="p">)</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">slen</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">header_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="kc">False</span>
+        <span class="n">slen</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt;L&quot;</span><span class="p">)</span>
+        <span class="n">raws</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">slen</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Got String&quot;</span><span class="p">,</span> <span class="n">unicode</span><span class="p">(</span><span class="n">raws</span><span class="p">,</span> <span class="s2">&quot;utf_16_le&quot;</span><span class="p">),</span> <span class="s2">&quot;at&quot;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">raws</span><span class="p">,</span> <span class="s2">&quot;utf_16_le&quot;</span><span class="p">),</span> <span class="n">header_size</span></div>
+
+<span class="n">dm_types</span><span class="p">[</span><span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">dm_read_string</span>
+
+
+<span class="c1"># struct is 15</span>
+<div class="viewcode-block" id="dm_read_struct_types"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.dm_read_struct_types">[docs]</a><span class="k">def</span> <span class="nf">dm_read_struct_types</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">outtypes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_len</span><span class="p">,</span> <span class="n">nfields</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outtypes</span><span class="p">)</span>
+        <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l l&quot;</span><span class="p">,</span> <span class="n">_len</span><span class="p">,</span> <span class="n">nfields</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">outtypes</span><span class="p">:</span>
+            <span class="n">_len</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l l&quot;</span><span class="p">,</span> <span class="n">_len</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">outtypes</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">_len</span><span class="p">,</span> <span class="n">nfields</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l l&quot;</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">_len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># is it always?</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfields</span><span class="p">):</span>
+            <span class="n">_len</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l l&quot;</span><span class="p">)</span>
+            <span class="n">types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">assert</span><span class="p">(</span><span class="n">_len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">assert</span><span class="p">(</span><span class="n">dtype</span> <span class="o">!=</span> <span class="mi">15</span><span class="p">)</span>  <span class="c1"># we don&#39;t allow structs of structs?</span>
+        <span class="k">return</span> <span class="n">types</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">nfields</span></div>
+
+
+<div class="viewcode-block" id="dm_read_struct"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.dm_read_struct">[docs]</a><span class="k">def</span> <span class="nf">dm_read_struct</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">outdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_structdmtypes_for_python_typeorobject</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outdata</span><span class="p">]</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">dm_read_struct_types</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">outdata</span><span class="p">):</span>
+            <span class="n">dm_types</span><span class="p">[</span><span class="n">t</span><span class="p">](</span><span class="n">f</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="c1"># we write length at the very end</span>
+        <span class="c1"># but _len is probably not len, it&#39;s set to 0 for the</span>
+        <span class="c1"># file I&#39;m trying...</span>
+        <span class="n">write_len</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">write_len</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+            <span class="c1"># dm_read_struct first writes a length which we overwrite here</span>
+            <span class="c1"># I think the length ignores the length field (4 bytes)</span>
+            <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># the very end (2 is pos from end)</span>
+            <span class="k">assert</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">==</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">header</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">types</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">dm_read_struct_types</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found struct with types&quot;</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="s2">&quot;at&quot;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">dm_types</span><span class="p">[</span><span class="n">t</span><span class="p">](</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span> <span class="n">header</span></div>
+
+<span class="n">dm_types</span><span class="p">[</span><span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">dm_read_struct</span>
+
+
+<span class="c1"># array is 20</span>
+<div class="viewcode-block" id="dm_read_array"><a class="viewcode-back" href="../../../../../pycroscopy.io.translators.df_utils.html#pycroscopy.io.translators.df_utils.parse_dm3.dm_read_array">[docs]</a><span class="k">def</span> <span class="nf">dm_read_array</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">array_header</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># type, length</span>
+    <span class="k">if</span> <span class="n">outdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outdata</span><span class="p">,</span> <span class="n">structarray</span><span class="p">):</span>
+            <span class="c1"># we write type, struct_types, length</span>
+            <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l&quot;</span><span class="p">,</span> <span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">))</span>
+            <span class="n">outdmtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_dmtype_for_structchar</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">outdata</span><span class="o">.</span><span class="n">typecodes</span><span class="p">]</span>
+            <span class="n">struct_header</span> <span class="o">=</span> <span class="n">dm_read_struct_types</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outtypes</span><span class="o">=</span><span class="n">outdmtypes</span><span class="p">)</span>
+            <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; L&quot;</span><span class="p">,</span> <span class="n">outdata</span><span class="o">.</span><span class="n">num_elements</span><span class="p">())</span>
+            <span class="n">outdata</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">struct_header</span> <span class="o">+</span> <span class="n">array_header</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outdata</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">,</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outdata</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
+                <span class="n">outdata</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">outdata</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf_16_le&quot;</span><span class="p">))</span>
+            <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">outdata</span><span class="p">,</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">))</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">get_dmtype_for_structchar</span><span class="p">(</span><span class="n">outdata</span><span class="o">.</span><span class="n">typecode</span><span class="p">)</span>
+            <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+            <span class="n">put_into_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; L&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outdata</span><span class="p">))</span>
+            <span class="n">write_array</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">array_header</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Unsupported type for conversion to array:</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outdata</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># supports arrays of structs and arrays of types,</span>
+        <span class="c1"># but not arrays of arrays (Is this possible)</span>
+        <span class="c1"># actually lets just use the array object, which only allows arrays of</span>
+        <span class="c1"># simple types!</span>
+
+        <span class="c1"># arrays of structs are pretty common, eg in a simple image CLUT</span>
+        <span class="c1"># data[&quot;DocumentObjectList&quot;][0][&quot;ImageDisplayInfo&quot;][&quot;CLUT&quot;] is an</span>
+        <span class="c1"># array of 3 bytes</span>
+        <span class="c1"># we can&#39;t handle arrays of structs easily, as we use lists for</span>
+        <span class="c1"># taglists, dicts for taggroups and arrays for array data.</span>
+        <span class="c1"># But array.array only supports simple types. We need a new type, then.</span>
+        <span class="c1"># let&#39;s make a structarray</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; l&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">):</span>
+            <span class="n">types</span><span class="p">,</span> <span class="n">struct_header</span> <span class="o">=</span> <span class="n">dm_read_struct_types</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">alen</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; L&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array of structs! types </span><span class="si">%s</span><span class="s2">, len </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">types</span><span class="p">)),</span> <span class="n">alen</span><span class="p">),</span> <span class="s2">&quot;at&quot;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">structarray</span><span class="p">([</span><span class="n">get_structchar_for_dmtype</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">types</span><span class="p">])</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">alen</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">,</span> <span class="n">array_header</span> <span class="o">+</span> <span class="n">struct_header</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># mfm 2013-08-02 struct.calcsize(&#39;l&#39;) is 4 on win and 8 on Mac!</span>
+            <span class="c1"># however &gt;l, &lt;l is 4 on both... could be a bug?</span>
+            <span class="c1"># Can we get around this by adding &#39;&gt;&#39; to out structchar?</span>
+            <span class="c1"># nope, array only takes a sinlge char. Trying i, I instead</span>
+            <span class="n">struct_char</span> <span class="o">=</span> <span class="n">get_structchar_for_dmtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">struct_char</span><span class="p">)</span>
+            <span class="n">alen</span> <span class="o">=</span> <span class="n">get_from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;&gt; L&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array type </span><span class="si">%d</span><span class="s2"> len </span><span class="si">%d</span><span class="s2"> struct </span><span class="si">%c</span><span class="s2"> size </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">dtype</span><span class="p">,</span> <span class="n">alen</span><span class="p">,</span> <span class="n">struct_char</span><span class="p">,</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="n">struct_char</span><span class="p">)),</span> <span class="s2">&quot;at&quot;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">alen</span><span class="p">:</span>
+                <span class="c1"># faster to read &lt;1024f than &lt;f 1024 times. probly</span>
+                <span class="c1"># stype = &quot;&lt;&quot; + str(alen) + dm_simple_names[dtype][1]</span>
+                <span class="c1"># ret = get_from_file(f, stype)</span>
+                <span class="n">read_array</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">alen</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done Array type </span><span class="si">%d</span><span class="s2"> len </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">alen</span><span class="p">),</span> <span class="s2">&quot;at&quot;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">,</span> <span class="n">array_header</span></div>
+
+<span class="n">dm_types</span><span class="p">[</span><span class="n">get_dmtype_for_name</span><span class="p">(</span><span class="s1">&#39;array&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">dm_read_array</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,496 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.viz.be_viz_utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.viz.be_viz_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.viz.be_viz_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.viz.be_viz_utils">
+<span id="pycroscopy-viz-be-viz-utils"></span><h1>pycroscopy.viz.be_viz_utils<a class="headerlink" href="#module-pycroscopy.viz.be_viz_utils" title="Permalink to this headline">¶</a></h1>
+<p>Created on Thu Jan 05 13:29:12 2017</p>
+<p>&#64;author: Suhas Somnath, Chris R. Smith</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.viz.be_viz_utils.jupyter_visualize_be_spectrograms">
+<code class="descname">jupyter_visualize_be_spectrograms</code><span class="sig-paren">(</span><em>h5_main</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#jupyter_visualize_be_spectrograms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.be_viz_utils.jupyter_visualize_be_spectrograms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Jupyer notebook ONLY function. Sets up a simple visualzier for visualizing raw BE data.
+Sliders for position indices can be used to visualize BE spectrograms (frequency, UDVS step).
+In the case of 2 spatial dimensions, a spatial map will be provided as well</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Raw Band Excitation dataset</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="examples-using-pycroscopy-viz-be-viz-utils-jupyter-visualize-be-spectrograms">
+<h3>Examples using <code class="docutils literal"><span class="pre">pycroscopy.viz.be_viz_utils.jupyter_visualize_be_spectrograms</span></code><a class="headerlink" href="#examples-using-pycroscopy-viz-be-viz-utils-jupyter-visualize-be-spectrograms" title="Permalink to this headline">¶</a></h3>
+<div class="sphx-glr-thumbcontainer" tooltip="S. Somnath\ :sup:`1,2`,  R. K. Vasudevan\ :sup:`1,3` * :sup:`1` Institute for Functional Imagin..."><div class="figure" id="id1">
+<img alt="../_images/sphx_glr_plot_spectral_unmixing_thumb.png" src="../_images/sphx_glr_plot_spectral_unmixing_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plot_spectral_unmixing.html#sphx-glr-auto-examples-plot-spectral-unmixing-py"><span class="std std-ref">Spectral Unmixing</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="**Suhas Somnath, Chris R. Smith**"><div class="figure" id="id2">
+<img alt="../_images/sphx_glr_tutorial_04_parallel_computing_thumb.png" src="../_images/sphx_glr_tutorial_04_parallel_computing_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/tutorial_04_parallel_computing.html#sphx-glr-auto-examples-tutorial-04-parallel-computing-py"><span class="std std-ref">Tutorial 4: Parallel Computing</span></a></span></p>
+</div>
+</div><div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.be_viz_utils.jupyter_visualize_beps_loops">
+<code class="descname">jupyter_visualize_beps_loops</code><span class="sig-paren">(</span><em>h5_projected_loops</em>, <em>h5_loop_guess</em>, <em>h5_loop_fit</em>, <em>step_chan='DC_Offset'</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#jupyter_visualize_beps_loops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.be_viz_utils.jupyter_visualize_beps_loops" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interactive plotting of the BE Loops</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_projected_loops</strong> (<em>h5py.Dataset</em>) – Dataset holding the loop projections</li>
+<li><strong>h5_loop_guess</strong> (<em>h5py.Dataset</em>) – Dataset holding the loop guesses</li>
+<li><strong>h5_loop_fit</strong> (<em>h5py.Dataset</em>) – Dataset holding the loop gits</li>
+<li><strong>step_chan</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the Spectroscopic dimension to plot versus.  Needs testing.
+Default ‘DC_Offset’</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.be_viz_utils.jupyter_visualize_beps_sho">
+<code class="descname">jupyter_visualize_beps_sho</code><span class="sig-paren">(</span><em>h5_sho_dset</em>, <em>step_chan</em>, <em>resp_func=None</em>, <em>resp_label='Response'</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#jupyter_visualize_beps_sho"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.be_viz_utils.jupyter_visualize_beps_sho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Jupyer notebook ONLY function. Sets up an interactive visualizer for viewing SHO fitted BEPS data.
+Currently, this is limited to DC and AC spectroscopy datasets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_sho_dset</strong> (<em>h5py.Dataset</em>) – dataset to be plotted</li>
+<li><strong>step_chan</strong> (<em>string / unicode</em>) – Name of the channel that forms the primary spectroscopic axis (eg - DC offset)</li>
+<li><strong>resp_func</strong> (<em>function</em><em> (</em><em>optional</em><em>)</em>) – Function to apply to the spectroscopic data. Currently, DC spectroscopy uses A*cos(phi) and AC spectroscopy
+uses A</li>
+<li><strong>resp_label</strong> (<em>string / unicode</em><em> (</em><em>optional</em><em>)</em>) – Label for the response (y) axis.</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.be_viz_utils.plot_loop_guess_fit">
+<code class="descname">plot_loop_guess_fit</code><span class="sig-paren">(</span><em>vdc</em>, <em>ds_proj_loops</em>, <em>ds_guess</em>, <em>ds_fit</em>, <em>title=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#plot_loop_guess_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.be_viz_utils.plot_loop_guess_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the loop guess, fit, source projected loops for a single cycle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>- 1D float numpy array</strong> (<em>vdc</em>) – DC offset vector (unshifted)</li>
+<li><strong>- 2D numpy array</strong> (<em>ds_proj_loops</em>) – Projected loops arranged as [position, vdc]</li>
+<li><strong>- 1D compound numpy array</strong> (<em>ds_fit</em>) – Loop guesses arranged as [position]</li>
+<li><strong>- 1D compound numpy array</strong> – Loop fits arranged as [position]</li>
+<li><strong>-</strong><strong> (</strong><strong>Optional</strong><strong>) </strong><strong>String / unicode</strong> (<em>title</em>) – Title for the figure</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>fig - matplotlib.pyplot.figure object</em> – Figure handle</li>
+<li><em>axes - 2D array of matplotlib.pyplot.axis handles</em> – handles to axes in the 2d figure</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.viz.be_viz_utils.visualize_sho_results">
+<code class="descname">visualize_sho_results</code><span class="sig-paren">(</span><em>h5_main</em>, <em>save_plots=True</em>, <em>show_plots=True</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#visualize_sho_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.viz.be_viz_utils.visualize_sho_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots some loops, amplitude, phase maps for BE-Line and BEPS datasets.</p>
+<p>Note: The file MUST contain SHO fit gusses at the very least</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em>) – dataset to be plotted</li>
+<li><strong>save_plots</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to save plots to files in the same directory as the h5 file</li>
+<li><strong>show_plots</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to display the plots on the screen</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt>
+<code class="descname">jupyter_visualize_be_spectrograms</code><span class="sig-paren">(</span><em>h5_main</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#jupyter_visualize_be_spectrograms"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Jupyer notebook ONLY function. Sets up a simple visualzier for visualizing raw BE data.
+Sliders for position indices can be used to visualize BE spectrograms (frequency, UDVS step).
+In the case of 2 spatial dimensions, a spatial map will be provided as well</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset</em>) – Raw Band Excitation dataset</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">jupyter_visualize_beps_loops</code><span class="sig-paren">(</span><em>h5_projected_loops</em>, <em>h5_loop_guess</em>, <em>h5_loop_fit</em>, <em>step_chan='DC_Offset'</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#jupyter_visualize_beps_loops"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Interactive plotting of the BE Loops</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_projected_loops</strong> (<em>h5py.Dataset</em>) – Dataset holding the loop projections</li>
+<li><strong>h5_loop_guess</strong> (<em>h5py.Dataset</em>) – Dataset holding the loop guesses</li>
+<li><strong>h5_loop_fit</strong> (<em>h5py.Dataset</em>) – Dataset holding the loop gits</li>
+<li><strong>step_chan</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the Spectroscopic dimension to plot versus.  Needs testing.
+Default ‘DC_Offset’</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">jupyter_visualize_beps_sho</code><span class="sig-paren">(</span><em>h5_sho_dset</em>, <em>step_chan</em>, <em>resp_func=None</em>, <em>resp_label='Response'</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#jupyter_visualize_beps_sho"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Jupyer notebook ONLY function. Sets up an interactive visualizer for viewing SHO fitted BEPS data.
+Currently, this is limited to DC and AC spectroscopy datasets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>h5_sho_dset</strong> (<em>h5py.Dataset</em>) – dataset to be plotted</li>
+<li><strong>step_chan</strong> (<em>string / unicode</em>) – Name of the channel that forms the primary spectroscopic axis (eg - DC offset)</li>
+<li><strong>resp_func</strong> (<em>function</em><em> (</em><em>optional</em><em>)</em>) – Function to apply to the spectroscopic data. Currently, DC spectroscopy uses A*cos(phi) and AC spectroscopy
+uses A</li>
+<li><strong>resp_label</strong> (<em>string / unicode</em><em> (</em><em>optional</em><em>)</em>) – Label for the response (y) axis.</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">plot_loop_guess_fit</code><span class="sig-paren">(</span><em>vdc</em>, <em>ds_proj_loops</em>, <em>ds_guess</em>, <em>ds_fit</em>, <em>title=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#plot_loop_guess_fit"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots the loop guess, fit, source projected loops for a single cycle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>- 1D float numpy array</strong> (<em>vdc</em>) – DC offset vector (unshifted)</li>
+<li><strong>- 2D numpy array</strong> (<em>ds_proj_loops</em>) – Projected loops arranged as [position, vdc]</li>
+<li><strong>- 1D compound numpy array</strong> (<em>ds_fit</em>) – Loop guesses arranged as [position]</li>
+<li><strong>- 1D compound numpy array</strong> – Loop fits arranged as [position]</li>
+<li><strong>-</strong><strong> (</strong><strong>Optional</strong><strong>) </strong><strong>String / unicode</strong> (<em>title</em>) – Title for the figure</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>fig - matplotlib.pyplot.figure object</em> – Figure handle</li>
+<li><em>axes - 2D array of matplotlib.pyplot.axis handles</em> – handles to axes in the 2d figure</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">visualize_sho_results</code><span class="sig-paren">(</span><em>h5_main</em>, <em>save_plots=True</em>, <em>show_plots=True</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/viz/be_viz_utils.html#visualize_sho_results"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plots some loops, amplitude, phase maps for BE-Line and BEPS datasets.</p>
+<p>Note: The file MUST contain SHO fit gusses at the very least</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 Dataset</em>) – dataset to be plotted</li>
+<li><strong>save_plots</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to save plots to files in the same directory as the h5 file</li>
+<li><strong>show_plots</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to display the plots on the screen</li>
+<li><strong>cmap</strong> (<em>String</em><em>, or </em><em>matplotlib.colors.LinearSegmentedColormap object</em><em> (</em><em>Optional</em><em>)</em>) – Requested color map</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

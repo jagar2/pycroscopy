@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.translators.utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.translators.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.translators.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Tue Nov  3 15:11:33 2015</span>
+<span class="sd">Basic functions that can be used by any SPM translator class</span>
+
+<span class="sd">@author: Suhas Somnath</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  <span class="c1"># For array operations</span>
+<span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">tm</span>  <span class="c1"># for getting time stamps</span>
+<span class="kn">from</span> <span class="nn">..microdata</span> <span class="k">import</span> <span class="n">MicroDataset</span>
+
+
+<div class="viewcode-block" id="interpret_frequency"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.utils.interpret_frequency">[docs]</a><span class="k">def</span> <span class="nf">interpret_frequency</span><span class="p">(</span><span class="n">freq_str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Interprets a string denoting frequency into its numerical equivalent.</span>
+<span class="sd">    For example &quot;4 MHz&quot; is translated to 4E+6</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freq_str : unicode / string</span>
+<span class="sd">        Frequency as a string - eg &#39;4 MHz&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    frequency : float</span>
+<span class="sd">        Frequency in hertz</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="n">freq_str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;MHz&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">1.0E+6</span>
+    <span class="k">elif</span> <span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;kHz&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">1.0E+3</span></div>
+
+
+<div class="viewcode-block" id="generate_dummy_main_parms"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.utils.generate_dummy_main_parms">[docs]</a><span class="k">def</span> <span class="nf">generate_dummy_main_parms</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a (dummy) dictionary of parameters that will be used at the root level of the h5 file</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    main_parms : dictionary</span>
+<span class="sd">        Dictionary containing basic descriptors that describe a dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="n">main_parms</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;translate_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y_%m_</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;instrument&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cypher_west&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;xcams_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;John Doe&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;sample_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;PZT&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;sample_description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Thin Film&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;project_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Band Excitation&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;CNMS_2015B_X0000&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Band Excitation data&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;data_tool&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;be_analyzer&#39;</span>
+    <span class="c1"># This parameter actually need not be a dummy and can be extracted from the parms file</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;experiment_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2015-10-05 14:55:05&#39;</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;experiment_unix_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="c1"># Need to fill in the x and y grid size here</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;grid_size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;grid_size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1"># Need to fill in the current X, Y, Z, Laser position here</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;current_position_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">main_parms</span><span class="p">[</span><span class="s1">&#39;current_position_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">main_parms</span></div>
+
+
+<div class="viewcode-block" id="make_position_mat"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.utils.make_position_mat">[docs]</a><span class="k">def</span> <span class="nf">make_position_mat</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets the position index matrices and labels for each of the spatial dimensions.</span>
+<span class="sd">    It is intentionally generic so that it works for any SPM dataset.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    num_steps : List / numpy array</span>
+<span class="sd">        Steps in each spatial direction.</span>
+<span class="sd">        Note that the axes must be ordered from fastest varying to slowest varying</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------------</span>
+<span class="sd">    pos_mat : 2D unsigned int numpy array</span>
+<span class="sd">        arranged as [steps, spatial dimension]  </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">num_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
+    <span class="n">spat_dims</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">num_steps</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+    
+    <span class="n">pos_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">num_steps</span><span class="p">),</span> <span class="n">spat_dims</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+    <span class="n">pos_ind</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">indx</span><span class="p">,</span> <span class="n">curr_steps</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">curr_steps</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            
+            <span class="n">part1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">num_steps</span><span class="p">[:</span><span class="n">indx</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            
+            <span class="k">if</span> <span class="n">indx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">part2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">num_steps</span><span class="p">[:</span><span class="n">indx</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">part2</span> <span class="o">=</span> <span class="mi">1</span>
+            
+            <span class="k">if</span> <span class="n">indx</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
+                <span class="n">part3</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">part3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">num_steps</span><span class="p">[</span><span class="n">indx</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span>           
+                                
+            <span class="n">pos_mat</span><span class="p">[:,</span> <span class="n">pos_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">part1</span><span class="p">)</span><span class="o">/</span><span class="n">part2</span><span class="p">),</span> <span class="n">part3</span><span class="p">)</span>
+            <span class="n">pos_ind</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">pos_mat</span></div>
+
+
+<div class="viewcode-block" id="get_position_slicing"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.utils.get_position_slicing">[docs]</a><span class="k">def</span> <span class="nf">get_position_slicing</span><span class="p">(</span><span class="n">pos_lab</span><span class="p">,</span> <span class="n">curr_pix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dictionary of slice objects to help in creating region references </span>
+<span class="sd">    to the position indices and values H5 datasets </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    pos_lab : List of strings</span>
+<span class="sd">        Labels of each of the position axes</span>
+<span class="sd">    curr_pix : (Optional) unsigned int</span>
+<span class="sd">        Last pixel in the positon matrix. Useful in experiments where the </span>
+<span class="sd">        parameters have changed (eg. BEPS new data format)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ------------</span>
+<span class="sd">    slice_dict : dictionary</span>
+<span class="sd">        Dictionary of tuples containing slice objects corresponding to </span>
+<span class="sd">        each position axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">slice_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">spat_ind</span><span class="p">,</span> <span class="n">spat_dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pos_lab</span><span class="p">):</span>
+        <span class="n">slice_dict</span><span class="p">[</span><span class="n">spat_dim</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">curr_pix</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="n">spat_ind</span><span class="p">,</span> <span class="n">spat_ind</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">slice_dict</span></div>
+
+
+<div class="viewcode-block" id="get_spectral_slicing"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.utils.get_spectral_slicing">[docs]</a><span class="k">def</span> <span class="nf">get_spectral_slicing</span><span class="p">(</span><span class="n">spec_lab</span><span class="p">,</span> <span class="n">curr_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dictionary of slice objects to help in creating region references</span>
+<span class="sd">    to the spectroscopic indices and values H5 datasets</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    spec_lab : List of strings</span>
+<span class="sd">        Labels of each of the Spectroscopic axes</span>
+<span class="sd">    curr_spec : (Optional) unsigned int</span>
+<span class="sd">        Last position in the spectroscopic matrix. Useful in experiments where the</span>
+<span class="sd">        parameters have changed (eg. BEPS new data format)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ------------</span>
+<span class="sd">    slice_dict : dictionary</span>
+<span class="sd">        Dictionary of tuples containing slice objects corresponding to</span>
+<span class="sd">        each Spectroscopic axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">slice_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">spat_ind</span><span class="p">,</span> <span class="n">spat_dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spec_lab</span><span class="p">):</span>
+        <span class="n">slice_dict</span><span class="p">[</span><span class="n">spat_dim</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">spat_ind</span><span class="p">,</span> <span class="n">spat_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="n">curr_spec</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">slice_dict</span></div>
+
+
+<div class="viewcode-block" id="build_ind_val_dsets"><a class="viewcode-back" href="../../../../pycroscopy.io.translators.html#pycroscopy.io.translators.utils.build_ind_val_dsets">[docs]</a><span class="k">def</span> <span class="nf">build_ind_val_dsets</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">is_spectral</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">initial_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds the MicroDatasets for the position OR spectroscopic indices and values</span>
+<span class="sd">    of the data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    is_spectral : Boolean</span>
+<span class="sd">        Spectroscopic (True) or Position (False)</span>
+<span class="sd">    dimensions : array_like of numpy.uint</span>
+<span class="sd">        Integer values for the length of each dimension</span>
+<span class="sd">    steps : array_like of float, optional</span>
+<span class="sd">        Floating point values for the step-size in each dimension.  One</span>
+<span class="sd">        if not specified.</span>
+<span class="sd">    initial_values : array_like of float, optional</span>
+<span class="sd">        Floating point for the zeroth value in each dimension.  Zero if</span>
+<span class="sd">        not specified.</span>
+<span class="sd">    labels : array_like of str, optional</span>
+<span class="sd">        The names of each dimension.  Empty strings will be used if not</span>
+<span class="sd">        specified.</span>
+<span class="sd">    units : array_like of str, optional</span>
+<span class="sd">        The units of each dimension.  Empty strings will be used if not</span>
+<span class="sd">        specified.</span>
+<span class="sd">    verbose : Boolean, optional</span>
+<span class="sd">        Whether or not to print statements for debugging purposes</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ds_spec_inds : Microdataset of numpy.uint</span>
+<span class="sd">        Dataset containing the position indices</span>
+<span class="sd">    ds_spec_vals : Microdataset of float</span>
+<span class="sd">        Dataset containing the value at each position</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    `steps`, `initial_values`, `labels`, and &#39;units&#39; must be the same length as</span>
+<span class="sd">    `dimensions` when they are specified.</span>
+
+<span class="sd">    Dimensions should be in the order from fastest varying to slowest.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">steps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The arrays for step sizes and dimension sizes must be the same.&#39;</span><span class="p">)</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Steps&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">steps</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">initial_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">initial_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">initial_values</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The arrays for initial values and dimension sizes must be the same.&#39;</span><span class="p">)</span>
+    <span class="n">initial_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">initial_values</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Initial Values&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">initial_values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">initial_values</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">dimensions</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The arrays for labels and dimension sizes must be the same.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Get the indices for all dimensions</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">make_position_mat</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">indices</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+
+    <span class="c1"># Convert the indices to values</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">initial_values</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">*</span><span class="n">steps</span>
+
+    <span class="c1"># Create the slices that will define the labels</span>
+    <span class="k">if</span> <span class="n">is_spectral</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;Spectroscopic_&#39;</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="n">region_slices</span> <span class="o">=</span> <span class="n">get_spectral_slicing</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;Position_&#39;</span>
+        <span class="n">region_slices</span> <span class="o">=</span> <span class="n">get_position_slicing</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+    <span class="c1"># Create the MicroDatasets for both Indices and Values</span>
+    <span class="n">ds_indices</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="n">mode</span> <span class="o">+</span> <span class="s1">&#39;Indices&#39;</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+    <span class="n">ds_indices</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">region_slices</span>
+
+    <span class="n">ds_values</span> <span class="o">=</span> <span class="n">MicroDataset</span><span class="p">(</span><span class="n">mode</span> <span class="o">+</span> <span class="s1">&#39;Values&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">ds_values</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">region_slices</span>
+
+    <span class="k">if</span> <span class="n">units</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">units</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The arrays for labels and dimension sizes must be the same.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ds_indices</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span>
+        <span class="n">ds_values</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span>
+
+    <span class="k">return</span> <span class="n">ds_indices</span><span class="p">,</span> <span class="n">ds_values</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

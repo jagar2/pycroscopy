@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.io.io_hdf5 &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.io.io_hdf5</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.io.io_hdf5</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Wed Oct 21 12:29:33 2015</span>
+<span class="sd">Main Class in charge of writing/reading to/from hdf5 file.</span>
+<span class="sd">@author: Numan Laanait, Suhas Somnath, Chris Smith</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># cannot import unicode_literals since it is not compatible with h5py just yet</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.microdata</span> <span class="k">import</span> <span class="n">MicroDataGroup</span>
+<span class="kn">from</span> <span class="nn">..__version__</span> <span class="k">import</span> <span class="n">version</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="n">unicode</span> <span class="o">=</span> <span class="nb">str</span>
+
+
+<div class="viewcode-block" id="ioHDF5"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5">[docs]</a><span class="k">class</span> <span class="nc">ioHDF5</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_handle</span><span class="p">,</span> <span class="n">cachemult</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles:</span>
+<span class="sd">            + I/O operation from HDF5 file.</span>
+<span class="sd">            + Utilities to get data and associated auxiliary.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        file_handle : Object - String or Unicode or open hdf5 file</span>
+<span class="sd">            Absolute path to the h5 file or an open hdf5 file</span>
+<span class="sd">        cachemult : unsigned int (Optional. default = 1)</span>
+<span class="sd">            Cache multiplier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">file_handle</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">]:</span>
+            <span class="c1"># file handle is actually a file path</span>
+            <span class="c1"># propfaid = h5py.h5p.create(h5py.h5p.FILE_ACCESS)</span>
+            <span class="c1"># if cachemult != 1:</span>
+            <span class="c1">#     settings = list(propfaid.get_cache())</span>
+            <span class="c1">#     settings[2] *= cachemult</span>
+            <span class="c1">#     propfaid.set_cache(*settings)</span>
+            <span class="c1"># try:</span>
+            <span class="c1">#     fid = h5py.h5f.open(file_handle, fapl=propfaid)</span>
+            <span class="c1">#     self.file = h5py.File(fid, mode = &#39;r+&#39;)</span>
+            <span class="c1"># except IOError:</span>
+            <span class="c1">#     #print(&#39;Unable to open file %s. \n Making a new one! \n&#39; %(filename))</span>
+            <span class="c1">#     fid = h5py.h5f.create(file_handle, fapl=propfaid)</span>
+            <span class="c1">#     self.file = h5py.File(fid, mode = &#39;w&#39;)</span>
+            <span class="c1"># except:</span>
+            <span class="c1">#     raise</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_handle</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_handle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">file_handle</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">file_handle</span><span class="p">)</span> <span class="o">==</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">:</span>
+            <span class="c1"># file handle is actually an open hdf file</span>
+            <span class="k">if</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span>
+                <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;ioHDF5 cannot work with open HDF5 files in read mode. Change to r+ or w&#39;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">file</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">filename</span>
+
+<div class="viewcode-block" id="ioHDF5.clear"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clear h5.file of all contents</span>
+
+<span class="sd">        file.clear() only removes the contents, it does not free up previously allocated space.</span>
+<span class="sd">        To do so, it&#39;s necessary to use the h5repack command after clearing.</span>
+<span class="sd">        Because the file must be closed and reopened, it is best to call this</span>
+<span class="sd">        function immediately after the creation of the ioHDF5 object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repack</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ioHDF5.repack"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5.repack">[docs]</a>    <span class="k">def</span> <span class="nf">repack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses the h5repack command to recover cleared space in an hdf5 file.</span>
+<span class="sd">        h5repack can also be used to change chunking and compression, but these options have</span>
+<span class="sd">        not yet been implemented here.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">tmpfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;.tmp&#39;</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Repack the opened hdf5 file into a temporary file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">repack_line</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;h5repack&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">tmpfile</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">])</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">repack_line</span><span class="p">,</span>
+                                    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span>
+                                    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># Check that the file is done being modified</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Could not repack hdf5 file&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Delete the original file and move the temporary file to the originals path</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># TODO Find way to get the real OS error that works in and out of Spyder</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Could not copy repacked file to original path.&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The original file is located </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The repacked file is located </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">))</span>
+            <span class="k">raise</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Open the repacked file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r+&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ioHDF5.close"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close h5.file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ioHDF5.delete"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete h5.file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ioHDF5.flush"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flush data from memory and commit to file.</span>
+<span class="sd">        Use this after manually inserting data into the hdf dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ioHDF5.writeData"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5.writeData">[docs]</a>    <span class="k">def</span> <span class="nf">writeData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">print_log</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes data into the hdf5 file and assigns data attributes such as region references.</span>
+<span class="sd">        The tree structure is inferred from the AFMData Object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : Instance of MicroData</span>
+<span class="sd">            Tree structure describing the organization of the data</span>
+<span class="sd">        print_log : Boolean (Optional)</span>
+<span class="sd">            Whether or not to print all log statements - use for debugging purposes</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        refList : List of HDF5dataset or HDF5Datagroup references</span>
+<span class="sd">            References to the objects written</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">h5_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span>
+
+        <span class="n">h5_file</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Pycroscopy version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
+
+        <span class="c1"># Checking if the data is an MicroDataGroup object</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">MicroDataGroup</span><span class="p">):</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Input of type: </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Input not of type MicroDataGroup.</span><span class="se">\n</span><span class="s2"> We&#39;re done here! </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Figuring out if the first item in AFMData tree is file or group</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+            <span class="c1"># For file we just write the attributes</span>
+
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">h5_file</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_string_att</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote attributes of file </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h5_file</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">h5_file</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># For a group we write it and its attributes</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">indexed</span><span class="p">:</span>
+                <span class="sd">&#39;&#39;&#39; If the name of the requested group ends in a &#39;_&#39;, the user expects</span>
+<span class="sd">                the suffix index to be appended automatically. Here, we check to</span>
+<span class="sd">                ensure that the chosen index is new.</span>
+<span class="sd">                &#39;&#39;&#39;</span>
+                <span class="n">previous</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                        <span class="n">previous</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">previous</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># assuming that the last element of previous contains the highest index</span>
+                    <span class="n">last</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">parent</span><span class="p">][</span><span class="n">previous</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">last</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{:03d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Created group </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">parent</span><span class="p">][</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group already exists: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">h5_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="n">h5_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">raise</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Writing attribute: </span><span class="si">{}</span><span class="s1"> with value: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_string_att</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote attributes to group: </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="c1"># Populating the tree structure recursively</span>
+        <span class="n">ref_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Recursive function</span>
+
+        <span class="k">def</span> <span class="nf">__populate</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Recursive function to build the tree from the top down.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            child</span>
+<span class="sd">            parent</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># Update the parent attribute with the true path</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">MicroDataGroup</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">indexed</span><span class="p">:</span>
+                    <span class="n">previous</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">([</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()])[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">previous</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">last</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">previous</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+                        <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">last</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{:03d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">itm</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Created Group </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">itm</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">][</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Found Group already exists </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">h5_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                    <span class="n">h5_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="k">raise</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Writing attribute: </span><span class="si">{}</span><span class="s1"> with value: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+                    <span class="n">itm</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_string_att</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote attributes to group </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="c1"># here we do the recursive function call</span>
+                <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+                    <span class="n">__populate</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">parent</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">child</span><span class="o">.</span><span class="n">resizable</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">maxshape</span><span class="p">):</span>
+                        <span class="c1"># finite sized dataset and maxshape is not provided</span>
+                        <span class="c1"># Typically for small / ancilliary datasets</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">itm</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                                 <span class="n">data</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                                                 <span class="n">compression</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">compression</span><span class="p">,</span>
+                                                                 <span class="n">dtype</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                                                 <span class="n">chunks</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">chunking</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                            <span class="n">itm</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">][</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Found Dataset already exists </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="n">h5_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                            <span class="n">h5_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                            <span class="k">raise</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># In many cases, we DON&#39;T need resizable datasets but we know the max-size</span>
+                        <span class="c1"># Here, we only allocate the space. The provided data is ignored</span>
+                        <span class="c1"># print child.name</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">itm</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">child</span><span class="o">.</span><span class="n">maxshape</span><span class="p">,</span>
+                                                                 <span class="n">compression</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">compression</span><span class="p">,</span>
+                                                                 <span class="n">dtype</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                                                 <span class="n">chunks</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">chunking</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                            <span class="n">itm</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">][</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Found Dataset already exists </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="n">h5_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                            <span class="n">h5_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                            <span class="k">raise</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Resizable but the written files are significantly larger</span>
+                    <span class="n">max_shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">))])</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">itm</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                             <span class="n">data</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                                             <span class="n">compression</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">compression</span><span class="p">,</span>
+                                                             <span class="n">dtype</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                                             <span class="n">chunks</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">chunking</span><span class="p">,</span>
+                                                             <span class="n">maxshape</span><span class="o">=</span><span class="n">max_shape</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                        <span class="n">itm</span> <span class="o">=</span> <span class="n">h5_file</span><span class="p">[</span><span class="n">parent</span><span class="p">][</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                        <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Found Dataset already exists </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="n">h5_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                        <span class="n">h5_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                        <span class="k">raise</span>
+
+                <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Created Dataset </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="c1"># print(&#39;Found some region references&#39;)</span>
+                    <span class="c1"># writing region reference</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;labels&#39;</span><span class="p">:</span>
+                        <span class="c1"># print(&#39;Found some region references&#39;)</span>
+                        <span class="n">labels</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>  <span class="c1"># labels here is a dictionary</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">write_region_references</span><span class="p">(</span><span class="n">itm</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">print_log</span><span class="o">=</span><span class="n">print_log</span><span class="p">)</span>
+                        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">                        Now make an attribute called &#39;labels&#39; that is a list of strings </span>
+<span class="sd">                        First ascertain the dimension of the slicing:</span>
+<span class="sd">                        &#39;&#39;&#39;</span>
+                        <span class="n">found_dim</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">for</span> <span class="n">dimen</span><span class="p">,</span> <span class="n">slobj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]):</span>
+                            <span class="c1"># We make the assumption that checking the start is sufficient</span>
+                            <span class="k">if</span> <span class="n">slobj</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                <span class="n">found_dim</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="k">break</span>
+                        <span class="k">if</span> <span class="n">found_dim</span><span class="p">:</span>
+                            <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>  <span class="c1"># The list that will hold all the names</span>
+                            <span class="k">for</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                                <span class="n">headers</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">col_name</span><span class="p">][</span><span class="n">dimen</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_name</span>
+                            <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Writing header attributes: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                            <span class="c1"># Now write the list of col / row names as an attribute:</span>
+                            <span class="n">itm</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_string_att</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Unable to write region labels for </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+                        <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote Region References of Dataset </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Writing attribute: </span><span class="si">{}</span><span class="s1"> with value: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+                        <span class="n">itm</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_string_att</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote Attributes of Dataset </span><span class="si">%s</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">itm</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+                            <span class="c1"># Make a dictionary of references</span>
+            <span class="n">ref_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">itm</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ref_list</span>
+
+        <span class="c1"># Recursive function is called at each stage beginning at the root</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+            <span class="n">__populate</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished writing to h5 file.</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                  <span class="s1">&#39;Right now you got yourself a fancy folder structure. </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                  <span class="s1">&#39;Make sure you do some reference linking to take advantage of the full power of HDF5.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ref_list</span></div>
+
+<div class="viewcode-block" id="ioHDF5.clean_string_att"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5.clean_string_att">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">clean_string_att</span><span class="p">(</span><span class="n">att_val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replaces any unicode objects within lists with their string counterparts to ensure compatibility with python 3.</span>
+<span class="sd">        If the attribute is indeed a list of unicodes, the changes will be made in-place</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        att_val : object</span>
+<span class="sd">            Attribute object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        att_val : object</span>
+<span class="sd">            Attribute object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">att_val</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">att_val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">att_val</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">att_val</span><span class="p">]):</span>
+                    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">att_val</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">att_val</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">str_</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">att_val</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">att_val</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Failed to clean: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">att_val</span><span class="p">))</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="ioHDF5.write_region_references"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.io.io_hdf5.html#pycroscopy.io.io_hdf5.ioHDF5.write_region_references">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">write_region_references</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="n">print_log</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates attributes of a h5.Dataset that refer to regions in the arrays</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset : h5.Dataset instance</span>
+<span class="sd">            Dataset to which region references will be added as attributes</span>
+<span class="sd">        slices : dictionary</span>
+<span class="sd">            The slicing information must be formatted using tuples of slice objects.</span>
+<span class="sd">            For example {&#39;region_1&#39;:(slice(None, None), slice (0,1))}</span>
+<span class="sd">        print_log : Boolean (Optional. Default = False)</span>
+<span class="sd">            Whether or not to print status messages</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting to write Region References to Dataset&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;of shape:&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">slices</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;About to write region reference:&#39;</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">slices</span><span class="p">[</span><span class="n">sl</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">slices</span><span class="p">[</span><span class="n">sl</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+                <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">regionref</span><span class="p">[</span><span class="n">slices</span><span class="p">[</span><span class="n">sl</span><span class="p">]]</span>
+                <span class="k">if</span> <span class="n">print_log</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote Region Reference:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sl</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Region reference </span><span class="si">%s</span><span class="s1"> could not be written since the object size was not equal to the dimensions of&#39;</span>
+                     <span class="s1">&#39; the dataset&#39;</span> <span class="o">%</span> <span class="n">sl</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

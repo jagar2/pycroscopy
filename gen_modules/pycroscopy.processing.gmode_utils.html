@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing.gmode_utils &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycroscopy.processing.gmode_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gen_modules/pycroscopy.processing.gmode_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pycroscopy.processing.gmode_utils">
+<span id="pycroscopy-processing-gmode-utils"></span><h1>pycroscopy.processing.gmode_utils<a class="headerlink" href="#module-pycroscopy.processing.gmode_utils" title="Permalink to this headline">¶</a></h1>
+<p>Created on Thu May 05 13:29:12 2016</p>
+<p>&#64;author: Suhas Somnath</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pycroscopy.processing.gmode_utils.decompress_response">
+<code class="descname">decompress_response</code><span class="sig-paren">(</span><em>f_condensed_mat</em>, <em>num_pts</em>, <em>hot_inds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#decompress_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.gmode_utils.decompress_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time domain representation of waveform(s) that are compressed in the frequency space</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f_condensed_mat</strong> (<em>1D</em><em> or </em><em>2D complex numpy arrays</em>) – Frequency domain signals arranged as [position, frequency].
+Only the positive frequncy bins must be in the compressed dataset.
+The dataset is assumed to have been FFT shifted (such that 0 Hz is at the center).</li>
+<li><strong>num_pts</strong> (<em>unsigned int</em>) – Number of points in the time domain signal</li>
+<li><strong>hot_inds</strong> (<em>1D unsigned int numpy array</em>) – Indices of the frequency bins in the compressed data.
+This index array will be necessary to reverse map the condensed
+FFT into its original form</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>time_resp</strong> – Time domain response arranged as [position, time]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Memory is given higher priority here, so this function loops over the position
+instead of doing the inverse FFT on the complete data.</p>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.gmode_utils.fft_filter_dataset">
+<code class="descname">fft_filter_dataset</code><span class="sig-paren">(</span><em>h5_main</em>, <em>filter_parms</em>, <em>write_filtered=True</em>, <em>write_condensed=False</em>, <em>num_cores=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#fft_filter_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.gmode_utils.fft_filter_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters G-mode data using specified filter parameters and writes results to file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 dataset object</em>) – Dataset containing the raw data</li>
+<li><strong>filter_parms</strong> (<em>dictionary</em>) – Dictionary that contains all the filtering parameters</li>
+<li><strong>write_filtered</strong> (<em>(</em><em>optional</em><em>) </em><em>Boolean - default True</em>) – Whether or not to write filtered data to file</li>
+<li><strong>write_condensed</strong> (<em>(</em><em>optional</em><em>) </em><em>Boolean - default False</em>) – Whether or not to write condensed filtered data to file</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em>) – Number of cores to use for processing data in parallel</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 group reference containing filtered dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.gmode_utils.filter_chunk_parallel">
+<code class="descname">filter_chunk_parallel</code><span class="sig-paren">(</span><em>raw_data</em>, <em>parm_dict</em>, <em>num_cores</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#filter_chunk_parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.gmode_utils.filter_chunk_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters the provided dataset in parallel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw_data</strong> (<em>2D numpy array</em>) – Raw data arranged as [repetition, points per measurement]</li>
+<li><strong>parm_dict</strong> (<em>Dictionary</em>) – Parameters necessary for filtering</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em>) – Number of cores to use for processing data in parallel</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>(noise_floors, filt_data, cond_data)</em></li>
+<li><strong>noise_floors</strong> (<em>1D numpy array</em>) – Contains the noise floors per set of measurements</li>
+<li><strong>filt_data</strong> (<em>2D numpy array or None</em>) – filtered data arranged as [repetition, points per measurement]</li>
+<li><strong>cond_data</strong> (<em>2D complex numpy array or None</em>) – [set of measurements, frequency bins containing data]</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.gmode_utils.filter_chunk_serial">
+<code class="descname">filter_chunk_serial</code><span class="sig-paren">(</span><em>raw_data</em>, <em>parm_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#filter_chunk_serial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.gmode_utils.filter_chunk_serial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters the provided dataset serially</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw_data</strong> (<em>2D numpy array</em>) – Raw data arranged as [repetition, points per measurement]</li>
+<li><strong>parm_dict</strong> (<em>Dictionary</em>) – Parameters necessary for filtering</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>(noise_floors, filt_data, cond_data)</em></li>
+<li><strong>noise_floors</strong> (<em>1D numpy array</em>) – Contains the noise floors per set of measurements</li>
+<li><strong>filt_data</strong> (<em>2D numpy array or None</em>) – filtered data arranged as [repetition, points per measurement]</li>
+<li><strong>cond_data</strong> (<em>2D complex numpy array or None</em>) – [set of measurements, frequency bins containing data]</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.gmode_utils.reshape_from_lines_to_pixels">
+<code class="descname">reshape_from_lines_to_pixels</code><span class="sig-paren">(</span><em>h5_main</em>, <em>pts_per_cycle</em>, <em>scan_step_x_m=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#reshape_from_lines_to_pixels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.gmode_utils.reshape_from_lines_to_pixels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Breaks up the provided raw G-mode dataset into lines and pixels (from just lines)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset object</em>) – Reference to the main dataset that contains the raw data that is only broken up by lines</li>
+<li><strong>pts_per_cycle</strong> (<em>unsigned int</em>) – Number of points in a single pixel</li>
+<li><strong>scan_step_x_m</strong> (<em>float</em>) – Step in meters for pixels</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_resh</strong> – Reference to the main dataset that contains the reshaped data</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">h5py.Dataset object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.gmode_utils.test_filter">
+<code class="descname">test_filter</code><span class="sig-paren">(</span><em>resp_wfm</em>, <em>filter_parms</em>, <em>samp_rate</em>, <em>show_plots=True</em>, <em>use_rainbow_plots=True</em>, <em>excit_wfm=None</em>, <em>central_resp_size=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#test_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.gmode_utils.test_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters the provided response with the provided filters. Use this only to test filters.
+This function does not care about the file structure etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resp_wfm</strong> (<em>1D numpy float array</em>) – Raw response waveform in the time domain</li>
+<li><strong>filter_parms</strong> (<em>dictionary</em>) – Dictionary that contains all the filtering parameters, see Notes for details.</li>
+<li><strong>samp_rate</strong> (<em>unsigned int</em>) – Sampling rate in Hertz</li>
+<li><strong>show_plots</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to plot FFTs before and after filtering</li>
+<li><strong>use_rainbow_plots</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to plot loops whose color varied as a function of time</li>
+<li><strong>excit_wfm</strong> (<em>(</em><em>Optional</em><em>) </em><em>1D numpy float array</em>) – Excitation waveform in the time domain. This waveform is necessary for plotting loops.</li>
+<li><strong>central_resp_size</strong> (<em>(</em><em>Optional</em><em>) </em><em>unsigned int</em>) – Number of responce sample points from the center of the waveform to show in plots. Useful for SPORC</li>
+<li><strong>verbose</strong> (<em>(</em><em>Optional</em><em>) </em><em>string</em>) – Whether or not to print statements</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>filt_data</strong> – Filtered signal in the time domain</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy float array</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p><em>Filter Parameters</em></p>
+<dl class="docutils">
+<dt>noise_threshold <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>0&lt;1 eg 1E-4</dd>
+<dt>comb_[Hz] <span class="classifier-delimiter">:</span> <span class="classifier">Retain harmonics of frequency</span></dt>
+<dd>[first frequency, band width, number of harmonics]</dd>
+<dt>LPF_cutOff_[Hz] <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>low pass frequency cut off frequency</dd>
+<dt>band_filt_[Hz] <span class="classifier-delimiter">:</span> <span class="classifier">2D list</span></dt>
+<dd>[0] = center frequency, [1] = band widths</dd>
+<dt>phase_[rad] <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Compensation for instrumentation induced phase offset in radians</dd>
+<dt>samp_rate_[Hz] <span class="classifier-delimiter">:</span> <span class="classifier">unsigned int</span></dt>
+<dd>Sampling rate in Hz</dd>
+<dt>num_pix <span class="classifier-delimiter">:</span> <span class="classifier">unsigned int</span></dt>
+<dd>Number of pixels to filter simultaneously</dd>
+</dl>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt id="pycroscopy.processing.gmode_utils.unit_filter">
+<code class="descname">unit_filter</code><span class="sig-paren">(</span><em>single_parm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#unit_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycroscopy.processing.gmode_utils.unit_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters a single instance of a signal.
+This is the function that is called in parallel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>single_parm</strong> (<em>Tuple</em>) – Parameters and data for filtering a single data instance.
+Constructed as (raw_data_vec, parm_dict)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>noise_floors</strong> (<em>float</em>) – Noise floor</li>
+<li><strong>filt_data</strong> (<em>1D numpy array or None</em>) – filtered data</li>
+<li><strong>cond_data</strong> (<em>1D complex numpy array or None</em>) – frequency bins containing data</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="function">
+<dt>
+<code class="descname">decompress_response</code><span class="sig-paren">(</span><em>f_condensed_mat</em>, <em>num_pts</em>, <em>hot_inds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#decompress_response"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns the time domain representation of waveform(s) that are compressed in the frequency space</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f_condensed_mat</strong> (<em>1D</em><em> or </em><em>2D complex numpy arrays</em>) – Frequency domain signals arranged as [position, frequency].
+Only the positive frequncy bins must be in the compressed dataset.
+The dataset is assumed to have been FFT shifted (such that 0 Hz is at the center).</li>
+<li><strong>num_pts</strong> (<em>unsigned int</em>) – Number of points in the time domain signal</li>
+<li><strong>hot_inds</strong> (<em>1D unsigned int numpy array</em>) – Indices of the frequency bins in the compressed data.
+This index array will be necessary to reverse map the condensed
+FFT into its original form</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>time_resp</strong> – Time domain response arranged as [position, time]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2D numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Memory is given higher priority here, so this function loops over the position
+instead of doing the inverse FFT on the complete data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">fft_filter_dataset</code><span class="sig-paren">(</span><em>h5_main</em>, <em>filter_parms</em>, <em>write_filtered=True</em>, <em>write_condensed=False</em>, <em>num_cores=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#fft_filter_dataset"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Filters G-mode data using specified filter parameters and writes results to file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>HDF5 dataset object</em>) – Dataset containing the raw data</li>
+<li><strong>filter_parms</strong> (<em>dictionary</em>) – Dictionary that contains all the filtering parameters</li>
+<li><strong>write_filtered</strong> (<em>(</em><em>optional</em><em>) </em><em>Boolean - default True</em>) – Whether or not to write filtered data to file</li>
+<li><strong>write_condensed</strong> (<em>(</em><em>optional</em><em>) </em><em>Boolean - default False</em>) – Whether or not to write condensed filtered data to file</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em>) – Number of cores to use for processing data in parallel</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">HDF5 group reference containing filtered dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">filter_chunk_parallel</code><span class="sig-paren">(</span><em>raw_data</em>, <em>parm_dict</em>, <em>num_cores</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#filter_chunk_parallel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Filters the provided dataset in parallel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw_data</strong> (<em>2D numpy array</em>) – Raw data arranged as [repetition, points per measurement]</li>
+<li><strong>parm_dict</strong> (<em>Dictionary</em>) – Parameters necessary for filtering</li>
+<li><strong>num_cores</strong> (<em>unsigned int</em>) – Number of cores to use for processing data in parallel</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>(noise_floors, filt_data, cond_data)</em></li>
+<li><strong>noise_floors</strong> (<em>1D numpy array</em>) – Contains the noise floors per set of measurements</li>
+<li><strong>filt_data</strong> (<em>2D numpy array or None</em>) – filtered data arranged as [repetition, points per measurement]</li>
+<li><strong>cond_data</strong> (<em>2D complex numpy array or None</em>) – [set of measurements, frequency bins containing data]</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">filter_chunk_serial</code><span class="sig-paren">(</span><em>raw_data</em>, <em>parm_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#filter_chunk_serial"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Filters the provided dataset serially</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw_data</strong> (<em>2D numpy array</em>) – Raw data arranged as [repetition, points per measurement]</li>
+<li><strong>parm_dict</strong> (<em>Dictionary</em>) – Parameters necessary for filtering</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>(noise_floors, filt_data, cond_data)</em></li>
+<li><strong>noise_floors</strong> (<em>1D numpy array</em>) – Contains the noise floors per set of measurements</li>
+<li><strong>filt_data</strong> (<em>2D numpy array or None</em>) – filtered data arranged as [repetition, points per measurement]</li>
+<li><strong>cond_data</strong> (<em>2D complex numpy array or None</em>) – [set of measurements, frequency bins containing data]</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">reshape_from_lines_to_pixels</code><span class="sig-paren">(</span><em>h5_main</em>, <em>pts_per_cycle</em>, <em>scan_step_x_m=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#reshape_from_lines_to_pixels"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Breaks up the provided raw G-mode dataset into lines and pixels (from just lines)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>h5_main</strong> (<em>h5py.Dataset object</em>) – Reference to the main dataset that contains the raw data that is only broken up by lines</li>
+<li><strong>pts_per_cycle</strong> (<em>unsigned int</em>) – Number of points in a single pixel</li>
+<li><strong>scan_step_x_m</strong> (<em>float</em>) – Step in meters for pixels</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>h5_resh</strong> – Reference to the main dataset that contains the reshaped data</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">h5py.Dataset object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">test_filter</code><span class="sig-paren">(</span><em>resp_wfm</em>, <em>filter_parms</em>, <em>samp_rate</em>, <em>show_plots=True</em>, <em>use_rainbow_plots=True</em>, <em>excit_wfm=None</em>, <em>central_resp_size=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#test_filter"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Filters the provided response with the provided filters. Use this only to test filters.
+This function does not care about the file structure etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resp_wfm</strong> (<em>1D numpy float array</em>) – Raw response waveform in the time domain</li>
+<li><strong>filter_parms</strong> (<em>dictionary</em>) – Dictionary that contains all the filtering parameters, see Notes for details.</li>
+<li><strong>samp_rate</strong> (<em>unsigned int</em>) – Sampling rate in Hertz</li>
+<li><strong>show_plots</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to plot FFTs before and after filtering</li>
+<li><strong>use_rainbow_plots</strong> (<em>(</em><em>Optional</em><em>) </em><em>Boolean</em>) – Whether or not to plot loops whose color varied as a function of time</li>
+<li><strong>excit_wfm</strong> (<em>(</em><em>Optional</em><em>) </em><em>1D numpy float array</em>) – Excitation waveform in the time domain. This waveform is necessary for plotting loops.</li>
+<li><strong>central_resp_size</strong> (<em>(</em><em>Optional</em><em>) </em><em>unsigned int</em>) – Number of responce sample points from the center of the waveform to show in plots. Useful for SPORC</li>
+<li><strong>verbose</strong> (<em>(</em><em>Optional</em><em>) </em><em>string</em>) – Whether or not to print statements</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>filt_data</strong> – Filtered signal in the time domain</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1D numpy float array</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p><em>Filter Parameters</em></p>
+<dl class="docutils">
+<dt>noise_threshold <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>0&lt;1 eg 1E-4</dd>
+<dt>comb_[Hz] <span class="classifier-delimiter">:</span> <span class="classifier">Retain harmonics of frequency</span></dt>
+<dd>[first frequency, band width, number of harmonics]</dd>
+<dt>LPF_cutOff_[Hz] <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>low pass frequency cut off frequency</dd>
+<dt>band_filt_[Hz] <span class="classifier-delimiter">:</span> <span class="classifier">2D list</span></dt>
+<dd>[0] = center frequency, [1] = band widths</dd>
+<dt>phase_[rad] <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Compensation for instrumentation induced phase offset in radians</dd>
+<dt>samp_rate_[Hz] <span class="classifier-delimiter">:</span> <span class="classifier">unsigned int</span></dt>
+<dd>Sampling rate in Hz</dd>
+<dt>num_pix <span class="classifier-delimiter">:</span> <span class="classifier">unsigned int</span></dt>
+<dd>Number of pixels to filter simultaneously</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">unit_filter</code><span class="sig-paren">(</span><em>single_parm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycroscopy/processing/gmode_utils.html#unit_filter"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Filters a single instance of a signal.
+This is the function that is called in parallel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>single_parm</strong> (<em>Tuple</em>) – Parameters and data for filtering a single data instance.
+Constructed as (raw_data_vec, parm_dict)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>noise_floors</strong> (<em>float</em>) – Noise floor</li>
+<li><strong>filt_data</strong> (<em>1D numpy array or None</em>) – filtered data</li>
+<li><strong>cond_data</strong> (<em>1D complex numpy array or None</em>) – frequency bins containing data</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

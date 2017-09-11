@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing.feature_extraction &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../../index.html"/>
+        <link rel="up" title="pycroscopy.processing" href="../processing.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../processing.html">pycroscopy.processing</a> &raquo;</li>
+        
+      <li>pycroscopy.processing.feature_extraction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.processing.feature_extraction</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Tue Oct  6 15:34:12 2015</span>
+
+<span class="sd">@author: Numan Laanait -- nlaanait@gmail.com</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">skimage.feature</span>
+
+
+<span class="c1"># TODO: Docstrings following numpy standard.</span>
+
+<span class="c1"># Functions</span>
+<div class="viewcode-block" id="pickle_keypoints"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.pickle_keypoints">[docs]</a><span class="k">def</span> <span class="nf">pickle_keypoints</span><span class="p">(</span><span class="n">keypoints</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to pickle cv2.sift keypoint objects</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    keypoints</span>
+<span class="sd">        keypoint object to be pickled</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kpArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">keypoints</span><span class="p">:</span>
+        <span class="n">kpArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kpArray</span><span class="p">,</span> <span class="p">[</span><span class="n">point</span><span class="o">.</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">point</span><span class="o">.</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="n">kpArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">kpArray</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kpArray</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">kpArray</span></div>
+
+
+<span class="c1"># Class to do feature extraction. This is a wrapper on scikit-image and openCV feature extraction detectors.</span>
+<span class="c1"># TODO: Add support for opencV or implement sift.</span>
+<span class="c1"># TODO: Add io operations for extracted features.</span>
+<span class="c1"># TODO: Memory checking, since some of the features are quite large.</span>
+
+<div class="viewcode-block" id="FeatureExtractorParallel"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.FeatureExtractorParallel">[docs]</a><span class="k">class</span> <span class="nc">FeatureExtractorParallel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is an Object used to contain a data set and has methods to perform</span>
+<span class="sd">    feature extraction on the data set that are detector based.</span>
+<span class="sd">    Begin by loading a detector for features and a computer vision library.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    detector_name : (string)</span>
+<span class="sd">        name of detector.</span>
+<span class="sd">    lib : (string)</span>
+<span class="sd">        computer vision library to use (opencv or skimage)</span>
+
+<span class="sd">        The following can be used for:</span>
+<span class="sd">        lib = opencv: SIFT, ORB, SURF</span>
+<span class="sd">        lib = skimage: ORB, BRIEF, CENSURE</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detector_name</span><span class="p">,</span> <span class="n">lib</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">==</span> <span class="s1">&#39;opencv&#39;</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1">#                detector = cv2.__getattribute__(detector_name)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">==</span> <span class="s1">&#39;skimage&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">detector</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">detector_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: The Library does not contain the specified detector&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">clearData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="FeatureExtractorParallel.loadData"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.FeatureExtractorParallel.loadData">[docs]</a>    <span class="k">def</span> <span class="nf">loadData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a Method that loads h5 Dataset to be corrected.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset : h5py.Dataset</span>
+<span class="sd">            Dataset to be corrected</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Error: Data must be an h5 Dataset object&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureExtractorParallel.getData"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.FeatureExtractorParallel.getData">[docs]</a>    <span class="k">def</span> <span class="nf">getData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a Method that returns the loaded h5 Dataset.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+
+<div class="viewcode-block" id="FeatureExtractorParallel.getFeatures"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.FeatureExtractorParallel.getFeatures">[docs]</a>    <span class="k">def</span> <span class="nf">getFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a Method that returns features (keypoints and descriptors)</span>
+<span class="sd">        that are obtained by using the FeatureExtractor.Detector object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        processors : int, optional</span>
+<span class="sd">                    Number of processors to use, default = 1.</span>
+<span class="sd">        mask : boolean, optional, default False.</span>
+<span class="sd">            Whether to use</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        keypts :</span>
+<span class="sd">            keypoints</span>
+<span class="sd">        descs :</span>
+<span class="sd">            descriptors</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">detector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span>
+        <span class="n">dset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span>
+        <span class="n">processes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;processors&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;origin&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">winSize</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;window_size&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mask</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">mask_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">winSize</span><span class="p">):</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">winSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">winSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                  <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">winSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">winSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">x</span>
+
+            <span class="n">mask_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mask_indices</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">mask_func</span><span class="p">,</span> <span class="n">winSize</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">imp</span><span class="p">[</span><span class="n">mask_ind</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">winSize</span><span class="p">,</span> <span class="n">winSize</span><span class="p">)</span> <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="n">dset</span><span class="p">])</span>
+
+        <span class="c1"># detect and compute keypoints</span>
+        <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">lib</span> <span class="o">==</span> <span class="s1">&#39;opencv&#39;</span><span class="p">:</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="p">(</span><span class="n">image</span> <span class="o">-</span> <span class="n">image</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">image</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
+                <span class="n">k_obj</span><span class="p">,</span> <span class="n">d_obj</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">detectAndCompute</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">keypts</span><span class="p">,</span> <span class="n">descs</span> <span class="o">=</span> <span class="n">pickle_keypoints</span><span class="p">(</span><span class="n">k_obj</span><span class="p">),</span> <span class="n">pickle_keypoints</span><span class="p">(</span><span class="n">d_obj</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">lib</span> <span class="o">==</span> <span class="s1">&#39;skimage&#39;</span><span class="p">:</span>
+                <span class="n">imp</span> <span class="o">=</span> <span class="p">(</span><span class="n">image</span> <span class="o">-</span> <span class="n">image</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+                <span class="n">imp</span><span class="p">[</span><span class="n">imp</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">imp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+                <span class="n">detector</span><span class="o">.</span><span class="n">detect_and_extract</span><span class="p">(</span><span class="n">imp</span><span class="p">)</span>
+                <span class="n">keypts</span><span class="p">,</span> <span class="n">descs</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">keypoints</span><span class="p">,</span> <span class="n">detector</span><span class="o">.</span><span class="n">descriptors</span>
+
+            <span class="k">return</span> <span class="n">keypts</span><span class="p">,</span> <span class="n">descs</span>
+
+        <span class="c1"># start pool of workers</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;launching </span><span class="si">%i</span><span class="s1"> kernels...&#39;</span> <span class="o">%</span> <span class="n">processes</span><span class="p">)</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="p">)</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">imp</span> <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">processes</span><span class="p">)</span>
+        <span class="n">jobs</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">imap</span><span class="p">(</span><span class="n">detect</span><span class="p">,</span> <span class="n">tasks</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="n">chunk</span><span class="p">)</span>
+
+        <span class="c1"># get keypoints and descriptors</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extracting features...&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;ValueError something about 2d-image. Probably some of the detector input params are wrong.&#39;</span><span class="p">)</span>
+
+        <span class="n">keypts</span> <span class="o">=</span> <span class="p">[</span><span class="n">itm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">itm</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="p">[</span><span class="n">itm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">itm</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+
+        <span class="c1"># close the pool</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Closing down the kernels... </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">keypts</span><span class="p">,</span> <span class="n">desc</span></div></div>
+
+
+<div class="viewcode-block" id="FeatureExtractorSerial"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.FeatureExtractorSerial">[docs]</a><span class="k">class</span> <span class="nc">FeatureExtractorSerial</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is an Object used to contain a data set and has methods to perform</span>
+<span class="sd">    feature extraction on the data set that are detector based.</span>
+<span class="sd">    Begin by loading a detector for features and a computer vision library.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    detector_name : (string)</span>
+<span class="sd">        name of detector.</span>
+<span class="sd">    lib : (string)</span>
+<span class="sd">        computer vision library to use (opencv or skimage)</span>
+
+<span class="sd">        The following can be used for:</span>
+<span class="sd">        lib = opencv: SIFT, ORB, SURF</span>
+<span class="sd">        lib = skimage: ORB, BRIEF, CENSURE</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detector_name</span><span class="p">,</span> <span class="n">lib</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">==</span> <span class="s1">&#39;opencv&#39;</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1">#                detector = cv2.__getattribute__(detector_name)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">==</span> <span class="s1">&#39;skimage&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">detector</span> <span class="o">=</span> <span class="n">skimage</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">detector_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: The Library does not contain the specified detector&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">clearData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="FeatureExtractorSerial.loadData"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.FeatureExtractorSerial.loadData">[docs]</a>    <span class="k">def</span> <span class="nf">loadData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a Method that loads h5 Dataset to be corrected.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset : h5py.Dataset</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Error: Data must be an h5 Dataset object&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureExtractorSerial.getData"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.FeatureExtractorSerial.getData">[docs]</a>    <span class="k">def</span> <span class="nf">getData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a Method that returns the loaded h5 Dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+
+<div class="viewcode-block" id="FeatureExtractorSerial.getFeatures"><a class="viewcode-back" href="../../../gen_modules/pycroscopy.processing.feature_extraction.html#pycroscopy.processing.feature_extraction.FeatureExtractorSerial.getFeatures">[docs]</a>    <span class="k">def</span> <span class="nf">getFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a Method that returns features (keypoints and descriptors)</span>
+<span class="sd">        that are obtained by using the FeatureExtractor.Detector object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mask : boolean, optional</span>
+<span class="sd">            Whether to use, default False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        keypts :</span>
+<span class="sd">            descriptors</span>
+<span class="sd">        descs :</span>
+<span class="sd">            keypoints</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">detector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span>
+        <span class="n">dset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;origin&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">winSize</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;window_size&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mask</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">mask_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">winSize</span><span class="p">):</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">winSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">winSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                  <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">winSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">winSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">x</span>
+
+            <span class="n">mask_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mask_indices</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">mask_func</span><span class="p">,</span> <span class="n">winSize</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">imp</span><span class="p">[</span><span class="n">mask_ind</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">winSize</span><span class="p">,</span> <span class="n">winSize</span><span class="p">)</span> <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="n">dset</span><span class="p">])</span>
+
+        <span class="c1"># detect and compute keypoints</span>
+        <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">lib</span> <span class="o">==</span> <span class="s1">&#39;opencv&#39;</span><span class="p">:</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="p">(</span><span class="n">image</span> <span class="o">-</span> <span class="n">image</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">image</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
+                <span class="n">k_obj</span><span class="p">,</span> <span class="n">d_obj</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">detectAndCompute</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">keypts</span><span class="p">,</span> <span class="n">descs</span> <span class="o">=</span> <span class="n">pickle_keypoints</span><span class="p">(</span><span class="n">k_obj</span><span class="p">),</span> <span class="n">pickle_keypoints</span><span class="p">(</span><span class="n">d_obj</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">lib</span> <span class="o">==</span> <span class="s1">&#39;skimage&#39;</span><span class="p">:</span>
+                <span class="n">imp</span> <span class="o">=</span> <span class="p">(</span><span class="n">image</span> <span class="o">-</span> <span class="n">image</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+                <span class="n">imp</span><span class="p">[</span><span class="n">imp</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">imp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+                <span class="n">detector</span><span class="o">.</span><span class="n">detect_and_extract</span><span class="p">(</span><span class="n">imp</span><span class="p">)</span>
+                <span class="n">keypts</span><span class="p">,</span> <span class="n">descs</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">keypoints</span><span class="p">,</span> <span class="n">detector</span><span class="o">.</span><span class="n">descriptors</span>
+
+            <span class="k">return</span> <span class="n">keypts</span><span class="p">,</span> <span class="n">descs</span>
+
+        <span class="c1"># start pool of workers</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">detect</span><span class="p">(</span><span class="n">imp</span><span class="p">)</span> <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+
+        <span class="c1"># get keypoints and descriptors</span>
+        <span class="n">keypts</span> <span class="o">=</span> <span class="p">[</span><span class="n">itm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">itm</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="p">[</span><span class="n">itm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">itm</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">keypts</span><span class="p">,</span> <span class="n">desc</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

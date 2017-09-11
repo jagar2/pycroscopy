@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycroscopy.processing &mdash; pycroscopy 0.56.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="pycroscopy 0.56.01 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pycroscopy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.56
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Data_Format.html">Pycroscopy Data and File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pycroscopy.html">pycroscopy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Pycroscopy Gallery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pycroscopy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycroscopy.processing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycroscopy.processing</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Pycroscopy&#39;s processing module</span>
+
+<span class="sd">Submodules</span>
+<span class="sd">----------</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: _autosummary</span>
+
+<span class="sd">    atom_finding</span>
+<span class="sd">    cluster</span>
+<span class="sd">    decomposition</span>
+<span class="sd">    feature_extraction</span>
+<span class="sd">    fft</span>
+<span class="sd">    giv_utils</span>
+<span class="sd">    gmode_utils</span>
+<span class="sd">    image_processing</span>
+<span class="sd">    image_transformation</span>
+<span class="sd">    proc_utils</span>
+<span class="sd">    process</span>
+<span class="sd">    svd_utils</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">parallel_compute</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">fft</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">gmode_utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">proc_utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">svd_utils</span>
+<span class="kn">from</span> <span class="nn">.svd_utils</span> <span class="k">import</span> <span class="n">doSVD</span><span class="p">,</span> <span class="n">rebuild_svd</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">decomposition</span>
+<span class="kn">from</span> <span class="nn">.decomposition</span> <span class="k">import</span> <span class="n">Decomposition</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">cluster</span>
+<span class="kn">from</span> <span class="nn">.cluster</span> <span class="k">import</span> <span class="n">Cluster</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">image_processing</span>
+<span class="kn">from</span> <span class="nn">.image_processing</span> <span class="k">import</span> <span class="n">ImageWindow</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">giv_utils</span>
+<span class="kn">from</span> <span class="nn">.feature_extraction</span> <span class="k">import</span> <span class="n">FeatureExtractorParallel</span><span class="p">,</span> <span class="n">FeatureExtractorSerial</span>
+<span class="kn">from</span> <span class="nn">.image_transformation</span> <span class="k">import</span> <span class="n">geoTransformerParallel</span><span class="p">,</span> <span class="n">geoTransformerSerial</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">process</span>
+<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">Process</span>
+
+
+<div class="viewcode-block" id="no_impl"><a class="viewcode-back" href="../../gen_modules/pycroscopy.processing.html#pycroscopy.processing.no_impl">[docs]</a><span class="k">def</span> <span class="nf">no_impl</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You need to install Multiprocess package (pip,github) to do a parallel Computation.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                              <span class="s2">&quot;Switching to the serial version. &quot;</span><span class="p">)</span></div>
+
+<span class="n">FeatureExtractor</span> <span class="o">=</span> <span class="n">FeatureExtractorSerial</span>
+<span class="n">geoTransformer</span> <span class="o">=</span> <span class="n">geoTransformerSerial</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">FeatureExtractorParallel</span> <span class="o">=</span> <span class="n">no_impl</span>
+    <span class="n">geoTransformerParallel</span> <span class="o">=</span> <span class="n">no_impl</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">FeatureExtractor</span> <span class="o">=</span> <span class="n">FeatureExtractorParallel</span>
+    <span class="n">geoTransformer</span> <span class="o">=</span> <span class="n">geoTransformerParallel</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Cluster&#39;</span><span class="p">,</span> <span class="s1">&#39;Decomposition&#39;</span><span class="p">,</span> <span class="s1">&#39;ImageWindow&#39;</span><span class="p">,</span> <span class="s1">&#39;doSVD&#39;</span><span class="p">,</span> <span class="s1">&#39;fft&#39;</span><span class="p">,</span> <span class="s1">&#39;gmode_utils&#39;</span><span class="p">,</span> <span class="s1">&#39;proc_utils&#39;</span><span class="p">,</span> <span class="s1">&#39;svd_utils&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;giv_utils&#39;</span><span class="p">,</span> <span class="s1">&#39;rebuild_svd&#39;</span><span class="p">,</span> <span class="s1">&#39;Process&#39;</span><span class="p">,</span> <span class="s1">&#39;parallel_compute&#39;</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Numan Laanait, Suhas Somnath, Chris Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.56.01',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
