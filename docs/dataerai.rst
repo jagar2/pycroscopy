@@ -1,10 +1,10 @@
 Dataerai provenance tutorials
 =============================
 
-Pycroscopy notebooks can preserve analysis outputs in
+Pycroscopy notebooks can preserve complete notebook runs in
 `Dataerai <https://dataerai.com/>`_ by calling the Dataerai Python SDK directly.
 This guide does not add a pycroscopy API or dependency. Install and authenticate
-Dataerai only in notebook environments that need to upload assets.
+Dataerai only in notebook environments that need to preserve assets.
 
 Installation
 ------------
@@ -19,99 +19,93 @@ If your notebook should start the local Dataerai daemon automatically, set the
 binary. If the daemon is already running, the default socket connection is
 enough.
 
-Notebook workflow
------------------
+Notebook-run workflow
+---------------------
 
-The same pattern is included as an opt-in section in every notebook under
-``jupyter_notebooks``:
+Every notebook under ``jupyter_notebooks`` includes an opt-in Dataerai section.
+The section follows the same pattern as Dataerai's PyTorch training helpers:
+SDK calls handle file transfers and provenance relationships, while Dataerai's
+credential-refresh helper is used for REST endpoints that are not yet exposed on
+``DataeraiClient``.
 
-1. Save the pycroscopy or ``sidpy.Dataset`` result to a file.
-2. Build a small ``pycroscopy`` metadata dictionary for search and audit.
-3. Upload the file with ``DataeraiClient.upload``.
-4. Link the uploaded asset to each source asset with
-   ``DataeraiClient.create_relationship``.
+When enabled, each notebook preservation cell:
+
+1. Creates a notebook-run collection under the selected project, or reuses the
+   collection in ``DATAERAI_COLLECTION_ID``.
+2. Preserves local raw input files listed in ``DATAERAI_RAW_DATA_PATHS``.
+3. Preserves a raw-input manifest with parameters and missing raw-path audit
+   details.
+4. Preserves the notebook file when it can be found, plus a notebook manifest
+   containing environment, git, and IPython input-history information.
+5. Preserves derived array artifacts, additional output files, and output
+   images, including any currently open matplotlib figures.
+6. Preserves an execution log that records the run id, collection id, uploaded
+   asset ids, content ids, source asset ids, missing paths, parameter summary,
+   and package versions.
+7. Creates provenance relationships so outputs are linked to raw inputs,
+   notebook assets, execution logs, and output images.
+
+Configuration
+-------------
+
+Each notebook cell starts with editable settings:
 
 .. code:: python
 
-  import hashlib
-  from datetime import datetime, timezone
-  from pathlib import Path
+  RUN_DATAERAI_DEMO = False
+  DATAERAI_PROJECT_ID = "<your-project-id>"
+  DATAERAI_BINARY_PATH = None
+  DATAERAI_SOURCE_ASSET_IDS = []
+  DATAERAI_PARENT_COLLECTION_ID = None
+  DATAERAI_COLLECTION_ID = None
 
-  import numpy as np
-  from dataerai import DataeraiClient
+Set ``RUN_DATAERAI_DEMO = True`` and replace ``DATAERAI_PROJECT_ID`` before
+running the cell. Use ``DATAERAI_SOURCE_ASSET_IDS`` when an upstream raw asset
+already exists in Dataerai. Use ``DATAERAI_COLLECTION_ID`` to preserve repeated
+runs into the same collection; otherwise the cell creates a new collection for
+each run.
 
-  result_path = Path("cleaned_afm.npy")
-  np.save(result_path, np.asarray(cleaned_dataset))
+Captured metadata
+-----------------
 
-  digest = hashlib.sha256(result_path.read_bytes()).hexdigest()
-  pycroscopy_metadata = {
-      "pycroscopy": {
-          "schema_version": 1,
-          "created_at": datetime.now(timezone.utc).isoformat(),
-          "file": {
-              "filename": result_path.name,
-              "suffix": result_path.suffix,
-              "size_bytes": result_path.stat().st_size,
-              "sha256": digest,
-          },
-          "dataset": {
-              "title": getattr(cleaned_dataset, "title", None),
-              "data_type": str(getattr(cleaned_dataset, "data_type", "")),
-              "shape": list(getattr(cleaned_dataset, "shape", [])),
-              "dtype": str(getattr(cleaned_dataset, "dtype", "")),
-          },
-          "lineage": {
-              "source_asset_ids": ["raw-asset-id"],
-          },
-      }
-  }
-
-  with DataeraiClient(binary_path="/usr/local/bin/dataerai") as client:
-      uploaded = client.upload(
-          str(result_path),
-          title="Cleaned AFM image",
-          owner_type="project",
-          owner_id="proj-abc123",
-          tags=["pycroscopy", "afm"],
-          metadata=pycroscopy_metadata,
-      )
-
-      relationship = client.create_relationship(
-          uploaded.asset_id,
-          "raw-asset-id",
-          "derived_from",
-          analysis_mode="non_destructive",
-          qualifier_note="Created by a pycroscopy notebook.",
-          qualifiers={"tool": "pycroscopy"},
-      )
-
-  print("asset_id:", uploaded.asset_id)
-  print("content_id:", uploaded.content_id)
-  print("relationship:", relationship.type)
-
-Metadata shape
---------------
-
-Use a top-level ``pycroscopy`` key so Dataerai records can be searched and
-audited without requiring Dataerai to understand every pycroscopy object:
+Every uploaded asset receives a top-level ``pycroscopy`` metadata object. The
+shape is intentionally simple so Dataerai records can be searched and audited
+without requiring Dataerai to understand every pycroscopy object:
 
 .. code:: json
 
   {
     "pycroscopy": {
-      "schema_version": 1,
+      "schema_version": 2,
+      "run_id": "...",
       "created_at": "2026-06-25T00:00:00+00:00",
+      "notebook": "Intro_to_Pycroscopy.ipynb",
+      "operation": "intro_pycroscopy_analysis",
+      "role": "derived_result",
       "file": {
-        "filename": "cleaned_afm.npy",
-        "suffix": ".npy",
+        "filename": "pycroscopy_intro_result.npz",
+        "suffix": ".npz",
         "size_bytes": 32768,
         "sha256": "..."
       },
-      "dataset": {
-        "title": "Cleaned AFM image",
-        "data_type": "image",
-        "shape": [64, 64],
-        "dtype": "float64"
+      "environment": {
+        "python": "...",
+        "platform": "...",
+        "packages": {
+          "pycroscopy": "...",
+          "dataerai": "..."
+        },
+        "git": {
+          "commit": "...",
+          "branch": "...",
+          "dirty": false
+        }
+      },
+      "artifact": {
+        "dataset_sid": {
+          "shape": [64, 64],
+          "dtype": "float64"
+        }
       },
       "lineage": {
         "source_asset_ids": ["raw-asset-id"]
@@ -122,15 +116,24 @@ audited without requiring Dataerai to understand every pycroscopy object:
 Relationship types
 ------------------
 
-Create relationships from the uploaded result asset to upstream source assets.
-Use ``derived_from`` for processed data products and ``analysis_of`` when the
-asset is an analysis output that should point back to raw or intermediate data.
+The notebook cells create directed relationships from dependent assets to their
+upstream evidence:
+
+* ``derived_from`` links result and derived-output assets to raw input assets,
+  source assets, or the raw-input manifest.
+* ``copy_of`` links uploaded raw local files to existing Dataerai source assets
+  when ``DATAERAI_SOURCE_ASSET_IDS`` is provided.
+* ``generated_by`` links outputs and images to the notebook manifest or notebook
+  snapshot.
+* ``documented_by`` links outputs and images to the execution-log asset.
+* ``visualization_of`` links output-image assets to the derived-result asset.
+* ``execution_of`` links the execution-log asset to the notebook manifest.
 
 File format follow-up
 ---------------------
 
-The notebook examples save compact NumPy ``.npy`` or ``.npz`` files so the
-Dataerai workflow is easy to run in a tutorial. A follow-up ADR should decide
-the preferred preservation formats for pycroscopy workflows, including when to
-preserve original source files, ``sidpy``/HDF5 artifacts, or compact derived
-arrays.
+The notebook examples save compact NumPy ``.npz`` result bundles and preserve
+raw files in their original local formats when those files are present. A
+follow-up ADR should decide the preferred preservation formats for pycroscopy
+workflows, including when to preserve original source files, ``sidpy``/HDF5
+artifacts, compact derived arrays, figures, and execution logs.
