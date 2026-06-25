@@ -22,7 +22,8 @@ enough.
 Notebook workflow
 -----------------
 
-The same pattern works in the example notebooks:
+The same pattern is included as an opt-in section in every notebook under
+``jupyter_notebooks``:
 
 1. Save the pycroscopy or ``sidpy.Dataset`` result to a file.
 2. Build a small ``pycroscopy`` metadata dictionary for search and audit.
@@ -128,7 +129,8 @@ asset is an analysis output that should point back to raw or intermediate data.
 File format follow-up
 ---------------------
 
-The notebook examples save NumPy ``.npy`` files so the DataErai workflow is easy
-to run in a tutorial. A follow-up ADR should decide the preferred preservation
-formats for pycroscopy workflows, including when to preserve original source
-files, ``sidpy``/HDF5 artifacts, or compact derived arrays.
+The notebook examples save compact NumPy ``.npy`` or ``.npz`` files so the
+DataErai workflow is easy to run in a tutorial. A follow-up ADR should decide
+the preferred preservation formats for pycroscopy workflows, including when to
+preserve original source files, ``sidpy``/HDF5 artifacts, or compact derived
+arrays.
