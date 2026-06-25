@@ -1,10 +1,10 @@
-DataErai provenance tutorials
+Dataerai provenance tutorials
 =============================
 
 Pycroscopy notebooks can preserve analysis outputs in
-`DataErai <https://dataerai.com/>`_ by calling the DataErai Python SDK directly.
+`Dataerai <https://dataerai.com/>`_ by calling the Dataerai Python SDK directly.
 This guide does not add a pycroscopy API or dependency. Install and authenticate
-DataErai only in notebook environments that need to upload assets.
+Dataerai only in notebook environments that need to upload assets.
 
 Installation
 ------------
@@ -14,7 +14,7 @@ Installation
   pip install dataerai
   dataerai auth login
 
-If your notebook should start the local DataErai daemon automatically, set the
+If your notebook should start the local Dataerai daemon automatically, set the
 ``binary_path`` argument in ``DataeraiClient`` to the installed ``dataerai``
 binary. If the daemon is already running, the default socket connection is
 enough.
@@ -92,8 +92,8 @@ The same pattern is included as an opt-in section in every notebook under
 Metadata shape
 --------------
 
-Use a top-level ``pycroscopy`` key so DataErai records can be searched and
-audited without requiring DataErai to understand every pycroscopy object:
+Use a top-level ``pycroscopy`` key so Dataerai records can be searched and
+audited without requiring Dataerai to understand every pycroscopy object:
 
 .. code:: json
 
@@ -130,7 +130,7 @@ File format follow-up
 ---------------------
 
 The notebook examples save compact NumPy ``.npy`` or ``.npz`` files so the
-DataErai workflow is easy to run in a tutorial. A follow-up ADR should decide
+Dataerai workflow is easy to run in a tutorial. A follow-up ADR should decide
 the preferred preservation formats for pycroscopy workflows, including when to
 preserve original source files, ``sidpy``/HDF5 artifacts, or compact derived
 arrays.
