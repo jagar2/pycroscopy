@@ -21,5 +21,4 @@ More information is available below
     pycroscopy.analysis
     pycroscopy.io
     pycroscopy.processing
-    pycroscopy.provenance
     pycroscopy.viz

@@ -1,10 +1,10 @@
-DataErai provenance
-===================
+DataErai provenance tutorials
+=============================
 
-``pycroscopy.provenance`` provides optional helpers for preserving analysis
-artifacts in `DataErai <https://dataerai.com/>`_. The integration keeps
-DataErai out of the default dependency set: install the DataErai SDK only in
-the environment that will upload assets.
+Pycroscopy notebooks can preserve analysis outputs in
+`DataErai <https://dataerai.com/>`_ by calling the DataErai Python SDK directly.
+This guide does not add a pycroscopy API or dependency. Install and authenticate
+DataErai only in notebook environments that need to upload assets.
 
 Installation
 ------------
@@ -12,56 +12,87 @@ Installation
 .. code:: bash
 
   pip install dataerai
-
-The DataErai command line application must also be installed and authenticated:
-
-.. code:: bash
-
   dataerai auth login
 
-Preserve an analysis result
----------------------------
+If your notebook should start the local DataErai daemon automatically, set the
+``binary_path`` argument in ``DataeraiClient`` to the installed ``dataerai``
+binary. If the daemon is already running, the default socket connection is
+enough.
 
-The helper uploads a local artifact through the DataErai Python SDK, records
-file preservation metadata such as SHA-256 and size, captures useful
-``sidpy.Dataset`` metadata when available, and links the new asset to upstream
-source assets.
+Notebook workflow
+-----------------
+
+The same pattern works in the example notebooks:
+
+1. Save the pycroscopy or ``sidpy.Dataset`` result to a file.
+2. Build a small ``pycroscopy`` metadata dictionary for search and audit.
+3. Upload the file with ``DataeraiClient.upload``.
+4. Link the uploaded asset to each source asset with
+   ``DataeraiClient.create_relationship``.
 
 .. code:: python
 
+  import hashlib
+  from datetime import datetime, timezone
+  from pathlib import Path
+
   import numpy as np
-  import sidpy
+  from dataerai import DataeraiClient
 
-  from pycroscopy.provenance import DataEraiProvenanceClient
+  result_path = Path("cleaned_afm.npy")
+  np.save(result_path, np.asarray(cleaned_dataset))
 
-  result_path = "cleaned_afm.npy"
-  cleaned = sidpy.Dataset.from_array(np.random.random((64, 64)))
-  cleaned.title = "Cleaned AFM image"
-  cleaned.data_type = "image"
-  np.save(result_path, np.asarray(cleaned))
+  digest = hashlib.sha256(result_path.read_bytes()).hexdigest()
+  pycroscopy_metadata = {
+      "pycroscopy": {
+          "schema_version": 1,
+          "created_at": datetime.now(timezone.utc).isoformat(),
+          "file": {
+              "filename": result_path.name,
+              "suffix": result_path.suffix,
+              "size_bytes": result_path.stat().st_size,
+              "sha256": digest,
+          },
+          "dataset": {
+              "title": getattr(cleaned_dataset, "title", None),
+              "data_type": str(getattr(cleaned_dataset, "data_type", "")),
+              "shape": list(getattr(cleaned_dataset, "shape", [])),
+              "dtype": str(getattr(cleaned_dataset, "dtype", "")),
+          },
+          "lineage": {
+              "source_asset_ids": ["raw-asset-id"],
+          },
+      }
+  }
 
-  with DataEraiProvenanceClient(binary_path="/usr/local/bin/dataerai") as provenance:
-      preserved = provenance.preserve_asset(
-          result_path,
+  with DataeraiClient(binary_path="/usr/local/bin/dataerai") as client:
+      uploaded = client.upload(
+          str(result_path),
           title="Cleaned AFM image",
           owner_type="project",
           owner_id="proj-abc123",
-          dataset=cleaned,
-          source_asset_ids=["raw-asset-id"],
-          relationship_type="derived_from",
-          tags=["afm", "clean_svd"],
-          extra_metadata={"workflow": "clean_svd"},
+          tags=["pycroscopy", "afm"],
+          metadata=pycroscopy_metadata,
       )
 
-  print("asset_id:", preserved.asset_id)
-  print("content_id:", preserved.content_id)
-  print("sha256:", preserved.metadata["pycroscopy"]["file"]["sha256"])
-  print("relationship:", preserved.relationships[0].type)
+      relationship = client.create_relationship(
+          uploaded.asset_id,
+          "raw-asset-id",
+          "derived_from",
+          analysis_mode="non_destructive",
+          qualifier_note="Created by a pycroscopy notebook.",
+          qualifiers={"tool": "pycroscopy"},
+      )
 
-Metadata schema
----------------
+  print("asset_id:", uploaded.asset_id)
+  print("content_id:", uploaded.content_id)
+  print("relationship:", relationship.type)
 
-DataErai receives a top-level ``pycroscopy`` metadata object:
+Metadata shape
+--------------
+
+Use a top-level ``pycroscopy`` key so DataErai records can be searched and
+audited without requiring DataErai to understand every pycroscopy object:
 
 .. code:: json
 
@@ -87,6 +118,9 @@ DataErai receives a top-level ``pycroscopy`` metadata object:
     }
   }
 
-The DataErai relationship is created from the preserved asset to each source
-asset. For derived analysis results, use ``derived_from`` or ``analysis_of`` as
-the relationship type.
+Relationship types
+------------------
+
+Create relationships from the uploaded result asset to upstream source assets.
+Use ``derived_from`` for processed data products and ``analysis_of`` when the
+asset is an analysis output that should point back to raw or intermediate data.

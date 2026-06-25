@@ -22,7 +22,6 @@ from . import learn
 from . import viz
 from . import signal
 from . import stats
-from . import provenance
 
 from .version import __version__
 from .version import __time__
