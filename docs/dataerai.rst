@@ -124,3 +124,11 @@ Relationship types
 Create relationships from the uploaded result asset to upstream source assets.
 Use ``derived_from`` for processed data products and ``analysis_of`` when the
 asset is an analysis output that should point back to raw or intermediate data.
+
+File format follow-up
+---------------------
+
+The notebook examples save NumPy ``.npy`` files so the DataErai workflow is easy
+to run in a tutorial. A follow-up ADR should decide the preferred preservation
+formats for pycroscopy workflows, including when to preserve original source
+files, ``sidpy``/HDF5 artifacts, or compact derived arrays.
